@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+#default-tab button[aria-selected="true"] {
+    background: linear-gradient(97deg, #C3976A 1.98%, #C3976A 43.12%, #C3976A 99.93%);
+}
+
+select:not([size]) {
+    appearance: none;
+    padding-right: 0px;
+    background-image: url(/images/arrow.svg);
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+}
+
+#navbar-sticky.active{
+    @apply left-0
+}
