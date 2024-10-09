@@ -71,7 +71,7 @@ return (
                 <select
                 defaultValue={"Currency"}
                 id="countries"
-                className="text-base font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3"
+                className="text-base font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3 !pr-10"
                 >
                 <option disabled>Currency</option>
                 <option value="US">United States</option>
@@ -87,7 +87,7 @@ return (
                 <div className="flex md:flex-row flex-col md:gap-4">
                     <div className="md:w-1/2 w-full">
                     <div className="relative mt-5 mb-4 overflow-x-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
                             <th scope="col" className="px-4 py-3">
@@ -225,7 +225,7 @@ return (
                     </div>
                     <div className="md:w-1/2 w-full">
                     <div className="relative md:mt-5 mb-4 overflow-x-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
                             <th scope="col" className="px-4 py-3">

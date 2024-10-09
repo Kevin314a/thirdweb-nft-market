@@ -30,10 +30,10 @@ const MemecoinsSlider = () => {
           pagination={{ clickable: true }}
           breakpoints={{
             320: {
-              slidesPerView: 1,
+              slidesPerView: 1.2,
             },
             480: {
-              slidesPerView: 2,
+              slidesPerView: 2.2,
             },
           
           }}

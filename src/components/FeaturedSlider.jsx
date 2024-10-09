@@ -30,13 +30,13 @@ const FeaturedSlider = () => {
           pagination={{ clickable: true }}
           breakpoints={{
             320: {
-              slidesPerView: 1,
+              slidesPerView: 1.2,
             },
-            425: {
-              slidesPerView: 2,
+            480: {
+              slidesPerView: 2.2,
             },
             768: {
-              slidesPerView: 3,
+              slidesPerView: 3.2,
             },
           }}
         >
