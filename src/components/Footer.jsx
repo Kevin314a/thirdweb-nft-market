@@ -51,14 +51,14 @@ export const Footer = () => {
         <div className="lg:w-2/3 w-full">
           <div className="flex mt-11 lg:flex-nowrap flex-wrap lg:justify-end xl:gap-12 lg:gap-8 gap-12">
             <div className="sm:w-1/4 w-[40%] lg:w-auto">
-              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-bold ">
+              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-medium ">
                 Marketplace
               </h4>
               <ul>
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Partners
                   </a>
@@ -66,7 +66,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Categories
                   </a>
@@ -74,7 +74,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Collections
                   </a>
@@ -82,7 +82,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Getting Listed
                   </a>
@@ -90,14 +90,14 @@ export const Footer = () => {
               </ul>
             </div>
             <div className="sm:w-1/4 w-[40%] lg:w-auto">
-              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-bold ">
+              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-medium ">
                 Exchange
               </h4>
               <ul>
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Swap
                   </a>
@@ -105,7 +105,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Pools
                   </a>
@@ -113,7 +113,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Farm
                   </a>
@@ -121,7 +121,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Stake
                   </a>
@@ -129,14 +129,14 @@ export const Footer = () => {
               </ul>
             </div>
             <div className="sm:w-1/4 w-[40%] lg:w-auto">
-              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-bold ">
+              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-medium ">
                 Community
               </h4>
               <ul>
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     About Us
                   </a>
@@ -144,7 +144,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Contact Us
                   </a>
@@ -152,7 +152,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Documents
                   </a>
@@ -160,7 +160,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     Privacy Policy
                   </a>
@@ -168,14 +168,14 @@ export const Footer = () => {
               </ul>
             </div>
             <div className="sm:w-1/4 w-[40%] lg:w-auto">
-              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-bold ">
+              <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-6 pb-3 leading-9 text-white font-medium ">
                 Learn
               </h4>
               <ul>
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     What Is DeFi?
                   </a>
@@ -183,7 +183,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     What Are NFTs?
                   </a>
@@ -191,7 +191,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     What Is GameFi?
                   </a>
@@ -199,7 +199,7 @@ export const Footer = () => {
                 <li>
                   <a
                     href="#"
-                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-medium"
+                    className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
                   >
                     What is SocialFi?
                   </a>
@@ -210,7 +210,7 @@ export const Footer = () => {
         </div>
       </div>
       <div className="text-center md:mt-[74px] mt-14 border-t md:py-9 py-5 border-white">
-        <p className="lg:text-xl md:text-base text-sm  text-white font-medium leading-[30px]">
+        <p className="lg:text-xl md:text-base text-sm  text-white font-light leading-[30px]">
           All Right Reserved © Posse Ltd 2024
         </p>
       </div>

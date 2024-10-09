@@ -45,7 +45,7 @@ export const Navbar = () => {
               </div>
             </div>
             <Link href="#"
-              className="xxl:text-base md:min-w-[180px] text-sm whitespace-nowrap transition-all ease-out duration-500 hover:bg-golden-1100 font-semibold text-white inline-flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-3 gap-2">
+              className="xxl:text-base md:min-w-[180px] text-sm whitespace-nowrap transition-all ease-out duration-500 hover:bg-golden-1100 font-medium text-white inline-flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-3 gap-2">
               <img src="images/wallet.svg" alt="" />
               <span className="hidden md:block">Connect Wallet</span>
             </Link>
@@ -80,7 +80,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href="#"
-                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-semibold xxl:text-lg text-base leading-[27px]"
+                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-medium xxl:text-lg text-base leading-[27px]"
                 aria-current="page"
               >
                 Marketplace
@@ -89,7 +89,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href="#"
-                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-semibold xxl:text-lg text-base leading-[27px]"
+                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-medium xxl:text-lg text-base leading-[27px]"
                 aria-current="page"
               >
                 DEX
@@ -98,7 +98,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href="#"
-                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-semibold xxl:text-lg text-base leading-[27px]"
+                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-medium xxl:text-lg text-base leading-[27px]"
                 aria-current="page"
               >
                 Yeehaw
@@ -107,7 +107,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href="#"
-                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-semibold xxl:text-lg text-base leading-[27px]"
+                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-medium xxl:text-lg text-base leading-[27px]"
                 aria-current="page"
               >
                 Drops
@@ -116,7 +116,7 @@ export const Navbar = () => {
             <li>
               <Link
                 href="#"
-                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-semibold xxl:text-lg text-base leading-[27px]"
+                className="block px-2.5 transition-all hover:text-golden-1000 text-white font-medium xxl:text-lg text-base leading-[27px]"
                 aria-current="page"
               >
                 Stats
