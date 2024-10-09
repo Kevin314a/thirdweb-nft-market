@@ -121,7 +121,7 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute -top-20 -right-2">
-          <img
+         <img
             src="/images/polygon-1.png"
             alt=""
           />
