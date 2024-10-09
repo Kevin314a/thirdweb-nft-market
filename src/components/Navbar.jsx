@@ -16,7 +16,7 @@ export const Navbar = () => {
     <>
   <header className="fixed py-2.5 w-full z-50 top-0 start-0 bg-black">
     <nav>
-      <div className="max-w-[1440px] flex items-center justify-between mx-auto xl:px-10 px-5">
+      <div className="max-w-[1920px] lg:px-[50px] flex items-center justify-between mx-auto xl:px-10 px-5">
         <Link href="#" className="flex items-center relative z-20">
           <Image src="images/logo.svg"  
           width={120}
