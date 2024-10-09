@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <>
       <section className="lg:pt-20 pt-24 relative z-10">
-        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto">
+        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
             Featured
             <span className="bg-text-bg  bg-clip-text text-transparent">
@@ -39,7 +39,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative z-10">
-        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto">
+        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
             Token
             <span className="bg-text-bg  bg-clip-text text-transparent">
@@ -80,7 +80,7 @@ export default function Home() {
       </section>
 
       <section className="md:pt-4 pt-10 pb-[34px] relative">
-        <div className="max-w-[1440px]max-w-[1920px] lg:px-[42px] px-5 mx-auto z-10 relative">
+        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto z-10 relative">
           <div className="w-full flex items-center justify-between">
           <TableTabs/>
           </div>
@@ -89,7 +89,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1440px]max-w-[1920px] lg:px-[42px] px-5 mx-auto relative z-10">
+        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto relative z-10">
           <div className="mb-14">
             <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
               Launchpad NFT
@@ -149,7 +149,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto relative z-10">
+        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto relative z-10">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
             Memecoins on
             <span className="bg-text-bg  bg-clip-text text-transparent">
