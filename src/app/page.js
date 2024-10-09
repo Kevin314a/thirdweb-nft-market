@@ -71,9 +71,8 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 -z-10">
-          <img
-            className="w-[145px] h-auto"
-            src="/images/polygon-22.png"
+           <img
+            src="/images/polygon-1.png"
             alt=""
           />
         </div>
