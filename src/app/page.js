@@ -72,7 +72,7 @@ export default function Home() {
         </div>
         <div className="absolute bottom-0 left-0 -z-10">
            <img
-            src="/images/polygon-1.png"
+            src="/images/poly-2.png"
             alt=""
           />
         </div>
