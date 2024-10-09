@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <>
       <section className="lg:pt-20 pt-24 relative z-10">
-        <div className="max-w-[1440px] lg:px-[50px] px-5 mx-auto">
+        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
             Featured
             <span className="bg-text-bg  bg-clip-text text-transparent">
@@ -39,7 +39,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative z-10">
-        <div className="max-w-[1440px] lg:px-[50px] px-5 mx-auto">
+        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
             Token
             <span className="bg-text-bg  bg-clip-text text-transparent">
@@ -70,8 +70,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 -z-10">
-           <img
+        <div className="absolute bottom-0 left-0 max-h-[312px] -z-10">
+          <img
+            className="w-[145px] h-full"
             src="/images/poly-2.png"
             alt=""
           />
@@ -79,7 +80,7 @@ export default function Home() {
       </section>
 
       <section className="md:pt-4 pt-10 pb-[34px] relative">
-        <div className="max-w-[1440px] lg:px-[42px] px-5 mx-auto z-10 relative">
+        <div className="max-w-[1440px]max-w-[1920px] lg:px-[42px] px-5 mx-auto z-10 relative">
           <div className="w-full flex items-center justify-between">
           <TableTabs/>
           </div>
@@ -88,7 +89,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1440px] lg:px-[42px] px-5 mx-auto relative z-10">
+        <div className="max-w-[1440px]max-w-[1920px] lg:px-[42px] px-5 mx-auto relative z-10">
           <div className="mb-14">
             <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
               Launchpad NFT
@@ -120,9 +121,10 @@ export default function Home() {
             <TopSalesSlider/>
           </div>
         </div>
-        <div className="absolute -top-20 -right-2">
-         <img
-            src="/images/polygon-1.png"
+        <div className="absolute -top-20 max-h-[312px] -right-2">
+          <img
+          className="w-auto h-full max-h-[312px]"
+            src="/images/poly-3.png"
             alt=""
           />
         </div>
@@ -147,7 +149,7 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1440px] lg:px-[50px] px-5 mx-auto relative z-10">
+        <div className="max-w-[1440px]max-w-[1920px] lg:px-[50px] px-5 mx-auto relative z-10">
           <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
             Memecoins on
             <span className="bg-text-bg  bg-clip-text text-transparent">
@@ -172,7 +174,7 @@ export default function Home() {
                width={646}
                height={291}
                 src="/images/marketplace-img.png"
-                className="w-full h-auto rounded-[16px]"
+                className="w-full h-full rounded-[16px]"
                 alt=""
               />
               <div className="absolute bottom-[18px] left-5 max-w-[150px] w-full">
@@ -215,17 +217,17 @@ export default function Home() {
           </div>
         </div>
         <div className="absolute md:block hidden bottom-1/2 -mb-44 left-0 z-0">
-          <img
-            className="max-h-[312px] bg-contain w-auto"
-            src="/images/polygon-4.png"
+        <img
+          className="w-auto h-full max-h-[312px]"
+            src="/images/poly-6.png"
             alt=""
-          />  
+          /> 
         </div>
 
         <div className="absolute -bottom-20 right-0 z-0">
-          <img
-            className="max-h-[312px] bg-contain w-auto"
-            src="/images/polygon-5.png"
+        <img
+          className="w-auto h-full max-h-[312px]"
+            src="/images/poly-7.png"
             alt=""
           />
         </div>
