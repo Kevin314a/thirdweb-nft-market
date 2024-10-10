@@ -48,7 +48,7 @@ export default function Home() {
             </span>
           </h2>
           <div className="flex lg:flex-nowrap flex-wrap justify-center gap-6">
-            <div className="">
+            <div className="lg:w-[38%]">
               <Image
                 width={500}
                 height={350}
@@ -58,7 +58,7 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className="">
+            <div className="lg:w-[62%]">
               <Image
                 width={815}
                 height={350}
@@ -68,16 +68,7 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className="">
-              <Image
-                width={500}
-                height={350}
-                src="/images/funia-img.png"
-                className="rounded-[15px] w-full"
-                alt=""
-                priority
-              />
-            </div>
+        
             
           </div>
         </div>
@@ -88,7 +79,7 @@ export default function Home() {
             alt=""
           />
         </div>
-        <div className="h-[653.31px] w-[645.18px] bg-[#200B07] blur-[250px] absolute -top-[50%] -left-44 -z-20"></div>
+        <div className="lg:h-[653.31px] h-[455px] w-[455px] lg:w-[645.18px] bg-[#3a140c] blur-[250px] absolute -top-[50%] -left-1/3 lg:-left-44 -z-20"></div>
 
       </section>
 
@@ -98,7 +89,7 @@ export default function Home() {
           <TableTabs/>
           </div>
         </div>
-        <div className="h-[653.31px] w-[645.18px] bg-[#200B07] blur-[250px] absolute -top-[35%] -right-44 z-0"></div>
+        <div className="lg:h-[653.31px] lg:w-[645.18px]  h-[455px] w-[455px] bg-[#3a140c] blur-[250px] absolute -top-[35%] -right-44 z-0"></div>
       </section>
 
       <section className="pt-10 relative">
@@ -152,8 +143,8 @@ export default function Home() {
           />
         </div>
 
-        <div className="h-[237px] w-[237px] bg-[#200B07] blur-[250px] absolute -top-[0%] -left-10 z-0"></div>
-        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[250px] absolute -bottom-[0%] -right-44 z-0"></div>
+        <div className="h-[237px] w-[237px] bg-[#3a140c] blur-[250px] absolute -top-[0%] -left-10 z-0"></div>
+        <div className="h-[555px] w-[547px] bg-[#3a140c] blur-[250px] absolute -bottom-[0%] -right-44 z-0"></div>
 
 
         <div className="absolute -bottom-34 right-0">
@@ -164,7 +155,7 @@ export default function Home() {
           />
         </div>
 
-        <div className="hlg:-[600px]  px-5bg-[#1D0B07] blur-[200px] absolute w-1/4 top-1/2 right-0 z-0"></div>
+        <div className="hlg:-[600px]  px-5bg-[#1D0B07] blur-[200px] absolute w-1/4 top-1/2 -right-[150px] z-0"></div>
       </section>
 
       <section className="pt-10 relative">
@@ -243,8 +234,8 @@ export default function Home() {
           /> 
         </div>
 
-        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[250px] absolute -top-[0%] -left-44 z-0"></div>
-        <div className="h-[966px] w-[952px] bg-[#200B07] blur-[250px] absolute -bottom-[0%] -right-44 z-0"></div>
+        <div className="h-[555px] w-[547px] bg-[#3a140c] blur-[250px] absolute -top-[0%] lg:-left-44 -left-[400px] z-0"></div>
+        <div className="h-[966px] w-[952px] bg-[#3a140c] blur-[250px] absolute -bottom-[0%] lg:-right-44 -right-[650px]  z-0"></div>
 
         <div className="absolute -bottom-20 right-0 z-0">
         <img
