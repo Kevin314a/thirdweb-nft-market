@@ -84,9 +84,9 @@ return (
             <TabPanels>
             <TabPanel>
                 <div className="w-full h-full">
-                <div className="flex md:flex-row flex-col md:gap-4">
+                <div className="flex flex-row gap-32 overflow-x-auto">
                     <div className="md:w-1/2 w-full">
-                    <div className="relative mt-5 mb-4 overflow-x-auto">
+                    <div className="relative mt-5 mb-4 ">
                         <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
@@ -224,7 +224,7 @@ return (
                     </div>
                     </div>
                     <div className="md:w-1/2 w-full">
-                    <div className="relative md:mt-5 mb-4 overflow-x-auto">
+                    <div className="relative mt-5 mb-4">
                         <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
@@ -371,11 +371,11 @@ return (
                 </div>
             </TabPanel>
             <TabPanel>
-                <div className="w-full h-full">
-                <div className="flex gap-4">
-                    <div className="w-1/2">
-                    <div className="relative md:mt-5 mb-4 overflow-x-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <div className="w-full h-full">
+                <div className="flex flex-row gap-32 overflow-x-auto">
+                    <div className="md:w-1/2 w-full">
+                    <div className="relative mt-5 mb-4 ">
+                        <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
                             <th scope="col" className="px-4 py-3">
@@ -511,9 +511,9 @@ return (
                         </table>
                     </div>
                     </div>
-                    <div className="w-1/2">
-                    <div className="relative mt-5 mb-4 overflow-x-auto">
-                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <div className="md:w-1/2 w-full">
+                    <div className="relative mt-5 mb-4">
+                        <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                         <thead className="text-sm text-golden-1000 font-inter leading-5 font-normal">
                             <tr>
                             <th scope="col" className="px-4 py-3">
