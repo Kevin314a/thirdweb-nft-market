@@ -6,7 +6,7 @@ export const Footer = () => {
     <div className="max-w-[1920px] px-6 mx-auto">
       <div className="flex lg:flex-row flex-col align-items-center">
         <div className="lg:w-1/3 w-full lg:mr-6 lg:pr-4">
-          <img src="images/footer-logo.svg" alt="" />
+          <img src="images/footer-logo.svg" alt="" className='-ml-5' />
           <p className="xl:text-lg mt-2 mb-[60px] text-white font-normal leading-[27px]">
             Posse Studios, the development arm behind the Posse ecosystem, is a
             software company specializing in blockchain and gaming technologies.
