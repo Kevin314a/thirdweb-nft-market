@@ -25,7 +25,7 @@ const TopSalesSlider = () => {
 
 
   return (
-    <div className="max-w-full mx-auto relative">
+    <div className="max-w-full mx-auto relative lg:pl-0 pl-3">
       <Swiper
         ref={swiperRef}
         spaceBetween={26}
