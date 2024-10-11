@@ -19,10 +19,9 @@ export default function Home() {
 
   return (
     <>
-    <div>
       <section className="lg:pt-20 pt-24 relative z-20">
-        <div className="max-w-[1920px] px-6 mx-auto">
-          <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
+        <div className="max-w-[1920px] lg:px-6 mx-auto">
+          <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal md:text-start lg:px-0 px-6 text-center mb-4">
             Featured
             <span className="bg-text-bg  bg-clip-text text-transparent">
               {" "}
@@ -37,33 +36,66 @@ export default function Home() {
             alt=""
           />
         </div>
-       
       </section>
 
-
-      <section className="md:pt-4 pt-10 pb-[34px] relative">
-        <div className="max-w-[1920px] px-6 mx-auto z-10 relative">
-          <div className="w-full flex items-center justify-between">
-          <TableTabs/>
+      <section className="md:pt-10 pt-8 relative z-10">
+        <div className="max-w-[1920px] px-6 mx-auto relative z-10">
+          <h2 className="text-[15px] mb-4 font-semibold text-white leading-normal sm:text-start text-center">
+            Token
+            <span className="bg-text-bg  bg-clip-text text-transparent">
+              {" "}
+              Swap
+            </span>
+          </h2>
+          <div className="flex lg:flex-nowrap flex-wrap justify-center gap-6">
+            <div className="lg:w-[38%] hidden lg:block">
+              <Image
+                width={500}
+                height={350}
+                src="/images/funia-img.png"
+                className="rounded-[15px] w-full"
+                alt=""
+                priority
+              />
+            </div>
+            <div className="lg:w-[62%] w-full">
+              <Image
+                width={815}
+                height={350}
+                src="/images/swap.png"
+                className="rounded-[15px] w-full"
+                alt=""
+                priority
+              />
+            </div>
+        
+            
           </div>
         </div>
-        <div className="lg:h-[653.31px] lg:w-[645.18px]  h-[455px] w-[455px] bg-[#200B07] blur-[200px] absolute -top-[0%] -right-44 z-0"></div>
-      
-      </section>
-
-      <section className="pt-10 relative">
-      <div className="absolute top-0 left-0 max-h-[312px] z-0">
+        <div className="absolute bottom-0 left-0 max-h-[312px] -z-10">
           <img
             className="w-[145px] h-full"
             src="/images/poly-2.png"
             alt=""
           />
         </div>
-        <div className="lg:h-[653.31px] h-[455px] w-[455px] lg:w-[645.18px] bg-[#200B07] blur-[200px] absolute -top-[50%] -left-1/3 lg:-left-[302px] z-0"></div>
+        <div className="lg:h-[653.31px] h-[455px] w-[455px] lg:w-[645.18px] bg-[#200B07] blur-[250px] absolute -top-[50%] -left-1/3 lg:-left-44 -z-20"></div>
 
-        <div className="max-w-[1920px] px-6 mx-auto relative z-10">
-          <div className="mb-14">
-            <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
+      </section>
+
+      <section className="md:pt-4 pt-8 pb-[34px] relative">
+        <div className="max-w-[1920px] px-6 mx-auto z-10 relative">
+          <div className="w-full flex items-center justify-between">
+          <TableTabs/>
+          </div>
+        </div>
+        <div className="lg:h-[653.31px] lg:w-[645.18px]  h-[455px] w-[455px] bg-[#200B07] blur-[250px] absolute -top-[35%] -right-44 z-0"></div>
+      </section>
+
+      <section className="lg:pt-10 pt-8 relative">
+        <div className="max-w-[1920px] lg:px-6 mx-auto relative z-10">
+          <div className="lg:mb-14 mb-10">
+            <h2 className="text-[15px] mb-4 font-semibold text-white leading-normal sm:text-start text-center lg:px-0 px-6">
               Launchpad NFT
               <span className="bg-text-bg  bg-clip-text text-transparent">
                 {" "}
@@ -72,8 +104,8 @@ export default function Home() {
             </h2>
             <LaunchpadSlider/>
           </div>
-          <div className="mb-14">
-            <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
+          <div className="lg:mb-14 mb-10">
+            <h2 className="text-[15px] mb-4 font-semibold text-white leading-normal sm:text-start text-center lg:px-0 px-6">
               NFT Market
               <span className="bg-text-bg  bg-clip-text text-transparent">
                 {" "}
@@ -82,8 +114,8 @@ export default function Home() {
             </h2>
             <MarketMoversSlider/>
           </div>
-          <div className="mb-14">
-            <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-10">
+          <div className="lg:mb-14 mb-10">
+            <h2 className="text-[15px] mb-4 font-semibold text-white leading-normal sm:text-start text-center lg:px-0 px-6">
               Top NFT
               <span className="bg-text-bg  bg-clip-text text-transparent">
                 {" "}
@@ -93,7 +125,7 @@ export default function Home() {
             <TopSalesSlider/>
           </div>
         </div>
-        <div className="absolute -top-0 max-h-[312px] -right-2">
+        <div className="absolute -top-20 max-h-[312px] -right-2">
           <img
           className="w-auto h-full max-h-[312px]"
             src="/images/poly-3.png"
@@ -103,7 +135,7 @@ export default function Home() {
 
 
 
-        <div className="absolute -translate-y-1/2 top-3/4 -mt-36 left-0">
+        <div className="absolute -translate-y-1/2 top-1/2 -mt-36 left-0">
           <img
             className="max-h-[312px] bg-contain w-auto"
             src="/images/polygon.png"
@@ -111,8 +143,8 @@ export default function Home() {
           />
         </div>
 
-        <div className="h-[237px] w-[237px] bg-[#200B07] blur-[200px] absolute top-[50%] -left-10 z-0"></div>
-        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[200px] absolute -bottom-[0%] -right-44 z-0"></div>
+        <div className="h-[237px] w-[237px] bg-[#200B07] blur-[250px] absolute -top-[0%] -left-10 z-0"></div>
+        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[250px] absolute -bottom-[0%] -right-44 z-0"></div>
 
 
         <div className="absolute -bottom-34 right-0">
@@ -127,15 +159,15 @@ export default function Home() {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1920px] px-6 mx-auto relative z-10">
-          <h2 className="text-[15px] sm:mb-3 font-semibold text-white leading-normal sm:text-start text-center mb-6">
+        <div className="max-w-[1920px] lg:px-6 mx-auto relative z-10">
+          <h2 className="text-[15px] mb-4 lg:px-0 px-6 font-semibold text-white leading-normal sm:text-start text-center">
             Memecoins on
             <span className="bg-text-bg  bg-clip-text text-transparent">
               {" "}
               Yeehaw
             </span>
           </h2>
-          <div className="text-center">
+          <div className="text-center px-6 ">
             <h3 className="lg:text-[50px] lg:leading-[75px] mb-10 text-4xl text-white font-semibold">
               Begin your meme adventure with
               <span className="bg-heading-bg  bg-clip-text text-transparent">
@@ -146,12 +178,12 @@ export default function Home() {
           </div>
           <MemecoinsSlider/>
 
-          <div className="relative mb-24 mt-[70px]">
+          <div className="relative mb-16 mt-[70px] px-6">
             <Image
               width={1340}
               height={402}
             src="/images/banner.png" className="w-full sm:min-h-[250px] min-h-[200px] object-cover h-auto rounded-[16px]" alt="" />
-            <div className="absolute top-[22px] left-5 max-w-[150px] w-full">
+            <div className="absolute top-[22px] left-10 max-w-[150px] w-full">
               <a
                 href="#"
                 className="text-base transition-all justify-center ease-out duration-500 hover:bg-golden-1100 max-w-[150px] text-center w-full mx-auto font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
@@ -169,8 +201,8 @@ export default function Home() {
           /> 
         </div>
 
-        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[200px] absolute -top-[0%] lg:-left-44 -left-[400px] z-0"></div>
-        <div className="h-[966px] w-[952px] bg-[#200B07] blur-[200px] absolute -bottom-[0%] lg:-right-[400px] -right-[650px]  z-0"></div>
+        <div className="h-[555px] w-[547px] bg-[#200B07] blur-[250px] absolute -top-[0%] lg:-left-44 -left-[400px] z-0"></div>
+        <div className="h-[966px] w-[952px] bg-[#200B07] blur-[250px] absolute -bottom-[0%] lg:-right-44 -right-[650px]  z-0"></div>
 
         <div className="absolute -bottom-20 right-0 z-0">
         <img
@@ -182,8 +214,6 @@ export default function Home() {
 
       </section>
 
-
-      </div>
 
     </>
   );
