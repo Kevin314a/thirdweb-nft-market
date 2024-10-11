@@ -15,13 +15,24 @@ return (
 <>
     <TabGroup className="w-full">
             <div className="w-full flex items-center md:flex-row flex-col gap-4 justify-between">
-            <TabList className="flex rounded-[10px] bg-bg-btn">
-                <Tab className="inline-block outline-none data-[selected]:bg-golden-1000  rounded-[10px] py-2 px-4 text-base font-medium text-white">
+            <TabList className="flex rounded-[10px]">
+                <Tab className="inline-block bg-bg-btn outline-none data-[selected]:bg-golden-1000  rounded-[10px] py-2 px-4 text-base font-medium text-white">
                 Top
                 </Tab>
-                <Tab className="inline-block outline-none data-[selected]:bg-golden-1000 pl-5 rounded-[10px] py-2 px-4 text-base font-medium text-white">
+                <Tab className="inline-block -ml-2.5 bg-bg-btn outline-none data-[selected]:bg-golden-1000 pl-5 rounded-[10px] py-2 px-4 text-base font-medium text-white">
                 Trending
                 </Tab>
+                <select
+                defaultValue={"Currency"}
+                id="countries"
+                className="text-base ml-[28px] md:hidden block font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3 !pr-10"
+                >
+                <option disabled>Currency</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+                </select>
             </TabList>
             <div className="flex items-center md:flex-row flex-col gap-4 overflow-auto">
                 <div className="flex items-center w-full rounded-lg bg-golden-1000/[30%]">
@@ -71,7 +82,7 @@ return (
                 <select
                 defaultValue={"Currency"}
                 id="countries"
-                className="text-base font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3 !pr-10"
+                className="text-base md:block hidden font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3 !pr-10"
                 >
                 <option disabled>Currency</option>
                 <option value="US">United States</option>
@@ -84,7 +95,7 @@ return (
             <TabPanels>
             <TabPanel>
                 <div className="w-full h-full">
-                <div className="flex flex-row gap-32 overflow-x-auto">
+                <div className="flex flex-row gap-32 overflow-x-auto mb-5">
                     <div className="md:w-1/2 w-full">
                     <div className="relative mt-5 mb-4 ">
                         <table className="min-w-[430px] w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -115,7 +126,7 @@ return (
                         </thead>
                         <tbody>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     1
@@ -136,7 +147,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     2
@@ -157,7 +168,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     3
@@ -178,7 +189,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     4
@@ -199,7 +210,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     5
@@ -253,7 +264,7 @@ return (
                         </thead>
                         <tbody>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     6
@@ -274,7 +285,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     7
@@ -295,7 +306,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     8
@@ -316,7 +327,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     9
@@ -337,7 +348,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     10
@@ -403,7 +414,7 @@ return (
                         </thead>
                         <tbody>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     1
@@ -424,7 +435,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     2
@@ -445,7 +456,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     3
@@ -466,7 +477,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     4
@@ -487,7 +498,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <th scope="row" className="px-4 py-2.5">
+                            <th scope="row" className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     5
@@ -541,7 +552,7 @@ return (
                         </thead>
                         <tbody>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     6
@@ -562,7 +573,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     7
@@ -583,7 +594,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     8
@@ -604,7 +615,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     9
@@ -625,7 +636,7 @@ return (
                             </td>
                             </tr>
                             <tr className="text-white text-base font-inter font-medium leading-6">
-                            <td className="px-4 py-2.5">
+                            <td className="px-3 py-2">
                                 <div className="flex items-center gap-[22px]">
                                 <span className="font-semibold text-2xl leading-7 text-golden-1000  max-w-[16px] w-full">
                                     10

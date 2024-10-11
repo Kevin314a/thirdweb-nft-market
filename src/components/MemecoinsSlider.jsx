@@ -34,6 +34,7 @@ const MemecoinsSlider = () => {
           breakpoints={{
             320: {
               slidesPerView: 1.2,
+              spaceBetween:15,
             },
             480: {
               slidesPerView: 2.2,

@@ -16,7 +16,7 @@ export const Navbar = () => {
     <>
   <header className="fixed py-2.5 w-full z-50 top-0 start-0 bg-black">
     <nav>
-      <div className="max-w-[1920px] px-6 flex items-center justify-between mx-auto">
+      <div className="max-w-[1920px] lg:px-6 px-3 flex items-center justify-between mx-auto">
         <Link href="#" className="flex items-center relative z-20">
           <Image src="images/logo.svg"  
           width={120}
@@ -25,7 +25,7 @@ export const Navbar = () => {
           className="min-w-[120px] h-auto bg-contain" alt="Logo" />
         </Link>
         <div className="flex w-full justify-end md:order-2 items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative z-20">
-          <div className="flex lg:w-full items-center xxl:gap-10 gap-5 justify-end">
+          <div className="flex lg:w-full items-center xxl:gap-10 gap-3 justify-end">
             <div className="relative xxl:max-w-[507px] lg:max-w-[330px] md:w-full flex justify-center items-center w-8 h-8 border border-golden-1300 rounded-full bg-golden-1300">
               <input
                 type="text"
@@ -45,15 +45,15 @@ export const Navbar = () => {
               </div>
             </div>
             <Link href="#"
-              className="xxl:text-base md:min-w-[180px] text-sm whitespace-nowrap transition-all ease-out duration-500 hover:bg-golden-1100 font-medium text-white inline-flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-3 gap-2">
+              className="xxl:text-base text-[10px] md:text-sm md:min-w-[180px] text-sm whitespace-nowrap transition-all ease-out duration-500 hover:bg-golden-1100 font-medium text-white inline-flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] md:px-3 px-1.5 sm:gap-2 gap-1">
               <img src="images/wallet.svg" alt="" />
-              <span className="hidden md:block">Connect Wallet</span>
+              <span>Connect Wallet</span>
             </Link>
           </div>
           <button onClick={toggleMenu}
             data-collapse-toggle="navbar-sticky"
             type="button"
-            className={`${active && 'bg-gray-100'} inline-flex items-center !outline-none !ring-0 !ml-3 p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
+            className={`${active && 'bg-gray-100 text-black'} inline-flex items-center focus:text-black !outline-none  text-white !ring-0 !ml-3 p-2 w-8 h-8 justify-center text-sm rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
             aria-controls="navbar-sticky"
             aria-expanded="false"
           >
