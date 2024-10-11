@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.variable} ${poppins.variable}`}>
-        <main className="font-poppins overflow-hidden bg-black w-full">
+        <main className="font-poppins overflow-hidden bg-black w-full bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url('/images/main-bg.png')` }} >
         <Navbar/>
         {children}
         <Footer/>
