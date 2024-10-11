@@ -412,7 +412,7 @@ const MemecoinsSlider = () => {
         </Swiper>
 
    
-        <div className="flex justify-between mt-4">
+        <div className="lg:flex hidden justify-between mt-4">
         <button
           onClick={handlePrev}
           className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition absolute -translate-y-1/2 top-1/2 -left-4 z-10 duration-300"
