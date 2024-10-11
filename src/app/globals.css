@@ -18,3 +18,60 @@ select:not([size]) {
 #navbar-sticky.active{
     @apply left-0
 }
+
+.exchange-icons {
+    position: absolute;
+    top: -5;
+    left: 45%;
+    border: 2px solid #846a51;
+    padding: 5px 8px;
+    border-radius: 50%;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    transform: rotate(0deg);
+    cursor: pointer;
+    transition: all 0.5s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.exchange-icons:not(:hover) {
+    transform: rotate(-180deg);
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.stacking-approve-box-minibox-inputbox {
+    background-color: transparent;
+    border: none!important;
+    font-size: 1.4em;
+    text-align: end;
+    color: white;
+    outline: none !important;
+}
+
+.hr {
+    width: 100%;
+    height: 2px;
+    margin-bottom: 10px;
+    background-color: #846a51;
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
