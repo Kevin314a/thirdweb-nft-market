@@ -5,11 +5,13 @@ import { getOwnContracts } from "@/server-actions/db/contract";
 import { createNFT } from "@/server-actions/nft";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default async function CreateNFTPage() {
   const cookieStore = cookies();
   const accountAddr = cookieStore.get('userAddr')?.value;
   if (!accountAddr) {
+    toast.error("Please connect your wallet!");
     redirect('/create');
   }
 

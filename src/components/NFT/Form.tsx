@@ -49,7 +49,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
       setShowSupply(true);
     }
 
-    setTraits(current[0].traitTypes?.map(tt => ({
+    setTraits(current[0]?.traitTypes?.map(tt => ({
       type: tt,
       name: "",
     })) ?? []);

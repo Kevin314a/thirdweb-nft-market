@@ -14,6 +14,7 @@ export default function CreatePage() {
     if (!account) {
       // TODO: TOAST HERE TO LOGIN
       console.log('[YOU MUST LOGIN]');
+      toast.error("Please connect your wallet!");
       return;
     }
     router.push('/create/nft');
@@ -26,7 +27,7 @@ export default function CreatePage() {
     // }
     // router.push('/create/coin');
 
-    toast.info("Coming Soon...");
+    toast.error("Coming Soon...");
   };
 
   return (
