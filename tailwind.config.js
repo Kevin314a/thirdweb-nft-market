@@ -16,6 +16,7 @@ module.exports = {
         "golden-1100": '#924A36',
         "golden-1200": '#924936',
         "golden-1300": '#3F3022',
+        "golden-1400": '#936d4f',
         "black-1000": '#3B160E',
         "green-1000": '#10BD7A',
         "gray-1000": '#514F4F',

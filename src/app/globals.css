@@ -75,3 +75,30 @@ input[type=number] {
     justify-content: center;
     align-items: center;
 }
+
+
+.slider {
+    margin: 0 20px 0 0;
+    overflow: hidden;
+    padding: 1rem 0;
+}
+
+.slider img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.react-multi-carousel-list {
+    padding: 0rem 0 2rem 0;
+}
+
+.custom-dot-list-style button {
+    border: none;
+    background: #c3976a;
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+}
+
+.react-multi-carousel-dot.react-multi-carousel-dot--active button {
+    background: #924936 !important;
+}
