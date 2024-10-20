@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 
-import MainBack from '@/assets';
+import { MainBack } from '@/assets';
 
 const inter = Inter({ subsets: ['latin'], variable: '--inter' });
 const poppins = Poppins({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--poppins' });

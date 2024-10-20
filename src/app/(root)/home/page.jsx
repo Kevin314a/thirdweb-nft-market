@@ -5,6 +5,13 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { ImageAzuki, ImageBanner, ImageCollection3, ImageCollection4, ImageCowboy, ImageCreator, ImageDex, ImageFunia, ImageMarketplace, ImageNFT, ImagePosse, ImageSwap, Poly2, Poly3, Poly6, Poly7, Polygon, Polygon1, Polygon11, Polygon22, Polygon4, Polygon5 } from "@/assets";
 import { Pagination } from "@/components/shared/Pagination";
 
+import FeaturedSlider from "@/components/shared/FeaturedSlider";
+import { TableTabs } from "@/components/shared/TableTabs";
+import LaunchpadSlider from "@/components/shared/LaunchpadSlider";
+import MarketMoversSlider from "@/components/shared/MarketMoversSlider";
+import TopSalesSlider from "@/components/shared/TopSalesSlider";
+import MemecoinsSlider from "@/components/shared/MemecoinsSlider";
+
 
 export default function PosseHome() {
 
