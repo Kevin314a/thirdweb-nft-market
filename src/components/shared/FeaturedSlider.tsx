@@ -244,7 +244,7 @@ const FeaturedSlider = () => {
               fill="none"
               strokeWidth={2}
               viewBox="0 0 24 24"
-              strokeLinecap="round"y
+              strokeLinecap="round"
               strokeLinejoin="round"
               color="#f5f3f7"
               width={24}

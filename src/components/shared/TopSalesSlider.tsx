@@ -34,7 +34,7 @@ const TopSalesSlider = () => {
         breakpoints={{
           320: {
             slidesPerView: 1.2,
-            spaceBetween:15,
+            spaceBetween: 15,
           },
           480: {
             slidesPerView: 2.2,
@@ -373,21 +373,21 @@ const TopSalesSlider = () => {
           onClick={handleNext}
           className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition duration-300 absolute -translate-y-1/2 top-1/2 -right-4 z-10 "
         >
-           <svg
-              stroke="currentColor"
-              className="rotate-180 -mr-1"
-              fill="none"
-              strokeWidth={2}
-              viewBox="0 0 24 24"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              color="#f5f3f7"
-              width={24}
-              height={24}
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
+          <svg
+            stroke="currentColor"
+            className="rotate-180 -mr-1"
+            fill="none"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            color="#f5f3f7"
+            width={24}
+            height={24}
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
 
         </button>
       </div>
