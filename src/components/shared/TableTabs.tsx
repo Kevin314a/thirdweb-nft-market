@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
+import { ImageCowboy } from '@/assets';
 
 
 export const TableTabs = () => {
@@ -132,7 +133,7 @@ export const TableTabs = () => {
                                 1
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -153,7 +154,7 @@ export const TableTabs = () => {
                                 2
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -174,7 +175,7 @@ export const TableTabs = () => {
                                 3
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -195,7 +196,7 @@ export const TableTabs = () => {
                                 4
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -216,7 +217,7 @@ export const TableTabs = () => {
                                 5
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -270,7 +271,7 @@ export const TableTabs = () => {
                                 6
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -291,7 +292,7 @@ export const TableTabs = () => {
                                 7
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -312,7 +313,7 @@ export const TableTabs = () => {
                                 8
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -333,7 +334,7 @@ export const TableTabs = () => {
                                 9
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -354,7 +355,7 @@ export const TableTabs = () => {
                                 10
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -420,7 +421,7 @@ export const TableTabs = () => {
                                 1
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -441,7 +442,7 @@ export const TableTabs = () => {
                                 2
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -462,7 +463,7 @@ export const TableTabs = () => {
                                 3
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -483,7 +484,7 @@ export const TableTabs = () => {
                                 4
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -504,7 +505,7 @@ export const TableTabs = () => {
                                 5
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -558,7 +559,7 @@ export const TableTabs = () => {
                                 6
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -579,7 +580,7 @@ export const TableTabs = () => {
                                 7
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -600,7 +601,7 @@ export const TableTabs = () => {
                                 8
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -621,7 +622,7 @@ export const TableTabs = () => {
                                 9
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />
@@ -642,7 +643,7 @@ export const TableTabs = () => {
                                 10
                               </span>
                               <img
-                                src="images/cowboy.png"
+                                src={ImageCowboy.src}
                                 className="rounded-[11px]"
                                 alt=""
                               />

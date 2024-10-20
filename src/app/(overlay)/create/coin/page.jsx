@@ -1,8 +1,24 @@
 'use client'
-import { useState } from "react";
 
 export default function CreateCoinPage() {
   
+  const formData = {
+    name: '',
+    ticker: '',
+    description: '',
+    twlink: '',
+    tellink: '',
+    website: '',
+  };
+
+  const handleSubmit = () => {
+    
+  };
+
+  const handleChange = () => {
+
+  };
+
   return (
     <div className="max-w-[1920px] flex-col md:flex-row mx-auto xl:px-10 px-5">
       <div className="mb-4 flex flex-col">

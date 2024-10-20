@@ -2,24 +2,27 @@
 import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import SwiperCore, { Swiper as SwiperInstance } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { ImageNFT } from '@/assets';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 const TopSalesSlider = () => {
 
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<SwiperCore | null>(null);
 
   const handlePrev = () => {
     if (swiperRef.current) {
-      swiperRef.current.swiper.slidePrev();
+      swiperRef.current.slidePrev();
     }
   };
 
   const handleNext = () => {
     if (swiperRef.current) {
-      swiperRef.current.swiper.slideNext();
+      swiperRef.current.slideNext();
     }
   };
 
@@ -27,7 +30,9 @@ const TopSalesSlider = () => {
   return (
     <div className="max-w-full mx-auto relative lg:pl-0 pl-3">
       <Swiper
-        ref={swiperRef}
+        onBeforeInit={(swiper) => {
+          swiperRef.current = swiper;
+        }}
         spaceBetween={26}
         slidesPerView={3}
         pagination={{ clickable: true }}
@@ -56,7 +61,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -93,7 +98,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -130,7 +135,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -167,7 +172,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -204,7 +209,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -241,7 +246,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -278,7 +283,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
@@ -315,7 +320,7 @@ const TopSalesSlider = () => {
               <Image
                 width={240}
                 height={162}
-                src="/images/nft-img.png"
+                src={ImageNFT}
                 className="w-full h-auto rounded-t-[9px]"
                 alt=""
               />
