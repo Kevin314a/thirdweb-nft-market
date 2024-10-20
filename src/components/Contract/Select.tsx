@@ -9,16 +9,17 @@ import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "../base";
 import { ImagePosse as defImage } from "@/assets";
 
 export const ContractSelect = forwardRef(({
-  onChange, onBlur, name, label, items,
+  onChange, onBlur, name, label, items, defaultValue
 }: {
   onChange: (e: any) => void,
   onBlur: (e: any) => void,
   name: string,
   label?: string,
-  items: PossePreContract[]
+  items: PossePreContract[],
+  defaultValue: string,
 }, ref: React.Ref<HTMLInputElement>) => {
 
-  const [contractAddr, setContractAddr] = useState<string>("");
+  const [contractAddr, setContractAddr] = useState<string>(defaultValue);
   const router = useRouter();
 
   const handleOnChange = (value: string) => {

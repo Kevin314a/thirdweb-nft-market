@@ -20,8 +20,14 @@ export async function getOwnContracts(
   try {
     const db = await connectToDB();
     const collection = db.collection<PosseDBContract>("contracts");
-    const result = await collection.find({owner}).toArray();
-    return result;
+    const result = await collection.find({ owner }).sort({ '_id': -1 }).toArray();
+
+    const collections = result.map(r => {
+      const { _id, ...rest } = r;
+      return { ...rest };
+    });
+
+    return !collections.length ? [] : collections;
   } catch (err) {
     console.error("[ERROR ON `getOwnContracts`]", err);
     return [];

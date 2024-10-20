@@ -8,12 +8,14 @@ import { type deployContract } from "@/server-actions/contract";
 import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "../base";
 import { XUpload } from "../XUpload";
 import { ContractTraitCard, ContractTraitDialog } from ".";
-import { useRouter } from "next/navigation";
 import { LuLoader2 } from "react-icons/lu";
 import { MdCheckCircleOutline } from "react-icons/md";
+import { useRouter } from "next/navigation";
+import { soneiumMinato } from "thirdweb/chains";
 import { useActiveAccount, useConnectModal } from "thirdweb/react";
-import { upload } from "thirdweb/storage";
-import JSONbig from "json-bigint";
+import { resolveScheme, upload } from "thirdweb/storage";
+import { deployERC1155Contract, deployERC721Contract } from "thirdweb/deploys";
+import toast from "react-hot-toast";
 
 
 export const ContractForm = (props: { deployContract: typeof deployContract }) => {
@@ -23,12 +25,11 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
   const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseDBContract>();
   const [contractType, setContractType] = useState<"ERC-721" | "ERC-1155">("ERC-721");
   const [file, setFile] = useState<File | null>(null);
-  const [errorFile, setErrorFile] = useState<"none" | "exceed" | null>(null);
+  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | null>(null);
   const [traitTypes, setTraitTypes] = useState<string[]>([]);
   const [isOpenTraitDialog, setIsOpenTraitDialog] = useState<boolean>(false);
   const [currentTraitIndex, setCurrentTraitIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  // const [mintStatus, setMintStatus] = useState<"idle" | "pending" | "finished" | "error">("idle");
   const router = useRouter();
 
   const onContractTypeChange = (type: "ERC-721" | "ERC-1155") => {
@@ -42,43 +43,101 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
       return;
     }
 
+    if (!["ERC-1155", "ERC-721"].includes(newCollection.type)) {
+      toast.error("The type of Contract is invalid.");
+      return;
+    }
+
     setIsLoading(true);
 
     let uri = "";
-    // try {
-    //   // upload image via thirdweb-ipfs, then change it to 
-    //   uri = (!file) ? "" : await upload({ client, files: [file] });
-    //   if (!uri) {
-    //     // TODO: toast error, user must input a logo image for contract
-    //     return;
-    //   }
-    // } catch (err) {
-    //   // TODO: toast error, with uploading
-    //   return;
-    // }
+    try {
+      // upload image via thirdweb-ipfs, then change it to 
+      uri = (!file) ? "" : await upload({ client, files: [file] });
+      // if (!uri) {
+      //   // TODO: toast error, user must input a logo image for contract
+      //   return;
+      // }
+    } catch (err) {
+      // TODO: toast error, with uploading
+      toast.error("Uploading icon file for collection is failed.");
+      return;
+    }
 
-    newCollection.image = uri;
-    newCollection.traitTypes = traitTypes;
-    // console.log("zza[ERROR ON DEPLOY-CONTRACT-FORM]", newCollection, account.address);
+    try {
 
-    // deploy collection to blockchain on server 
-    props
-      .deployContract(newCollection, JSONbig.stringify(account))
-      .then((res) => {
+      newCollection.image = uri;
+      newCollection.traitTypes = traitTypes;
 
-        setIsLoading(false);
-        if (!res.error) {
-          router.back();
-        }
+      // deploy collection to blockchain on server  via thirdweb
+      const deployedContractAddress = newCollection.type === "ERC-1155" ?
+        await deployERC1155Contract({
+          chain: soneiumMinato,
+          client,
+          account: account,
+          type: "TokenERC1155",
+          params: {
+            name: newCollection.name,
+            symbol: newCollection.symbol,
+            description: newCollection.description,
+            platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
+            royaltyBps: BigInt(newCollection.royaltyBps || 0),
+          },
+        })
+        :
+        await deployERC721Contract({
+          chain: soneiumMinato,
+          client,
+          account: account,
+          type: "TokenERC721",
+          params: {
+            name: newCollection.name,
+            symbol: newCollection.symbol,
+            description: newCollection.description,
+            platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
+            royaltyBps: BigInt(newCollection.royaltyBps || 0),
+          },
+        });
 
-        // TODO: show succesfully deploy toast
+      newCollection.address = deployedContractAddress;
+      newCollection.owner = account.address;
 
-      })
-      .catch((err) => {
-        console.log("[ERROR ON DEPLOY-CONTRACT-FORM]", err);
-        setIsLoading(false);
-        // TODO: toast error
-      });
+      // const toDBContract = newContract;
+      if (!!newCollection.image) {
+        const url = resolveScheme({
+          client,
+          uri: newCollection.image,
+        });
+        newCollection.image = url;
+      }
+
+      props.deployContract(newCollection)
+        .then((res) => {
+
+          setIsLoading(false);
+          if (!res.error) {
+            // TODO: show succesfully deploy toast
+            toast.success(res.message);
+            router.back();
+            setTimeout(() => {
+              router.refresh(); // This forces the current page to re-render
+            }, 100);
+          } else {
+            toast.error(res.message);
+          }
+        })
+        .catch((err) => {
+          console.log("[ERROR ON DEPLOY-CONTRACT-FORM]", err);
+          setIsLoading(false);
+          // TODO: toast error
+          toast.error("store information of your collection is failed.");
+        });
+
+    } catch (err) {
+      console.log("[ERROR ON DEPLOY-CONTRACT]", err);
+      setIsLoading(false);
+      toast.error("creating a collection is failed.");
+    }
   };
 
   const handleCreateTraitType = (newTraitType: string, isEdit: boolean, editIndex: number) => {
@@ -126,6 +185,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
           />
           {errorFile === "none" && <span className="text-md mt-1 w-full text-right">Your artwork is missing.</span>}
           {errorFile === "exceed" && <span className="text-md mt-1 w-full text-right">Your artwork exceeds 500KB.</span>}
+          {errorFile === "invalid-ext" && <span className="text-md mt-1 w-full text-right">Your artwork's extension type is invalid.</span>}
         </div>
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>

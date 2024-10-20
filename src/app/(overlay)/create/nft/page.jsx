@@ -5,7 +5,6 @@ import { getOwnContracts } from "@/server-actions/db/contract";
 import { createNFT } from "@/server-actions/nft";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import JSONbig from "json-bigint";
 
 export default async function CreateNFTPage() {
   const cookieStore = cookies();
@@ -23,7 +22,7 @@ export default async function CreateNFTPage() {
         <span className="text-4xl text-white">Create an NFT</span>
         <span className="text-sm text-golden-1000">Remember, once you mint your NFT you won’t be able to <br />change any of it’s information.</span>
       </div>
-      <NFTForm createNFT={createNFT} collections={JSONbig.stringify(collections)} />
+      <NFTForm createNFT={createNFT} collections={collections} />
     </div>
   );
 }

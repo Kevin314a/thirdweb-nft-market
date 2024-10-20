@@ -2,6 +2,7 @@ import { Inter, Poppins } from "next/font/google";
 import { Providers } from "@/components/shared/Provider";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 
 import { MainBack } from '@/assets';
@@ -27,6 +28,7 @@ export default function RootLayout({
             {children}
           </main>
         </Providers>
+        <Toaster position="top-right" />
       </body>
     </html>
   );

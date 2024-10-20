@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import { useCallback, useState } from "react";
 import Dropzone, { DropzoneOptions } from "react-dropzone";
+import toast from "react-hot-toast";
 import { HiOutlineUpload } from "react-icons/hi";
 
 export default function XUpload({
@@ -9,7 +10,7 @@ export default function XUpload({
   isError,
 }: {
   onFileChange: (file: File | null) => void;
-  onError: (err: "none" | "exceed" | null) => void;
+  onError: (err: "none" | "exceed" | "invalid-ext" | null) => void;
   isError: boolean,
 }) {
   const [file, setFile] = useState<string>();
@@ -20,6 +21,13 @@ export default function XUpload({
     const maxSize = 500 * 1024; // 500KB
     if (firstFile.size > maxSize) {
       onError("exceed");
+      return;
+    }
+
+    // Check for accepted file types
+    const acceptedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "video/mp4"];
+    if (!acceptedTypes.includes(firstFile.type)) {
+      onError("invalid-ext");
       return;
     }
 
@@ -45,7 +53,8 @@ export default function XUpload({
                 isError && "border-destructive"
               )}
             >
-              <input {...getInputProps()} accept="image/*" />
+              {/* <input {...getInputProps()} accept="image/*" /> */}
+              <input {...getInputProps()} accept=".jpg, .jpeg, .png, .gif, .svg, .mp4" />
               {file ? (
                 <>
                   <img

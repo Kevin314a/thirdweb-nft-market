@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useRef, useEffect } from "react";
 import { client } from "@/lib/constants";
 import { PosseDBContract, PosseDBNFT, PossePreContract, PosseTrait } from "@/lib/types";
 import { createNFT } from "@/server-actions/nft";
@@ -9,18 +8,28 @@ import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "..
 import { ContractSelect } from "../Contract";
 import { XUpload } from "../XUpload";
 import { NFTTraitCard, NFTTraitDialog } from ".";
+import { useForm } from "react-hook-form";
 import { LuLoader2 } from "react-icons/lu";
 import { useRouter } from "next/navigation";
+import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
+import { soneiumMinato } from "thirdweb/chains";
+import { isERC1155, mintTo as mintTo1155, nextTokenIdToMint as nextTokenIdToMint1155 } from "thirdweb/extensions/erc1155";
+import { isERC721, mintTo as mintTo721, nextTokenIdToMint as nextTokenIdToMint721 } from "thirdweb/extensions/erc721";
 import { useActiveAccount, useConnectModal } from "thirdweb/react";
-import JSONbig from "json-bigint";
+import { resolveScheme, upload } from "thirdweb/storage";
+import toast from "react-hot-toast";
 
-export const NFTForm = (props: { createNFT: typeof createNFT, collections: string }) => {
+export const NFTForm = (props: { createNFT: typeof createNFT, collections: PosseDBContract[] }) => {
   const account = useActiveAccount();
   const { connect } = useConnectModal();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { register, handleSubmit: useSubmit, formState: { errors }, reset, unregister } = useForm<PosseDBNFT>();
+  const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset, unregister } = useForm<PosseDBNFT>({
+    defaultValues: {
+      collection: props.collections[0]?.address,
+    }
+  });
   const [file, setFile] = useState<File | null>(null);
-  const [errorFile, setErrorFile] = useState<"none" | "exceed" | null>(null);
+  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | null>(null);
   const [traits, setTraits] = useState<PosseTrait[]>([]);
   const [isOpenTraitDialog, setIsOpenTraitDialog] = useState<boolean>(false);
   const [currentTraitIndex, setCurrentTraitIndex] = useState<number>(-1);
@@ -28,7 +37,26 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
   const [mintStatus, setMintStatus] = useState<"idle" | "pending" | "finished" | "error">("idle");
   const router = useRouter();
 
-  const handleSubmit = (newNFT: PosseDBNFT) => {
+  const [showSupply, setShowSupply] = useState<boolean>(false);
+  const selectedContract = watch('collection');
+
+  useEffect(() => {
+
+    const current = props.collections.filter(col => col.address === selectedContract);
+    if (current[0]?.type === "ERC-721") {
+      setShowSupply(false);
+    } else {
+      setShowSupply(true);
+    }
+
+    setTraits(current[0].traitTypes?.map(tt => ({
+      type: tt,
+      name: "",
+    })) ?? []);
+
+  }, [selectedContract]);
+
+  const handleSubmit = async (newNFT: PosseDBNFT) => {
     if (!account) {
       connect({ client });
       return;
@@ -37,36 +65,112 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
     setIsLoading(true);
 
     let uri = "";
-    // try {
-    //   // upload image via thirdweb-ipfs, then change it to 
-    //   uri = (!file) ? "" : await upload({ client, files: [file] });
-    //   if (!uri) {
-    //     // TODO: toast error, user must input a logo image for contract
-    //     return;
-    //   }
-    // } catch (err) {
-    //   // TODO: toast error, with uploading
-    //   return;
-    // }
+    try {
+      // upload image via thirdweb-ipfs, then change it to 
+      uri = (!file) ? "" : await upload({ client, files: [file] });
+      if (!uri) {
+        // TODO: toast error, user must input a logo image for contract
+        toast.error("please insert the artwork of the NFT");
+        return;
+      }
+    } catch (err) {
+      // TODO: toast error, with uploading
+      toast.error("Uploading icon file for collection is failed.");
+      return;
+    }
 
-    // change newNFT with responsed image-uri
-    newNFT.image = uri;
-    newNFT.traits = traits;
+    try {
 
-    // register nft to blockchain on server
-    props.createNFT(newNFT, JSONbig.stringify(account)).then((res) => {
-      setIsLoading(false);
-      if (!res.error) {
-        router.refresh();
-        // TODO: toast an error to minting nft.
+      // change newNFT with responsed image-uri
+      newNFT.image = uri;
+      newNFT.traits = traits;
+
+      // register nft to blockchain on server, mint nft via thirdweb
+      // first of all, check this contract is a valid NFT Collection.
+      const masterContract = getContract({
+        chain: soneiumMinato,
+        client,
+        address: newNFT.collection,
+      });
+      const is721 = await isERC721({ contract: masterContract });
+      const is1155 = await isERC1155({ contract: masterContract });
+      const isNFTCollection = is1155 || is721;
+
+      if (!isNFTCollection) {
+        console.error("[YOU MINTED AN NFT TO INVALID COLLECTION]");
+        toast.error("You are trying to mint an NFT to an invalid collection.");
+        throw new Error("[YOU MINTED AN NFT TO INVALID COLLECTION]");
       }
 
-      // TODO: toast mint an nft successfully.
-      // toast({
-      //   title: res.message,
-      //   description: res.action,
-      // });
-    });
+      // after check collection, then check about user can mint NFT to this collection.
+      // TODO:
+
+      // Minting NFT to the collection that user selected, via thirdweb-api
+      const records = newNFT.traits?.map(trait => ({
+        display_type: "string",
+        trait_type: trait.type,
+        value: trait.name,
+      }));
+
+      const transaction = !!is1155 ? mintTo1155({
+        contract: masterContract,
+        to: account.address,
+        supply: BigInt(newNFT.supply || 0),
+        nft: {
+          name: newNFT.name,
+          description: newNFT.description,
+          image: newNFT.image,
+          external_url: newNFT.externalLink,
+          properties: records,
+        }
+      }) : mintTo721({
+        contract: masterContract,
+        to: account.address,
+        nft: {
+          name: newNFT.name,
+          description: newNFT.description,
+          image: newNFT.image,
+          external_url: newNFT.externalLink,
+          properties: records,
+        }
+      });
+
+      const tx = await sendTransaction({ transaction, account });
+      const receipt = await waitForReceipt(tx);
+
+      newNFT.type = !is1155 ? "ERC-721" : "ERC-1155";
+
+      newNFT.tokenId = ((!is1155 ?
+        await nextTokenIdToMint1155({ contract: masterContract }) :
+        await nextTokenIdToMint721({ contract: masterContract })) - 1n
+      ).toString();
+
+      // const toDBNFT = newNFT;
+      if (newNFT.image) {
+        const url = resolveScheme({
+          client,
+          uri: newNFT.image,
+        });
+        newNFT.image = url;
+      }
+
+      props.createNFT(newNFT).then((res) => {
+        setIsLoading(false);
+        if (!res.error) {
+          router.refresh();
+          // TODO: toast an error to minting nft.
+          toast.success(res.message);
+
+          reset();
+        } else {
+          toast.error(res.message);
+        }
+      });
+    } catch (err) {
+      console.log("[ERROR ON MINT-AN-NFT]", err);
+      setIsLoading(false);
+      toast.error("Minting your NFT is failed.");
+    }
   };
 
   const handleCreateTrait = (newTrait: PosseTrait, isEdit: boolean, editIndex: number) => {
@@ -92,8 +196,6 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
     // unregister(`traits.${index}`);
   }
 
-  const collectionsFromDB: PosseDBContract[] = JSONbig.parse(props.collections);
-
   return (
     <div className="w-full flex flex-col justify-between items-center">
       <form
@@ -116,6 +218,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
           />
           {errorFile === "none" && <span className="text-md mt-1 w-full text-right">Your artwork is missing.</span>}
           {errorFile === "exceed" && <span className="text-md mt-1 w-full text-right">Your artwork exceeds 500KB.</span>}
+          {errorFile === "invalid-ext" && <span className="text-md mt-1 w-full text-right">Your artwork's extension type is invalid.</span>}
         </div>
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
@@ -123,7 +226,8 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
             <ContractSelect
               {...register('collection', { required: "Please select a collection" })}
               name="collection"
-              items={collectionsFromDB.map(collect => {
+              defaultValue={props.collections[0]?.address ?? ""}
+              items={props.collections.map(collect => {
                 const temp: PossePreContract = {
                   type: collect.type,
                   address: collect.address || "",
@@ -156,7 +260,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
               <p className="mt-1 text-xs text-red-600">{errors.name.message}</p>
             )}
           </Field>
-          <Field>
+          {showSupply && (<Field>
             <Label htmlFor="supply" className="block mb-2">Supply *</Label>
             <Input
               {...register('supply', {
@@ -181,6 +285,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
               <p className="mt-1 text-xs text-red-600">{errors.supply.message}</p>
             )}
           </Field>
+          )}
           <Field>
             <Label htmlFor="description" className="block mb-2">Description</Label>
             <Textarea
@@ -244,7 +349,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: strin
               }}
               disabled={isLoading}
             >
-              {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Create
+              {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Mint an NFT
             </Button>
           </div>
         </div>

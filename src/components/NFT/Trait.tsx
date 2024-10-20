@@ -27,8 +27,8 @@ export const NFTTraitDialog = ({
 
   useEffect(() => {
     setTraitData({
-      type: index < 0 ? '' : value.type,
-      name: index < 0 ? '' : value.name,
+      type: index < 0 ? '' : (value.type ?? ''),
+      name: index < 0 ? '' : (value.name ?? ''),
     })
   }, [index, value]);
 
@@ -98,8 +98,8 @@ export const NFTTraitDialog = ({
                     type="button"
                     variant="secondary"
                     className="w-full"
-                    disabled={!traitData.name || !traitData.type}
-                    onClick={() => !!traitData.name && !!traitData.type && onCreateTrait(traitData, index >= 0, index)}
+                    disabled={!traitData.type}
+                    onClick={() => !!traitData.type && onCreateTrait(traitData, index >= 0, index)}
                   >
                     Add
                   </Button>

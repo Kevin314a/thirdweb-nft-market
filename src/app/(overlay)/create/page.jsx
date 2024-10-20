@@ -4,6 +4,7 @@ import { ImageHat } from "@/assets";
 import { Button } from "@/components/base";
 import { useRouter } from "next/navigation";
 import { useActiveAccount } from "thirdweb/react";
+import toast from "react-hot-toast";
 
 export default function CreatePage() {
   const router = useRouter();
@@ -12,19 +13,22 @@ export default function CreatePage() {
   const gotoCreateNFT = () => {
     if (!account) {
       // TODO: TOAST HERE TO LOGIN
+      console.log('[YOU MUST LOGIN]');
       return;
     }
     router.push('/create/nft');
   };
 
   const gotoCreateCoin = () => {
-    if (!account) {
-      // TODO: TOAST HERE TO LOGIN
-      return;
-    }
-    router.push('/create/coin');
+    // if (!account) {
+    //   // TODO: TOAST HERE TO LOGIN
+    //   return;
+    // }
+    // router.push('/create/coin');
+
+    toast.info("Coming Soon...");
   };
-  
+
   return (
     <div className="flex flex-col mx-auto xl:px-10 px-5 max-w-[1920px]">
       <div className="flex justify-center lg:justify-start">
