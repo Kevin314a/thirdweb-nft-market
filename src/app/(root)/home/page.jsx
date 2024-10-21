@@ -191,6 +191,7 @@ export default function PosseHome() {
                     >
                       <input
                         disabled=""
+                        id="amount"
                         type="number"
                         placeholder="Enter Amount"
                         className="stacking-approve-box-minibox-inputbox md:!text-end !text-center w-full md:max-w-[60%]"
@@ -248,6 +249,7 @@ export default function PosseHome() {
                     <input
                       type="number"
                       placeholder={0.0}
+                      id="toamount"
                       className="stacking-approve-box-minibox-inputbox md:!text-end !text-center w-full md:max-w-[60%]"
                       disabled=""
                       defaultValue=""
@@ -258,6 +260,7 @@ export default function PosseHome() {
                     <input
                       className="w-full bg-transparent py-4 px-8 text-white outline-none ring-0"
                       type="text"
+                      id="wallet_address"
                       placeholder="Wallet address or ENS name in target network"
                       defaultValue=""
                       style={{ border: "none" }}

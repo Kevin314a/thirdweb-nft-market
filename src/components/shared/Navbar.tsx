@@ -5,16 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useActiveAccount } from "thirdweb/react";
+import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 
 import { Input } from "../base/Input";
 import { ConnectButton } from "./ConnectButton";
+// import { ProfileMenu } from "./ProfileMenu";
 import { IconLogo, IconMagnify } from "@/assets";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const [active, setActive] = useState<boolean>(false);
   const account = useActiveAccount();
+  const wallet = useActiveWallet();
 
   useEffect(() => {
     fetch('/api/save-user', {
@@ -52,7 +54,7 @@ export const Navbar = () => {
                   type="text"
                   id="text"
                   className="text-base md:block hidden xl:px-10 pl-10 pr-6"
-                  placeholder="Search collections"
+                  placeholder="Search collections on POSSE"
                   required={true}
                 />
                 <div className="absolute top-1/2 -translate-y-1/2  md:translate-x-auto -translate-x-1/2 left-1/2 -ml-0.5 md:left-5">
@@ -114,26 +116,26 @@ export const Navbar = () => {
 }
 
 const NAV_ITEMS = [
-  {
-    label: 'Marketplace',
-    href: '/',
-  },
-  {
-    label: 'DEX',
-    href: '#',
-  },
-  {
-    label: 'Yeehaw',
-    href: '#',
-  },
-  {
-    label: 'Drops',
-    href: '/drops',
-  },
-  {
-    label: 'Stats',
-    href: '/stats',
-  },
+  // {
+  //   label: 'Marketplace',
+  //   href: '/',
+  // },
+  // {
+  //   label: 'DEX',
+  //   href: '#',
+  // },
+  // {
+  //   label: 'Yeehaw',
+  //   href: '#',
+  // },
+  // {
+  //   label: 'Drops',
+  //   href: '/drops',
+  // },
+  // {
+  //   label: 'Stats',
+  //   href: '/stats',
+  // },
   {
     label: 'Create',
     href: '/create',
