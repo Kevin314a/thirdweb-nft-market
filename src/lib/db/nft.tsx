@@ -7,7 +7,7 @@ export const storeNFT = async (newNFT: PosseFormNFT) => {
   try {
     await dbConnect();
 
-    const old = await getNFT(newNFT.collection, newNFT.tokenId);
+    const old = await getNFT(newNFT.collection, BigInt(newNFT.tokenId));
     if (old) {
       return;
     }
@@ -55,7 +55,7 @@ export const getNFTs = async (
 
 export const getNFT = async (
   contractAddr: string,
-  tokenId: string,
+  tokenId: bigint,
 ) => {
   try {
     await dbConnect();

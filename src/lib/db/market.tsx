@@ -12,7 +12,7 @@ export const storeNFTtoMarket = async (listedNFT: PosseFormMarket) => {
       return;
     }
 
-    const nft = await getNFT(listedNFT.assetContractAddress, String(listedNFT.tokenId));
+    const nft = await getNFT(listedNFT.assetContractAddress, listedNFT.tokenId);
     const listedOnMarket = new MarketModel({
       id: listedNFT.id,
       creatorAddress: listedNFT.creatorAddress,
@@ -43,5 +43,21 @@ export const getNFTfromMarket = async (contractAddr: string, tokenId: string) =>
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
+  }
+};
+
+export const hasOwnAstrNFT = async (walletAddress: string) => {
+  try {
+    await dbConnect();
+    const oldOne = await MarketModel.findOne({
+      creatorAddress: walletAddress,
+      status: "ACTIVE",
+      type: "direct-listing",
+      'currencyValuePerToken.symbol': "ASTR"
+    });
+    return !!oldOne;
+  } catch (err) {
+    console.error("[ERROR ON RETRIEVE YOUR ASTR NFT from POSSE MARKET]", err);
+    throw new Error("Failed to retrieve your ASTR NFT from the POSSE Market");
   }
 };
