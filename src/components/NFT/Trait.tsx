@@ -38,7 +38,7 @@ export const NFTTraitDialog = ({
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-[9999] focus:outline-none" onClose={onClose}>
+      <Dialog as="div" className="relative z-[1999] focus:outline-none" onClose={onClose}>
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -48,10 +48,10 @@ export const NFTTraitDialog = ({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 z-[9996] bg-black/[50%]" />
+          <div className="fixed inset-0 z-[1996] bg-black/[50%]" />
         </TransitionChild>
 
-        <div className="fixed inset-0 z-[9999] overflow-y-auto">
+        <div className="fixed inset-0 z-[1999] overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4">
             <TransitionChild
               as={Fragment}

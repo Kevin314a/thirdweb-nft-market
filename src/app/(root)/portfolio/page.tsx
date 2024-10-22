@@ -1,7 +1,7 @@
 'use server'
 
 import { PortfolioBox } from "@/components/Portfolio";
-import { getPortfolioNFTs } from "@/server-actions/nft";
+import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
 
 export default async function PortfolioPage() {
   return (
@@ -14,7 +14,7 @@ export default async function PortfolioPage() {
         </h4>
       </div>
       <div className="max-w-[1920px] lg:px-[42px] min-h-[20vw] px-5 mx-auto z-10 relative">
-        <PortfolioBox getPortfolioNFTs={getPortfolioNFTs} />
+        <PortfolioBox getOwnedNFTs={getOwnedNFTs} listNFT={listNFT} verifyNFTtoList={verifyNFTtoList} />
       </div>
     </section>
   );

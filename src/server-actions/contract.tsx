@@ -10,7 +10,7 @@ export async function deployContract(newContract: PosseFormContract) {
     const res = {
       error: false,
       message: "Collection is created.",
-      action: "Success, your own Contract has been deployed",
+      actions: "Success, your own Contract has been deployed",
     };
     return res;
 
@@ -36,8 +36,8 @@ export async function getOwnContracts(owner: string) { //: Promise<PosseViewCont
       description: item.description,
       symbol: item.symbol,
       image: item.image,
-      platformFeeBps: item.platformFeeBps,
-      royaltyBps: item.royaltyBps,
+      // platformFeeBps: String(item.platformFeeBps),
+      royaltyBps: String(item.royaltyBps),
       owner: item.owner,
       traitTypes: item.traitTypes,
     }));

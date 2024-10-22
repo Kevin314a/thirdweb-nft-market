@@ -10,35 +10,42 @@ export default function XUpload({
   isError,
 }: {
   onFileChange: (file: File | null) => void;
-  onError: (err: "none" | "exceed" | "invalid-ext" | null) => void;
+  onError: (err: "none" | "exceed" | "invalid-ext" | "drop-fail" | null) => void;
   isError: boolean,
 }) {
-  const [file, setFile] = useState<string>();
+  const [file, setFile] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
   const onDrop = useCallback<NonNullable<DropzoneOptions["onDrop"]>>(([firstFile]: File[]) => {
 
-    const maxSize = 500 * 1024; // 500KB
-    if (firstFile.size > maxSize) {
-      onError("exceed");
-      return;
+    try {
+      const maxSize = 500 * 1024; // 500KB
+      if (firstFile.size > maxSize) {
+        onError("exceed");
+        setFile(null);
+        return;
+      }
+
+      // Check for accepted file types
+      const acceptedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "video/mp4"];
+      if (!acceptedTypes.includes(firstFile.type)) {
+        onError("invalid-ext");
+        setFile(null);
+        return;
+      }
+
+      onFileChange(firstFile);
+
+      const reader = new FileReader();
+      reader.onabort = () => console.log("file reading was aborted");
+      reader.onerror = () => console.log("file reading has failed");
+      reader.onload = () => setFile(reader.result as string);
+      reader.readAsDataURL(firstFile);
+    } catch (err) {
+      console.error("[ERROR ON USECALLBACK WITH ONDROP-ZONE]", err);
+      onError("drop-fail");
+      setFile(null);
     }
-
-    // Check for accepted file types
-    const acceptedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "video/mp4"];
-    if (!acceptedTypes.includes(firstFile.type)) {
-      onError("invalid-ext");
-      return;
-    }
-
-    onFileChange(firstFile);
-
-    const reader = new FileReader();
-    reader.onabort = () => console.log("file reading was aborted");
-    reader.onerror = () => console.log("file reading has failed");
-    reader.onload = () => setFile(reader.result as string);
-    reader.readAsDataURL(firstFile);
-
   }, [onFileChange]);
 
   return (
@@ -53,9 +60,8 @@ export default function XUpload({
                 isError && "border-destructive"
               )}
             >
-              {/* <input {...getInputProps()} accept="image/*" /> */}
               <input {...getInputProps()} accept=".jpg, .jpeg, .png, .gif, .svg, .mp4" />
-              {file ? (
+              {!!file ? (
                 <>
                   <img
                     src={file}
@@ -79,7 +85,7 @@ export default function XUpload({
                   <HiOutlineUpload color="white" size={36} />
                   <span className="text-lg font-medium text-white">Drag & drop media</span>
                   <span className="text-sm font-medium text-golden-1000">Browse files</span>
-                  <span className="text-xs text-gray-400">Max size: 50MB</span>
+                  <span className="text-xs text-gray-400">Max size: 500KB</span>
                   <span className="text-xs text-gray-400">JPG, PNG, GIF, SVG, MP4</span>
                 </>
               )}

@@ -24,7 +24,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
   const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseFormContract>();
   const [contractType, setContractType] = useState<"ERC-721" | "ERC-1155">("ERC-721");
   const [file, setFile] = useState<File | null>(null);
-  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | null>(null);
+  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
   const [traitTypes, setTraitTypes] = useState<string[]>([]);
   const [isOpenTraitDialog, setIsOpenTraitDialog] = useState<boolean>(false);
   const [currentTraitIndex, setCurrentTraitIndex] = useState<number>(-1);
@@ -53,13 +53,12 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
     try {
       // upload image via thirdweb-ipfs, then change it to 
       uri = (!file) ? "" : await upload({ client, files: [file] });
+      // collection might has no icon
       // if (!uri) {
-      //   // TODO: toast error, user must input a logo image for contract
       //   return;
       // }
     } catch (err) {
-      // TODO: toast error, with uploading
-      toast.error("Uploading icon file for collection is failed.");
+      toast.error("Uploading icon file for your collection is failed.");
       return;
     }
 
@@ -79,7 +78,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             name: newCollection.name,
             symbol: newCollection.symbol,
             description: newCollection.description,
-            platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
+            // platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
             royaltyBps: BigInt(newCollection.royaltyBps || 0),
           },
         })
@@ -93,7 +92,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             name: newCollection.name,
             symbol: newCollection.symbol,
             description: newCollection.description,
-            platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
+            // platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
             royaltyBps: BigInt(newCollection.royaltyBps || 0),
           },
         });
@@ -133,8 +132,13 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
 
     } catch (err) {
       console.log("[ERROR ON DEPLOY-CONTRACT]", err);
+      const error = err as { code: number, message: string };
+      if (!!error.code) {
+        toast.error(error.message);
+      } else {
+        toast.error(typeof err === 'string' ? err : "Deploying a collection is failed.");
+      }
       setIsLoading(false);
-      toast.error("creating a collection is failed.");
     }
   };
 
@@ -297,7 +301,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
               <p className="mt-1 text-xs text-red-600">{errors.royaltyBps.message}</p>
             )}
           </Field>
-          <Field>
+          {/* <Field>
             <Label htmlFor="platformFeeBps" className="block mb-2">Platform Fee</Label>
             <Input
               {...register('platformFeeBps', {
@@ -317,7 +321,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             {errors.platformFeeBps && (
               <p className="mt-1 text-xs text-red-600">{errors.platformFeeBps.message}</p>
             )}
-          </Field>
+          </Field> */}
           <Field>
             <Label as="p" className="block mb-2">Trait Type</Label>
             <Description id="traitd" className="text-golden-1000 text-xs">You can set the default types of traits before the NFTs are minted here.</Description>

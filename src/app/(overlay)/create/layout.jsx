@@ -27,7 +27,7 @@ export default function CreateLayout({ children }) {
   }, [account]);
 
   return (
-    <section className="pt-20 lg:pt-0 relative w-[100vw] h-full" style={{ zIndex: 9990, overflowX: 'hidden' }}>
+    <section className="pt-20 lg:pt-0 relative w-[100vw] h-full" style={{ zIndex: 1990, overflowX: 'hidden' }}>
       <div className="fixed py-2.5 w-full z-50 top-0 start-0 bg-transparent">
         <div className="max-w-[1920px] flex items-center justify-between mx-auto xl:px-10 px-5 h-[64px]">
           <button
@@ -59,7 +59,7 @@ export default function CreateLayout({ children }) {
       <div className="relative w-full h-full min-h-[calc(100vh)] flex items-center justify-center p-2 lg:p-20">
         {children}
       </div>
-      <div className="absolute bottom-12 left-0" style={{ zIndex: 9992 }}>
+      <div className="absolute bottom-12 left-0" style={{ zIndex: 1992 }}>
         <Image
           width={145}
           height={312}
@@ -69,7 +69,7 @@ export default function CreateLayout({ children }) {
           priority
         />
       </div>
-      <div className="absolute top-24 right-0" style={{ zIndex: 9992 }}>
+      <div className="absolute top-24 right-0" style={{ zIndex: 1992 }}>
         <Image
           width={220}
           height={328}

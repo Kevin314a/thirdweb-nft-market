@@ -14,7 +14,7 @@ export async function setUserCookie(address: string) {
     const res = {
       error: false,
       message: "cookie stored",
-      action: "Success, your cookie has been created",
+      actions: "Success, your cookie has been created",
     };
 
     return res;

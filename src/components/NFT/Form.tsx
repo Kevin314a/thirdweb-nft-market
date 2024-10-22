@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { client } from "@/lib/constants";
 import { PosseViewContract, PosseFormNFT, PosseTrait } from "@/lib/types";
-import { createNFT } from "@/server-actions/nft";
+import { mintNFT } from "@/server-actions/nft";
 import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "../base";
 import { ContractSelect } from "../Contract";
 import { XUpload } from "../XUpload";
@@ -19,17 +19,17 @@ import { useActiveAccount, useConnectModal } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
 import toast from "react-hot-toast";
 
-export const NFTForm = (props: { createNFT: typeof createNFT, collections: PosseViewContract[] }) => {
+export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseViewContract[] }) => {
   const account = useActiveAccount();
   const { connect } = useConnectModal();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset, unregister } = useForm<PosseFormNFT>({
-    defaultValues: {
-      collection: props.collections[0]?.address,
-    }
+  const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset } = useForm<PosseFormNFT>({
+    // defaultValues: {
+    //   collection: props.collections[0]?.address,
+    // }
   });
   const [file, setFile] = useState<File | null>(null);
-  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | null>(null);
+  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
   const [traits, setTraits] = useState<PosseTrait[]>([]);
   const [isOpenTraitDialog, setIsOpenTraitDialog] = useState<boolean>(false);
   const [currentTraitIndex, setCurrentTraitIndex] = useState<number>(-1);
@@ -41,7 +41,6 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
   const selectedContract = watch('collection');
 
   useEffect(() => {
-
     const current = props.collections.filter(col => col.address === selectedContract);
     if (current[0]?.type === "ERC-721") {
       setShowSupply(false);
@@ -56,6 +55,10 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
 
   }, [selectedContract]);
 
+  useEffect(() => {
+    reset({ collection: props.collections[0]?.address });
+  }, [reset]);
+
   const handleSubmit = async (newNFT: PosseFormNFT) => {
     if (!account) {
       connect({ client });
@@ -69,18 +72,15 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
       // upload image via thirdweb-ipfs, then change it to 
       uri = (!file) ? "" : await upload({ client, files: [file] });
       if (!uri) {
-        // TODO: toast error, user must input a logo image for contract
         toast.error("please insert the artwork of the NFT");
         return;
       }
     } catch (err) {
-      // TODO: toast error, with uploading
       toast.error("Uploading icon file for collection is failed.");
       return;
     }
 
     try {
-
       // change newNFT with responsed image-uri
       newNFT.image = uri;
       newNFT.traits = traits;
@@ -155,22 +155,27 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
 
       newNFT.owner = account.address;
 
-      props.createNFT(newNFT).then((res) => {
+      props.mintNFT(newNFT).then((res) => {
         setIsLoading(false);
         if (!res.error) {
-          router.refresh();
-          // TODO: toast an error to minting nft.
-          toast.success(res.message);
-
+          // router.refresh();
           reset();
+          setErrorFile("none");
+          setFile(null);
+          toast.success(res.message);
         } else {
           toast.error(res.message);
         }
       });
     } catch (err) {
       console.log("[ERROR ON MINT-AN-NFT]", err);
+      const error = err as { code: number, message: string };
+      if (!!error.code) {
+        toast.error(error.message);
+      } else {
+        toast.error(typeof err === 'string' ? err : "Minting your NFT is failed.");
+      }
       setIsLoading(false);
-      toast.error("Minting your NFT is failed.");
     }
   };
 
@@ -265,7 +270,6 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
                     }
                   } catch (err) {
                     return "Supply is invalid";
-                  } finally {
                   }
                 },
               })}

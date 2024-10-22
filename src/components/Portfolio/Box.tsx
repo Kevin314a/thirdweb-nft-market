@@ -1,36 +1,25 @@
 'use client'
 
-import { PosseViewNFT } from "@/lib/types";
-import { getPortfolioNFTs } from "@/server-actions/nft";
-import { useState } from "react";
+import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
+import { useListingPortfolio } from "@/hooks/useListingPortfolio";
+import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
+import React, { useState, useRef, forwardRef } from "react";
+import { useForm } from "react-hook-form";
+import { FaChevronDown } from "react-icons/fa";
+import { Button, Field, Fieldset, Input, Label, Menu, MenuButton, MenuItems, MenuItem } from "../base";
+import { Spinner } from "../shared/Spinner";
+import { SlideOver } from "../XSlideOver/SlideOver";
 import { PortfolioFilter, PortfolioNFT } from ".";
 
-export default function PortfolioBox(props: { getPortfolioNFTs: typeof getPortfolioNFTs }) {
+export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs, listNFT: typeof listNFT, verifyNFTtoList: typeof verifyNFTtoList }) {
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [nfts, setNfts] = useState<PosseViewNFT[]>([]);
-  const [filters, setFilters] = useState<{ search: string, sort: string, page: number }>({ search: "", sort: "", page: 0 });
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const { register, handleSubmit: useSubmit, formState: { errors } } = useForm<PosseFormListing>({});
+  const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/ listingItem, setListingItem, handleList, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
 
-  const onChangeFilter = async (_search: string, _sort: string) => {
-    setIsLoading(true);
-    setFilters({
-      search: _search,
-      sort: _sort,
-      page: 0,
-    });
-    const json_nfts = await props.getPortfolioNFTs(_search, _sort, 0);
-    setNfts(JSON.parse(json_nfts));
-    setIsLoading(false);
-  }
-
-  const onLoadMore = async () => {
-    setFilters({
-      ...filters,
-      page: filters.page + 1,
-    });
-    const _nfts = await props.getPortfolioNFTs(filters.search, filters.sort, filters.page + 1);
-    // setNfts(_nfts);
-  }
+  // useEffect(() => {
+  //   account && onChangeFilter(filters.search, filters.sort);
+  // }, [account]);
 
   return (
     <>
@@ -42,14 +31,130 @@ export default function PortfolioBox(props: { getPortfolioNFTs: typeof getPortfo
           <PortfolioNFT
             key={i}
             item={nft}
+            openListPanel={(item: PosseViewNFT) => {
+              setListingItem(item);
+              setIsListPanelOpen(true);
+            }}
           />
         ))}
       </div>
       <div className="flex justify-center items-center w-full">
         {!isLoading && !nfts.length && (
-          <>No NFTs.</>
+          <span className="text-white">No NFTs.</span>
         )}
       </div>
+      <SlideOver
+        open={isListPanelOpen}
+        setOpen={() => !isOperating && setIsListPanelOpen(false)}
+        title="List Details"
+      >
+        <div className="flex flex-col">
+          <form
+            ref={formRef}
+            onSubmit={useSubmit(handleList)}
+            className="flex flex-col gap-6 sm:gap-12"
+          >
+            <Fieldset className="flex flex-col md:flex-row gap-4">
+              <Field>
+                <Label htmlFor="price" className="block mb-2">Price *</Label>
+                <Input
+                  {...register('price', { required: "Price is required" })}
+                  id="price"
+                  type="number"
+                  step="any"
+                  className="px-3 py-1 bg-gray-600/[30%] focus:border-gray-300 border-gray-300"
+                />
+                {errors.price && (
+                  <p className="mt-1 text-xs text-red-600">{errors.price.message}</p>
+                )}
+              </Field>
+              <Field>
+                <Label htmlFor="currency" as="p" className="block mb-2">Currency *</Label>
+                <CurrencySelect
+                  {...register('currency', { required: "Please select a currency" })}
+                  name="currency"
+                  defaultValue={currencies[0]?.address ?? ""}
+                  items={currencies}
+                />
+                {errors.currency && (
+                  <p className="mt-1 text-xs text-red-600">{errors.currency.message}</p>
+                )}
+
+              </Field>
+            </Fieldset>
+            <Button
+              className="mt-4"
+              onClick={() => {
+                if (formRef.current && !isOperating) {
+                  formRef.current.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                }
+              }}
+            >
+              {isOperating && <Spinner />}
+              Direct List
+            </Button>
+          </form>
+        </div>
+      </SlideOver>
     </>
   );
-}
+};
+
+
+const CurrencySelect = forwardRef(({
+  onChange, onBlur, name, label, items, defaultValue
+}: {
+  onChange: (e: any) => void,
+  onBlur: (e: any) => void,
+  name: string,
+  label?: string,
+  items: PosseCurrency[],
+  defaultValue: string,
+}, ref: React.Ref<HTMLInputElement>) => {
+
+  const [currency, setCurrency] = useState<string>(defaultValue);
+  const selectedCurrency = items.filter((item: PosseCurrency) => item.address === currency)[0];
+
+  if (!items.length) {
+    return null;
+  }
+  return (
+    <>
+      <Menu as="div" className="relative inline-block text-left">
+        <MenuButton className="inline-flex justify-between items-center px-4 py-1 bg-gray-600/[30%] shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600/[70%] text-white rounded-md whitespace-nowrap">
+          <img src={selectedCurrency.icon} width="24" height="24" className="mr-2" />
+          {selectedCurrency.symbol}
+          <FaChevronDown className="ml-2" />
+        </MenuButton>
+
+        <MenuItems className="absolute right-0 mt-2 w-auto origin-top-right bg-gray-800 border border-gray-300 rounded-md shadow-lg focus:outline-none">
+          {items.map((item, i) => (
+            <MenuItem key={i}>
+              {({ focus }) => (
+                <button
+                  className={`${focus ? 'bg-gray-600' : ''} group flex w-full items-center px-6 py-2 text-sm text-white whitespace-nowrap`}
+                  onClick={() => {
+                    setCurrency(item.address);
+                    onChange({ target: { name, value: item.address } });
+                  }}
+                >
+                  <img src={item.icon} width="24" height="24" className="mr-2" />
+                  {item.symbol}
+                </button>
+              )}
+            </MenuItem>
+          ))}
+
+        </MenuItems>
+      </Menu>
+      <input
+        type="hidden"
+        name={name}
+        ref={ref}
+        value={currency}
+        onChange={() => { }}  // This is here to meet react-hook-form requirements
+        onBlur={onBlur}
+      />
+    </>
+  );
+});
