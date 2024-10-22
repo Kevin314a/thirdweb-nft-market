@@ -9,7 +9,7 @@ import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 
 import { Input } from "../base/Input";
 import { ConnectButton } from "./ConnectButton";
-// import { ProfileMenu } from "./ProfileMenu";
+import { ProfileMenu } from "./ProfileMenu";
 import { IconLogo, IconMagnify } from "@/assets";
 
 export const Navbar = () => {
@@ -38,11 +38,9 @@ export const Navbar = () => {
       <nav>
         <div className="max-w-[1920px] lg:px-6 px-3 flex items-center justify-between mx-auto">
           <Link href="/" className="flex items-center relative z-20">
-            <Image src={IconLogo}
-              unoptimized
+            <img src={IconLogo.src}
               width={120}
               height={64}
-              priority
               className="min-w-[120px] h-auto bg-contain"
               alt="Logo"
             />
@@ -67,7 +65,11 @@ export const Navbar = () => {
                     alt="" />
                 </div>
               </div>
-              <ConnectButton />
+              {account && wallet ? (
+                <ProfileMenu address={account.address} wallet={wallet} />
+              ) : (
+                <ConnectButton />
+              )}
             </div>
             <button onClick={toggleMenu}
               data-collapse-toggle="navbar-sticky"

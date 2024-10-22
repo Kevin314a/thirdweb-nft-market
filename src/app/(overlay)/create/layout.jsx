@@ -1,17 +1,19 @@
 'use client'
 
 import { ConnectButton } from "@/components/shared/ConnectButton";
+import { ProfileMenu } from "@/components/shared/ProfileMenu";
 import { Polygon1, Polygon22, TempImageCreateBack } from "@/assets";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
-import { useActiveAccount } from "thirdweb/react";
+import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 
 export default function CreateLayout({ children }) {
 
   const router = useRouter();
   const account = useActiveAccount();
+  const wallet = useActiveWallet();
 
   useEffect(() => {
     fetch('/api/save-user', {
@@ -36,7 +38,11 @@ export default function CreateLayout({ children }) {
           </button>
           <div className="flex w-full justify-end md:order-2 items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative z-20">
             <div className="flex lg:w-full items-center xxl:gap-10 gap-5 justify-end">
-              <ConnectButton />
+              {account && wallet ? (
+                <ProfileMenu address={account.address} wallet={wallet} />
+              ) : (
+                <ConnectButton />
+              )}
             </div>
           </div>
         </div>

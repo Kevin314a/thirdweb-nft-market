@@ -82,7 +82,7 @@ export const TableTabs = () => {
             </div>
             <select
               defaultValue={"Currency"}
-              id="countries"
+              id="countries1"
               className="text-base md:block hidden font-semibold outline-none text-white rounded-[10px] bg-golden-1000 py-[7px] px-3 !pr-10"
             >
               <option disabled>Currency</option>

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, forwardRef } from "react";
-import { type PossePreContract } from "@/lib/types";
+import { type PosseViewContract } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { LuCheck, LuChevronsUpDown, LuPlus } from "react-icons/lu";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "../base";
@@ -15,7 +15,7 @@ export const ContractSelect = forwardRef(({
   onBlur: (e: any) => void,
   name: string,
   label?: string,
-  items: PossePreContract[],
+  items: PosseViewContract[],
   defaultValue: string,
 }, ref: React.Ref<HTMLInputElement>) => {
 
@@ -41,7 +41,7 @@ export const ContractSelect = forwardRef(({
     }
   };
 
-  const collection = items.filter((item: PossePreContract) => item.address === contractAddr)[0];
+  const collection = items.filter((item: PosseViewContract) => item.address === contractAddr)[0];
 
   return (
     <>
@@ -75,7 +75,7 @@ export const ContractSelect = forwardRef(({
               transition
               className="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-golden-1300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
             >
-              {!!items.length && items.map((item: PossePreContract, i) => (
+              {!!items.length && items.map((item: PosseViewContract, i) => (
                 <ListboxOption
                   key={i}
                   value={item.address}

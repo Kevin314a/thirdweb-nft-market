@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { client } from "@/lib/constants";
-import { PosseDBContract, PosseDBNFT, PossePreContract, PosseTrait } from "@/lib/types";
+import { PosseViewContract, PosseFormNFT, PosseTrait } from "@/lib/types";
 import { createNFT } from "@/server-actions/nft";
 import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "../base";
 import { ContractSelect } from "../Contract";
@@ -19,11 +19,11 @@ import { useActiveAccount, useConnectModal } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
 import toast from "react-hot-toast";
 
-export const NFTForm = (props: { createNFT: typeof createNFT, collections: PosseDBContract[] }) => {
+export const NFTForm = (props: { createNFT: typeof createNFT, collections: PosseViewContract[] }) => {
   const account = useActiveAccount();
   const { connect } = useConnectModal();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset, unregister } = useForm<PosseDBNFT>({
+  const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset, unregister } = useForm<PosseFormNFT>({
     defaultValues: {
       collection: props.collections[0]?.address,
     }
@@ -56,7 +56,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
 
   }, [selectedContract]);
 
-  const handleSubmit = async (newNFT: PosseDBNFT) => {
+  const handleSubmit = async (newNFT: PosseFormNFT) => {
     if (!account) {
       connect({ client });
       return;
@@ -145,7 +145,6 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
         await nextTokenIdToMint721({ contract: masterContract })) - 1n
       ).toString();
 
-      // const toDBNFT = newNFT;
       if (newNFT.image) {
         const url = resolveScheme({
           client,
@@ -153,6 +152,8 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
         });
         newNFT.image = url;
       }
+
+      newNFT.owner = account.address;
 
       props.createNFT(newNFT).then((res) => {
         setIsLoading(false);
@@ -227,16 +228,7 @@ export const NFTForm = (props: { createNFT: typeof createNFT, collections: Posse
               {...register('collection', { required: "Please select a collection" })}
               name="collection"
               defaultValue={props.collections[0]?.address ?? ""}
-              items={props.collections.map(collect => {
-                const temp: PossePreContract = {
-                  type: collect.type,
-                  address: collect.address || "",
-                  name: collect.name,
-                  description: collect.description,
-                  image: collect.image,
-                };
-                return temp;
-              }).filter(collect => !!collect.address)}
+              items={props.collections}
             />
             {errors.collection && (
               <p className="mt-1 text-xs text-red-600">{errors.collection.message}</p>
