@@ -4,22 +4,33 @@ import { getContract } from "./contract";
 import NFTModel from "../model/NFT";
 
 export const storeNFT = async (newNFT: PosseFormNFT) => {
-  await dbConnect();
-  const collection = await getContract(newNFT.collection);
-  const nft = new NFTModel({
-    collectionId: collection._id,
-    tokenId: newNFT.tokenId,
-    type: newNFT.type,
-    name: newNFT.name,
-    owner: newNFT.owner,
-    description: newNFT.description,
-    image: newNFT.image,
-    supply: newNFT.supply,
-    externalLink: newNFT.externalLink,
-    traits: newNFT.traits,
-  });
+  try {
+    await dbConnect();
 
-  await nft.save();
+    const old = await getNFT(newNFT.collection, newNFT.tokenId);
+    if (old) {
+      return;
+    }
+
+    const collection = await getContract(newNFT.collection);
+    const nft = new NFTModel({
+      collectionId: collection._id,
+      tokenId: BigInt(newNFT.tokenId),
+      type: newNFT.type,
+      name: newNFT.name,
+      owner: newNFT.owner,
+      description: newNFT.description,
+      image: newNFT.image,
+      supply: BigInt(newNFT.supply || 0),
+      externalLink: newNFT.externalLink,
+      traits: newNFT.traits,
+    });
+
+    await nft.save();
+  } catch (err) {
+    console.error("[ERROR ON STORING NFT to DB]", err);
+    throw new Error("Failed to store your NFT");
+  }
 };
 
 export const getNFTs = async (
@@ -42,20 +53,53 @@ export const getNFTs = async (
   }
 };
 
+export const getNFT = async (
+  contractAddr: string,
+  tokenId: string,
+) => {
+  try {
+    await dbConnect();
+    return await NFTModel.findOne({ tokenId })
+      .populate({
+        path: 'collectionId',
+        match: { address: contractAddr }
+      })
+  } catch (err) {
+    console.error("[ERROR ON FIND AN NFT on DB]", err);
+    throw new Error("Failed to fetch an NFT");
+  }
+};
+
 export const updateNFT = async (
   filter: { [key: string]: any },
   data: { [key: string]: any },
 ) => {
-  await dbConnect();
-  await NFTModel.updateMany(filter, data);
+  try {
+    await dbConnect();
+    if (data.tokenId) {
+      data.tokenId = BigInt(data.tokenId);
+    }
+    if (data.supply) {
+      data.supply = BigInt(data.supply);
+    }
+    await NFTModel.updateMany(filter, data);
+  } catch (err) {
+    console.error("[ERROR ON UPDATE YOUR NFT on DB]", err);
+    throw new Error("Failed to update your NFT");
+  }
 };
 
 export const deleteNFT = async (collectionAddr: string, tokenId: string, owner: string) => {
-  await dbConnect();
-  const contract = await getContract(collectionAddr);
-  if (!contract) {
-    return false;
+  try {
+    await dbConnect();
+    const contract = await getContract(collectionAddr);
+    if (!contract) {
+      return false;
+    }
+    await NFTModel.deleteOne({ tokenId, owner, collectionId: contract._id });
+    return true;
+  } catch (err) {
+    console.error("[ERROR ON burn YOUR NFT on DB]", err);
+    throw new Error("Failed to burn your NFT");
   }
-  await NFTModel.deleteOne({ tokenId, owner, collectionId: contract._id });
-  return true;
 };

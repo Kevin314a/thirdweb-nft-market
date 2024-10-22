@@ -1,7 +1,7 @@
 'use server'
 
 import { NFTForm } from "@/components/NFT";
-import { createNFT } from "@/server-actions/nft";
+import { mintNFT } from "@/server-actions/nft";
 import { getOwnContracts } from "@/server-actions/contract";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -22,7 +22,7 @@ export default async function CreateNFTPage() {
         <span className="text-4xl text-white">Create an NFT</span>
         <span className="text-sm text-golden-1000">Remember, once you mint your NFT you won’t be able to <br />change any of it’s information.</span>
       </div>
-      <NFTForm createNFT={createNFT} collections={JSON.parse(json_collections)} />
+      <NFTForm mintNFT={mintNFT} collections={JSON.parse(json_collections)} />
     </div>
   );
 }

@@ -22,17 +22,15 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
   image: {
     type: String,
   },
-  platformFeeBps: {
-    type: String,
-    // type: Decimal128,
-    // get: (v: Decimal128) => BigInt(v.toString()),
-    // set: (v: bigint) => Decimal128.fromString(v.toString()),
-  },
+  // platformFeeBps: {
+  //   type: Decimal128,
+  //   get: (v: Decimal128) => BigInt(v.toString()),
+  //   set: (v: bigint) => Decimal128.fromString(v.toString()),
+  // },
   royaltyBps: {
-    type: String,
-    // type: Decimal128,
-    // get: (v: Decimal128) => BigInt(v.toString()),
-    // set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: Decimal128,
+    get: (v: Decimal128) => BigInt(v.toString()),
+    set: (v: bigint) => Decimal128.fromString(v.toString()),
   },
   owner: {
     type: String,
@@ -41,9 +39,9 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
   traitTypes: {
     type: [{ type: String, required: true }],
   },
-  // }, {
-  //   toJSON: { getters: true },
-  //   toObject: { getters: true },
+  }, {
+    toJSON: { getters: true },
+    toObject: { getters: true },
 });
 
 export default mongoose.models.Contract || mongoose.model<PosseDBContract>("Contract", ContractSchema, "contracts");
