@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import { PosseDBContract, PossePreContract } from "@/lib/types";
+import { PosseFormContract } from "@/lib/types";
 import { client } from "@/lib/constants";
 import { type deployContract } from "@/server-actions/contract";
 import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "../base";
@@ -17,12 +17,11 @@ import { resolveScheme, upload } from "thirdweb/storage";
 import { deployERC1155Contract, deployERC721Contract } from "thirdweb/deploys";
 import toast from "react-hot-toast";
 
-
 export const ContractForm = (props: { deployContract: typeof deployContract }) => {
   const account = useActiveAccount();
   const { connect } = useConnectModal();
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseDBContract>();
+  const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseFormContract>();
   const [contractType, setContractType] = useState<"ERC-721" | "ERC-1155">("ERC-721");
   const [file, setFile] = useState<File | null>(null);
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | null>(null);
@@ -37,7 +36,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
     setValue('type', type);
   }
 
-  const handleSubmit = async (newCollection: PosseDBContract) => {
+  const handleSubmit = async (newCollection: PosseFormContract) => {
     if (!account) {
       connect({ client });
       return;
@@ -102,7 +101,6 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
       newCollection.address = deployedContractAddress;
       newCollection.owner = account.address;
 
-      // const toDBContract = newContract;
       if (!!newCollection.image) {
         const url = resolveScheme({
           client,
