@@ -1,4 +1,3 @@
-
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
 import { NATIVE_TOKEN_ADDRESS } from "thirdweb";
 import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
@@ -52,7 +51,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     const json_nfts = await props.getOwnedNFTs(_search, _sort, 0);
     setNfts(JSON.parse(json_nfts));
     setIsLoading(false);
-  }
+  };
 
   const onLoadMore = async () => {
     setFilters({
@@ -61,7 +60,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     });
     const _nfts = await props.getOwnedNFTs(filters.search, filters.sort, filters.page + 1);
     // setNfts(_nfts);
-  }
+  };
 
   const handleList = async (listInfo: PosseFormListing) => {
     if (isOperating) {

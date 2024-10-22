@@ -36,9 +36,10 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
   },
   traits: {
     type: [{
-      type: { type: String, required: true },
-      name: { type: String, required: true },
+      type: { type: String },
+      name: { type: String },
     }],
+    default: [],
   },
   owner: {
     type: String,
@@ -46,22 +47,23 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
   },
   history: {
     type: [{
-      seller: { type: String, required: true },
-      buyer: { type: String, required: true },
-      action: { type: String, enum: ["DIRECT-LIST", "ENGLISH-AUCTION"], required: true },
+      seller: { type: String },
+      buyer: { type: String },
+      action: { type: String, enum: ["DIRECT-LIST", "ENGLISH-AUCTION"] },
       orginPrice: {
         type: Decimal128,
         get: (v: Decimal128) => BigInt(v.toString()),
         set: (v: bigint) => Decimal128.fromString(v.toString()),
       },
-      nativePrice: { type: Number, required: true },
-      qty: { type: Number, required: true },
+      nativePrice: { type: Number },
+      qty: { type: Number },
       purchasedAt: {
         type: Decimal128,
         get: (v: Decimal128) => BigInt(v.toString()),
         set: (v: bigint) => Decimal128.fromString(v.toString()),
       },
-    }]
+    }],
+    default: [],
   }
 }, {
   toJSON: { getters: true },

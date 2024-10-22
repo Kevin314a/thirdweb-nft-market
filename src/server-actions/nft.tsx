@@ -2,8 +2,8 @@
 
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { getNFTfromMarket, storeNFTtoMarket } from "@/lib/db/market";
-import { storeNFT, getNFTs } from "@/lib/db/nft";
-import { PosseFormMarket, PosseFormNFT, PosseViewNFT } from "@/lib/types";
+import { storeNFT, getNFTs, getNFT } from "@/lib/db/nft";
+import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";
 
@@ -121,6 +121,45 @@ export async function verifyNFTtoList(contractAddr: string, tokenId: string) {
   }
 }
 
+export async function getToken(contractAddr: string, tokenId: string) {
+  try {
+    const item = await getNFT(contractAddr, BigInt(tokenId));
+    const token: PosseViewNFT = {
+      collectionId: {
+        type: item.collectionId.type,
+        address: item.collectionId.address,
+        name: item.collectionId.name,
+        description: item.collectionId.description,
+        symbol: item.collectionId.symbol,
+        image: item.collectionId.image,
+        royaltyBps: String(item.collectionId.royaltyBps),
+        owner: item.collectionId.owner,
+        traitTypes: item.collectionId.traitTypes,
+      },
+      tokenId: String(item.tokenId),
+      type: item.type,
+      name: item.name,
+      description: item.description,
+      image: item.image,
+      supply: String(item.supply),
+      externalLink: item.externalLink,
+      traits: item.traits,
+      owner: item.owner,
+    };
+
+    return token;
+  } catch (err) {
+    console.error("[ERROR ON FETCHING TOKEN FOR TOKENPAGE]", err);
+    return null;
+    // const res = {
+    //   error: true,
+    //   message: "Sorry, an error occured fetching NFT for token page.",
+    //   actions: "Please try again",
+    // };
+    // return res;
+  }
+}
+
 export async function getOwnedNFTs(_search: string, _sort: string, _page: number) { //: Promise<PosseViewNFT[]> {
   try {
     const cookieStore = cookies();
@@ -166,7 +205,10 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
       image: item.image,
       supply: String(item.supply),
       externalLink: item.externalLink,
-      traits: item.traits,
+      traits: item.traits?.map((trait: PosseTrait) => ({
+        type: trait.type,
+        name: trait.name,
+      })),
       owner: item.owner,
     }));
 

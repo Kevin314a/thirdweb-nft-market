@@ -59,11 +59,8 @@ export const getNFT = async (
 ) => {
   try {
     await dbConnect();
-    return await NFTModel.findOne({ tokenId })
-      .populate({
-        path: 'collectionId',
-        match: { address: contractAddr }
-      })
+    const contract = await getContract(contractAddr);
+    return !contract ? null : await NFTModel.findOne({tokenId, collectionId: contract._id});
   } catch (err) {
     console.error("[ERROR ON FIND AN NFT on DB]", err);
     throw new Error("Failed to fetch an NFT");

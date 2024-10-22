@@ -26,6 +26,7 @@ const useScreenSize = () => {
 
   return screenSize;
 };
+
 export const ConnectButton = () => {
   const screenSize = useScreenSize();
 
@@ -57,5 +58,5 @@ export const ConnectButton = () => {
       }}
       client={client}
     />
-  )
+  );
 };

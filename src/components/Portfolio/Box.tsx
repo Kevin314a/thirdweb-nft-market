@@ -1,9 +1,9 @@
 'use client'
 
-import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
 import { useListingPortfolio } from "@/hooks/useListingPortfolio";
+import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
-import React, { useState, useRef, forwardRef } from "react";
+import { useState, useRef, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
 import { Button, Field, Fieldset, Input, Label, Menu, MenuButton, MenuItems, MenuItem } from "../base";
