@@ -74,7 +74,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
                     </div>
                   )}
                 </Radio>
-                <Radio
+                {/* <Radio
                   value={"ERC-1155"}
                   className={({ checked }) =>
                     `${checked ? 'bg-golden-1300 text-white' : 'bg-golden-1400 text-gray'
@@ -93,7 +93,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
                       </div>
                     </div>
                   )}
-                </Radio>
+                </Radio> */}
               </div>
             </RadioGroup>
             <input
@@ -155,11 +155,11 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
               {...register('royaltyBps', {
                 min: {
                   value: 0,
-                  message: "royalties is between 0.0% ~ 100.0%",
+                  message: "royalties is between 0.0% ~ 10.0%",
                 },
                 max: {
-                  value: 100.0,
-                  message: "royalties is between 0.0% ~ 100.0%",
+                  value: 10.0,
+                  message: "royalties is between 0.0% ~ 10.0%",
                 }
               })}
               id="royaltyBps"
