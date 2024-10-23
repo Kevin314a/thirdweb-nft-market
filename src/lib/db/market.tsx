@@ -57,7 +57,7 @@ export const hasOwnAstrNFT = async (walletAddress: string) => {
     endOfToday.setHours(23, 59, 59, 999);
 
     const oldOne = await MarketModel.findOne({
-      creatorAddress: walletAddress,
+      creatorAddress: { $regex: new RegExp(walletAddress, 'i') },
       status: "ACTIVE",
       'currencyValuePerToken.symbol': "ASTR",
       createdAt: {
