@@ -3,7 +3,8 @@ declare global {
   var mongoose: any; // This must be a `var` and not a `let / const`
 }
 
-const MONGODB_URI = process.env.MONGODB_URI!;
+const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODB_URI!;
+const dbName = process.env.NEXT_PUBLIC_DB_NAME || 'posse-production';
 
 if (!MONGODB_URI) {
   throw new Error(
@@ -24,7 +25,7 @@ export async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      dbName: `posse-bucket`,
+      dbName: dbName,
     };
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
