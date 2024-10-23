@@ -131,7 +131,7 @@ export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseView
               className="px-3 py-1 min-w-[25vw]"
             />
           </Field>
-          <Field>
+          {/* <Field>
             <Label htmlFor="externalLink" className="block mb-2">External link</Label>
             <Input
               {...register('externalLink')}
@@ -139,7 +139,7 @@ export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseView
               type="text"
               className="px-3 py-1 min-w-[25vw]"
             />
-          </Field>
+          </Field> */}
           <Field>
             <Label as="p" className="block mb-2">Trait</Label>
             <Description className="text-golden-1000 text-xs">Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page.</Description>

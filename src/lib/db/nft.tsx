@@ -22,7 +22,7 @@ export const storeNFT = async (newNFT: PosseFormNFT) => {
       description: newNFT.description,
       image: newNFT.image,
       supply: BigInt(newNFT.supply || 0),
-      externalLink: newNFT.externalLink,
+      // externalLink: newNFT.externalLink,
       traits: newNFT.traits,
     });
 

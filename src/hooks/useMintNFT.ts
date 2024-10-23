@@ -96,7 +96,7 @@ export function useMintNFT(props: MintNFTProps) {
           name: newNFT.name,
           description: newNFT.description,
           image: newNFT.image,
-          external_url: newNFT.externalLink,
+          // external_url: newNFT.externalLink,
           properties: records,
         }
       }) : mintTo721({
@@ -106,7 +106,7 @@ export function useMintNFT(props: MintNFTProps) {
           name: newNFT.name,
           description: newNFT.description,
           image: newNFT.image,
-          external_url: newNFT.externalLink,
+          // external_url: newNFT.externalLink,
           properties: records,
         }
       });

@@ -31,9 +31,9 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
     get: (v: Decimal128) => BigInt(v.toString()),
     set: (v: bigint) => Decimal128.fromString(v.toString()),
   },
-  externalLink: {
-    type: String,
-  },
+  // externalLink: {
+  //   type: String,
+  // },
   traits: {
     type: [{
       type: { type: String },

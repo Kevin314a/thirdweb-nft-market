@@ -144,7 +144,7 @@ export async function getToken(contractAddr: string, tokenId: string) {
       description: item.description,
       image: item.image,
       supply: String(item.supply),
-      externalLink: item.externalLink,
+      // externalLink: item.externalLink,
       traits: item.traits,
       owner: item.owner,
     };
@@ -206,7 +206,7 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
       description: item.description,
       image: item.image,
       supply: String(item.supply),
-      externalLink: item.externalLink,
+      // externalLink: item.externalLink,
       traits: item.traits?.map((trait: PosseTrait) => ({
         type: trait.type,
         name: trait.name,
