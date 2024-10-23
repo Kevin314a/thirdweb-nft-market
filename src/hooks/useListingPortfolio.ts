@@ -142,16 +142,6 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
 
       await sendAndConfirmTransaction({ transaction, account });
 
-      // const resTotalListings = await totalListings({
-      //   contract: MARKETPLACE_CONTRACT
-      // });
-      // const lastListing = await getAllListings({
-      //   contract: MARKETPLACE_CONTRACT,
-      //   start: Number(resTotalListings - 1n),
-      //   count: 1n,
-      // });
-      // // await props.listNFT(listingItem.collectionId.address, listingItem.tokenId, lastListing[0]);
-
       await props.listNFT(listingItem.collectionId.address, listingItem.tokenId);
       toast.success("Successfully Listed to POSSE Market");
 

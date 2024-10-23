@@ -52,7 +52,6 @@ export const hasOwnAstrNFT = async (walletAddress: string) => {
     const oldOne = await MarketModel.findOne({
       creatorAddress: walletAddress,
       status: "ACTIVE",
-      type: "direct-listing",
       'currencyValuePerToken.symbol': "ASTR"
     });
     return !!oldOne;

@@ -39,9 +39,9 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
   traitTypes: {
     type: [{ type: String, required: true }],
   },
-  }, {
-    toJSON: { getters: true },
-    toObject: { getters: true },
+}, {
+  toJSON: { getters: true },
+  toObject: { getters: true },
 });
 
 export default mongoose.models.Contract || mongoose.model<PosseDBContract>("Contract", ContractSchema, "contracts");

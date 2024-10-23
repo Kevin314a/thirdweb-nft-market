@@ -38,7 +38,7 @@ export async function listNFT(contractAddr: string, tokenId: string) {
 
     const lastListings: DirectListing[] = await getAllListings({
       contract: MARKETPLACE_CONTRACT,
-      start: Number(resTotalListings - 31n),
+      start: resTotalListings > 31n ? Number(resTotalListings - 31n) : 0,
       count: 35n,
     });
 
@@ -211,6 +211,7 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
         type: trait.type,
         name: trait.name,
       })),
+      isListed: item.isListed,
       owner: item.owner,
     }));
 
