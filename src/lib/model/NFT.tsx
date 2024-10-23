@@ -41,6 +41,7 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
     }],
     default: [],
   },
+  isListed: { type: Boolean, default: false },
   owner: {
     type: String,
     required: true,

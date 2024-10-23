@@ -4,6 +4,7 @@ import { client } from "@/lib/constants";
 import { PosseViewNFT } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
+import toast from "react-hot-toast";
 
 export default function PortfolioNFT({
   item,
@@ -17,7 +18,7 @@ export default function PortfolioNFT({
     <div className="relative group rounded-lg shadow-lg">
       <div
         className="cursor-pointer transition-all hover:scale-105 hover:shadow-lg flex flex-col w-full h-full bg-golden-1000 justify-between border overflow-hidden border-white/10 rounded-lg"
-        // onClick={() => router.push(`/contract/${item.collectionId.address}/token/${item.tokenId}`)}
+      // onClick={() => router.push(`/contract/${item.collectionId.address}/token/${item.tokenId}`)}
       >
         <div className="relative">
           {item.image && (
@@ -52,12 +53,21 @@ export default function PortfolioNFT({
           </div>
         </div>
       </div>
-      <button
-        className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
-        onClick={() => openListPanel(item)}
-      >
-        List
-      </button>
+      {!item.isListed ? (
+        <button
+          className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
+          onClick={() => openListPanel(item)}
+        >
+          List
+        </button>
+      ) : (
+        <button
+          className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
+          onClick={() => toast.error("comming soon")}
+        >
+          DeList
+        </button>
+      )}
     </div>
   );
 }

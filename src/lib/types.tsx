@@ -15,6 +15,7 @@ export type PosseFormNFT = {
   supply?: string;
   externalLink?: string;
   traits?: PosseTrait[];
+  isListed?: boolean;
   owner: string;
 };
 
@@ -28,6 +29,7 @@ export interface PosseViewNFT {
   supply?: string;
   externalLink?: string;
   traits?: PosseTrait[];
+  isListed?: boolean;
   owner: string;
 }
 

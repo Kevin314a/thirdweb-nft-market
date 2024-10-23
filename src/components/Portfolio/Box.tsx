@@ -15,7 +15,8 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { register, handleSubmit: useSubmit, formState: { errors } } = useForm<PosseFormListing>({});
-  const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/ listingItem, setListingItem, handleList, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
+  const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/
+    listingItem, setListingItem, handleList, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
 
   // useEffect(() => {
   //   account && onChangeFilter(filters.search, filters.sort);

@@ -2,7 +2,7 @@
 
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { getNFTfromMarket, storeNFTtoMarket } from "@/lib/db/market";
-import { storeNFT, getNFTs, getNFT } from "@/lib/db/nft";
+import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket } from "@/lib/db/nft";
 import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";
@@ -42,7 +42,7 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       count: 35n,
     });
 
-    const lastListing = lastListings.filter((ll: DirectListing) => String(ll.assetContractAddress) === String(contractAddr) && String(ll.asset.id) === String(tokenId));
+    const lastListing = lastListings.filter((ll: DirectListing) => String(ll.assetContractAddress) === String(contractAddr) && String(ll.tokenId) === String(tokenId));
     if (!lastListing.length) {
       console.error('[ERROR ON FINDING THE LAST LISTED YOUR NFT]', contractAddr, "#", tokenId);
       return {
@@ -51,6 +51,8 @@ export async function listNFT(contractAddr: string, tokenId: string) {
         actions: "You can get correct information about your activity with clicking the `Refresh` button",
       }
     }
+
+    await markNFTisonMarket(contractAddr, BigInt(tokenId));
 
     const listedNFT: PosseFormMarket = {
       id: lastListing[0].id,

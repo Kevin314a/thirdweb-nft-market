@@ -60,7 +60,25 @@ export const getNFT = async (
   try {
     await dbConnect();
     const contract = await getContract(contractAddr);
-    return !contract ? null : await NFTModel.findOne({tokenId, collectionId: contract._id});
+    return !contract ? null : await NFTModel.findOne({ tokenId, collectionId: contract._id });
+  } catch (err) {
+    console.error("[ERROR ON FIND AN NFT on DB]", err);
+    throw new Error("Failed to fetch an NFT");
+  }
+};
+
+export const markNFTisonMarket = async (
+  contractAddr: string,
+  tokenId: bigint,
+) => {
+  try {
+    const oldOne = await getNFT(contractAddr, tokenId);
+    if (!oldOne) {
+      throw new Error("Failed to get an NFT to mark");
+    }
+    oldOne.isListed = true;
+    await oldOne.save();
+    return true;
   } catch (err) {
     console.error("[ERROR ON FIND AN NFT on DB]", err);
     throw new Error("Failed to fetch an NFT");
