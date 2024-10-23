@@ -4,7 +4,7 @@ import { client } from "@/lib/constants";
 import { type deployContract } from "@/server-actions/contract";
 import { useRouter } from "next/navigation";
 import { soneiumMinato } from "thirdweb/chains";
-import { useActiveAccount, useConnectModal } from "thirdweb/react";
+import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
 import { deployERC1155Contract, deployERC721Contract } from "thirdweb/deploys";
 import toast from "react-hot-toast";
@@ -16,6 +16,8 @@ interface DeployContractProps {
 export function useDeployContract(props: DeployContractProps) {
 
   const account = useActiveAccount();
+  const switchChain = useSwitchActiveWalletChain();
+  const activeWalletChain = useActiveWalletChain();
   const { connect } = useConnectModal();
   const [file, setFile] = useState<File | null>(null);
   const [traitTypes, setTraitTypes] = useState<string[]>([]);
@@ -37,6 +39,10 @@ export function useDeployContract(props: DeployContractProps) {
 
     setIsLoading(true);
 
+    if (activeWalletChain?.id !== soneiumMinato.id) {
+      await switchChain(soneiumMinato);
+    }
+    
     let uri = "";
     try {
       // upload image via thirdweb-ipfs, then change it to 

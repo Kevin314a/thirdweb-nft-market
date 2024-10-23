@@ -7,7 +7,7 @@ import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { isERC1155, mintTo as mintTo1155, nextTokenIdToMint as nextTokenIdToMint1155 } from "thirdweb/extensions/erc1155";
 import { isERC721, mintTo as mintTo721, nextTokenIdToMint as nextTokenIdToMint721 } from "thirdweb/extensions/erc721";
-import { useActiveAccount, useConnectModal } from "thirdweb/react";
+import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
 import toast from "react-hot-toast";
 
@@ -18,6 +18,8 @@ interface MintNFTProps {
 
 export function useMintNFT(props: MintNFTProps) {
   const account = useActiveAccount();
+  const switchChain = useSwitchActiveWalletChain();
+  const activeWalletChain = useActiveWalletChain();
   const { connect } = useConnectModal();
   const [file, setFile] = useState<File | null>(null);
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
@@ -36,6 +38,10 @@ export function useMintNFT(props: MintNFTProps) {
     }
 
     setIsLoading(true);
+
+    if (activeWalletChain?.id !== soneiumMinato.id) {
+      await switchChain(soneiumMinato);
+    }
 
     let uri = "";
     try {
