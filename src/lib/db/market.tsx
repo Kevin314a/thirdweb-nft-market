@@ -49,10 +49,21 @@ export const getNFTfromMarket = async (contractAddr: string, tokenId: string) =>
 export const hasOwnAstrNFT = async (walletAddress: string) => {
   try {
     await dbConnect();
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
     const oldOne = await MarketModel.findOne({
       creatorAddress: walletAddress,
       status: "ACTIVE",
-      'currencyValuePerToken.symbol': "ASTR"
+      'currencyValuePerToken.symbol': "ASTR",
+      createdAt: {
+        $gte: startOfToday,
+        $lt: endOfToday,
+      },
     });
     return !!oldOne;
   } catch (err) {

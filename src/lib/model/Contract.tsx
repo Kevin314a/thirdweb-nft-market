@@ -42,6 +42,7 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
 }, {
   toJSON: { getters: true },
   toObject: { getters: true },
+  timestamps: true,
 });
 
 export default mongoose.models.Contract || mongoose.model<PosseDBContract>("Contract", ContractSchema, "contracts");

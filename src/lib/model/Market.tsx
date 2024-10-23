@@ -124,6 +124,7 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   toJSON: { getters: true },
   toObject: { getters: true },
   strict: false,
+  timestamps: true,
 });
 
 export default mongoose.models.Market || mongoose.model<PosseDBMarket>("Market", MarketSchema, "markets");

@@ -69,6 +69,7 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
 }, {
   toJSON: { getters: true },
   toObject: { getters: true },
+  timestamps: true,
 });
 
 export default mongoose.models.NFT || mongoose.model<PosseDBNFT>("NFT", NFTSchema, "nfts");
