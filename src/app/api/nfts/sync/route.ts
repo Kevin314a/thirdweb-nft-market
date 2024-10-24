@@ -40,14 +40,15 @@ export async function GET(request: Request) {
             if (!result.ok) {
               controller.enqueue(encoder.encode(`data: Error fetching own NFTs.\n\n`));
               controller.close();
+              return;
             }
 
             controller.enqueue(encoder.encode(`data: Fetching NFTs from chain net...\n\n`));
 
             const json = await result.json();
-            const nfts: PosseViewNFT[] = (json.items || []).map((contract: any) => {
 
-              const tokens: PosseViewNFT[] = contract.token_instances?.map((t: any) => ({
+            let nfts: PosseViewNFT[] = (json.items || []).flatMap((contract: any) => {
+              return contract.token_instances?.map((t: any) => ({
                 collectionId: {
                   type: contract.token.type,
                   address: contract.token.address,
@@ -72,43 +73,43 @@ export async function GET(request: Request) {
                 isListed: false,
                 owner: address,
               }));
-
-              return tokens;
-            }).flat();
+            });
 
             controller.enqueue(encoder.encode(`data: Fetching NFTs from chain net is completed...\n\n`));
 
-            for (let i = 0; i < nfts.length; i++) {
-              if (!nfts[i].name) {
+            // Create an array to hold promises for batch requests
+            const fetchPromises = nfts.map(async (nft) => {
+              if (!nft.name) {
                 try {
 
                   const nft3rdWeb = await getNFT721({
                     contract: getContract({
                       client,
                       chain: soneiumMinato,
-                      address: nfts[i].collectionId.address,
+                      address: nft.collectionId.address,
                     }),
-                    tokenId: BigInt(nfts[i].tokenId),
+                    tokenId: BigInt(nft.tokenId),
                   });
 
                   if (!!nft3rdWeb.metadata.name) {
-                    nfts[i].name = nft3rdWeb.metadata.name;
+                    nft.name = nft3rdWeb.metadata.name;
                     if (nft3rdWeb.metadata.image) {
                       const url = resolveScheme({
                         client,
                         uri: nft3rdWeb.metadata.image,
                       });
-                      nfts[i].image = url;
+                      nft.image = url;
                     }
-                    nfts[i].description = nft3rdWeb.metadata.description;
+                    nft.description = nft3rdWeb.metadata.description;
                   }
                 } catch (err) {
                   console.error("[ERROR] WITH getting data via thirdweb", err);
-                  continue;
                 }
               }
-              controller.enqueue(encoder.encode(`data: Fetching an NFT #${nfts[i].tokenId} of ${nfts[i].collectionId.address}...\n\n`));
-            }
+              controller.enqueue(encoder.encode(`data: Fetching an NFT #${nft.tokenId} of ${nft.collectionId.address}...\n\n`));
+            });
+
+            await Promise.all(fetchPromises);
 
             controller.enqueue(encoder.encode(`data: Updating your NFTs...\n\n`));
             await bulkUpdateNFTs(address, nfts); // upsert data to portfolio collection
