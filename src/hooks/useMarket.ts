@@ -1,16 +1,15 @@
 import { deListNFT } from "@/server-actions/nft";
 import { getAllValidNFTs, buyNFT } from "@/server-actions/market";
-import { NATIVE_TOKEN_ADDRESS } from "thirdweb";
 import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
 import { PosseCurrency, PosseViewMarket } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
-import { soneiumMinato } from "thirdweb/chains";
-import { getContract, sendAndConfirmTransaction } from "thirdweb";
-import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
-import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
-import { type DirectListing, createListing, cancelListing, getAllValidListings, totalListings, getAllListings, getListing, totalAuctions, getAllAuctions } from "thirdweb/extensions/marketplace";
+import { allowance, approve, decimals } from "thirdweb/extensions/erc20"; import { soneiumMinato } from "thirdweb/chains";
+import { type Hex, NATIVE_TOKEN_ADDRESS, sendTransaction, toTokens, waitForReceipt, getContract, sendAndConfirmTransaction } from "thirdweb";
+// import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
+// import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
+import { buyFromListing, cancelListing } from "thirdweb/extensions/marketplace";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -110,26 +109,113 @@ export function useMarket(props: MarketProps) {
     if (!account) {
       return;
     }
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.get(`/api/nfts/own`, {
-    //     params: { address: account.address, search: filters.search, sort: filters.sort, page: 0 }
-    //   });
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/market`, {
+        params: { address: account.address, search: filters.search, sort: filters.sort, currency: filters.currency, page: 0 }
+      });
 
-    //   setNfts(JSON.parse(response.data.nfts));
-    // } catch (err) {
-    //   console.error("error on fetching data from backend", err);
-    //   toast.error("Please reload this page");
-    // }
-    // setIsLoading(false);
+      setNfts(JSON.parse(response.data.nfts));
+    } catch (err) {
+      console.error("error on fetching data from backend", err);
+      toast.error("Please reload this page");
+    }
+    setIsLoading(false);
   };
 
   const onBuy = async (item: PosseViewMarket) => {
+    if (isOperating) return;
+
+    if (!account) return;
+
+    if (activeWalletChain?.id !== soneiumMinato.id) {
+      await switchChain(soneiumMinato);
+    }
+    setIsOperating(true);
+    try {
+      if (item.currencyContractAddress.toLowerCase() !== NATIVE_TOKEN_ADDRESS.toLowerCase()) {
+        const customTokenContract = getContract({
+          address: item.currencyContractAddress as Hex,
+          client,
+          chain: soneiumMinato,
+        });
+        const result = await allowance({
+          contract: customTokenContract,
+          owner: account?.address || '0x',
+          spender: MARKETPLACE_CONTRACT.address as Hex,
+        });
+
+        if (result < BigInt(item?.pricePerToken || 0)) {
+          const _decimals = await decimals({
+            contract: customTokenContract,
+          });
+          const transaction = approve({
+            contract: customTokenContract,
+            spender: MARKETPLACE_CONTRACT.address as Hex,
+            amount: toTokens(BigInt(item?.pricePerToken || 0), _decimals),
+          });
+          await sendAndConfirmTransaction({ transaction, account });
+        }
+      }
+
+      const transaction = buyFromListing({
+        contract: MARKETPLACE_CONTRACT,
+        listingId: BigInt(item.id),
+        quantity: BigInt(item.quantity),
+        recipient: account.address,
+      });
+      const receipt = await sendTransaction({
+        transaction,
+        account,
+      });
+      await waitForReceipt({
+        transactionHash: receipt.transactionHash,
+        client,
+        chain: soneiumMinato,
+      });
+      toast.success("Purchase completed! The asset(s) should arrive in your account shortly");
+
+      // TODO: refreching all datas
+    } catch (err) {
+      console.error(err);
+      if ((err as Error).message.startsWith("insufficient funds for gas")) {
+        toast("You don't have enough funds for this purchase.");
+      }
+    }
+    setIsOperating(false);
 
   };
 
   const onDelist = async (item: PosseViewMarket) => {
+    if (isOperating) return;
 
+    if (!account) {
+      toast.error("Please connect your wallet!");
+      return null;
+    }
+
+    setIsOperating(true);
+    try {
+
+      const transaction = cancelListing({
+        contract: MARKETPLACE_CONTRACT,
+        listingId: BigInt(item.id),
+      });
+
+      await sendAndConfirmTransaction({
+        transaction,
+        account,
+      });
+
+      toast.success("Listing cancelled successfully");
+
+      // TODO: refeching dailo contes;
+    } catch (err) {
+      console.error("error on delisting this selected NFT", err);
+      toast.error("You have an error on delisting with this error");
+    } finally {
+      setIsOperating(false);
+    }
   };
 
   return {

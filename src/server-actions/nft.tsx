@@ -1,6 +1,6 @@
 'use server'
 
-import { client, MARKETPLACE_CONTRACT, SONEIUM_MINATO_API_URL } from "@/lib/constants";
+import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { getNFTfromMarket, storeNFTtoMarket } from "@/lib/db/market";
 import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket, bulkUpdateNFTs } from "@/lib/db/nft";
 import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";

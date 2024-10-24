@@ -36,7 +36,7 @@ export default function MarketFilter({
     const { startDebounce, stopDebounce } = useDebounce(onChangeFilter, 300);
     startDebounce(search, sort, currency);
     return () => stopDebounce();
-  }, [search, sort]);
+  }, [search, sort, currency]);
 
   return (
 
@@ -46,7 +46,7 @@ export default function MarketFilter({
       onFocus={() => setSeeShortcut(false)}
       onBlur={() => setSeeShortcut(true)}
     >
-      <div className="flex w-full justify-center items-center gap-2">
+      <div className="flex w-full justify-center items-center gap-2 z-[2000]">
         <div className="relative w-full flex justify-center items-center w-8 h-8 border border-golden-1300 rounded-full bg-golden-1300">
           <Input
             ref={searchRef}
@@ -90,16 +90,16 @@ export default function MarketFilter({
         </div>
         <Menu as="div" className="relative inline-block text-left">
 
-          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600/[30%] shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
+          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
             Sort by: {sort.charAt(0).toUpperCase() + sort.slice(1)}
             <FaChevronDown />
           </MenuButton>
 
-          <MenuItems className="absolute right-0 mt-2 w-auto origin-top-right bg-gray-600/[30%] border border-golden-1000 rounded-md shadow-lg">
+          <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setSort("NAME")}
                 >
@@ -110,7 +110,7 @@ export default function MarketFilter({
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setSort("CREATEDAT")}
                 >
@@ -121,7 +121,7 @@ export default function MarketFilter({
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setSort("LISTEDAT")}
                 >
@@ -132,7 +132,7 @@ export default function MarketFilter({
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setSort("PRICEDESC")}
                 >
@@ -143,7 +143,7 @@ export default function MarketFilter({
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setSort("PRICEASC")}
                 >
@@ -156,16 +156,16 @@ export default function MarketFilter({
 
         <Menu as="div" className="relative inline-block text-left">
 
-          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600/[30%] shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
+          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
             Currency: {currency}
             <FaChevronDown />
           </MenuButton>
 
-          <MenuItems className="absolute right-0 mt-2 w-auto origin-top-right bg-gray-600/[30%] border border-golden-1000 rounded-md shadow-lg">
+          <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
             <MenuItem>
               {({ focus }) => (
                 <button
-                  className={`${focus ? 'bg-black/[30%]' : ''
+                  className={`${focus ? 'bg-gray-500' : ''
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setCurrency("ALL")}
                 >
@@ -177,7 +177,7 @@ export default function MarketFilter({
               <MenuItem key={i}>
                 {({ focus }) => (
                   <button
-                    className={`${focus ? 'bg-black/[30%]' : ''
+                    className={`${focus ? 'bg-gray-500' : ''
                       } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                     onClick={() => setCurrency(currency.symbol)}
                   >

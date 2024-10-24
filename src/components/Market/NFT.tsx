@@ -4,6 +4,7 @@ import { client } from "@/lib/constants";
 import { PosseViewMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
+import { Spinner } from "../shared/Spinner";
 
 export default function MarketNFT({
   item,
@@ -64,6 +65,7 @@ export default function MarketNFT({
           className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
           onClick={() => onDelist(item)}
         >
+          {isOperating && <Spinner />}
           Delist
         </button>
       ) : (
@@ -71,6 +73,7 @@ export default function MarketNFT({
           className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
           onClick={() => onBuy(item)}
         >
+          {isOperating && <Spinner />}
           Buy
         </button>
       )}
