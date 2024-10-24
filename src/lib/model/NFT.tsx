@@ -2,7 +2,11 @@ import { PosseDBNFT } from "../types";
 import mongoose from "mongoose";
 
 const NFTSchema = new mongoose.Schema<PosseDBNFT>({
-  collectionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Contract', required: true },
+  contract:{ type: mongoose.Schema.Types.ObjectId, ref: 'Contract', required: true },
+  contractAddr: { 
+    type: String, 
+    required: true 
+  },
   tokenId: {
     type: String,
     required: true,

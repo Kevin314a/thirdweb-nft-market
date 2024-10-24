@@ -96,7 +96,9 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     // Handle error or closure of the connection
     newEventSource.onerror = async () => {
       newEventSource.close();
-
+      setEventSource(null);
+      setIsLoading(false);
+      
       toast.success("Loading NFTs...", { duration: 5000 });
       await fnReload();
       toast.success("Successfully Load your NFTs...");
@@ -110,6 +112,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     if (!account) {
       return;
     }
+    setIsLoading(true);
     try {
       const response = await axios.get(`/api/nfts/own`, {
         params: { address: account.address, search: filters.search, sort: filters.sort, page: 0 }
@@ -153,7 +156,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
         await switchChain(soneiumMinato);
       }
 
-      const verified = await props.verifyNFTtoList(listingItem.collectionId.address, listingItem.tokenId);
+      const verified = await props.verifyNFTtoList(listingItem.contract.address, listingItem.tokenId);
       if (verified.error) {
         if (!!verified.actions) {
           throw new Error(verified.message.concat(verified.actions));
@@ -166,7 +169,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
       }
 
       const nftContract = getContract({
-        address: listingItem.collectionId.address,
+        address: listingItem.contractAddr,
         chain: soneiumMinato,
         client,
       });
@@ -203,7 +206,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
 
       await sendAndConfirmTransaction({ transaction, account });
 
-      await props.listNFT(listingItem.collectionId.address, listingItem.tokenId);
+      await props.listNFT(listingItem.contractAddr, listingItem.tokenId);
       toast.success("Successfully Listed to POSSE Market");
 
     } catch (err) {

@@ -18,7 +18,7 @@ export default function PortfolioNFT({
     <div className="relative group rounded-lg shadow-lg">
       <div
         className="cursor-pointer transition-all hover:scale-105 hover:shadow-lg flex flex-col w-full h-full bg-golden-1000 justify-between border overflow-hidden border-white/10 rounded-lg"
-      // onClick={() => router.push(`/contract/${item.collectionId.address}/token/${item.tokenId}`)}
+      // onClick={() => router.push(`/contract/${item.contract.address}/token/${item.tokenId}`)}
       >
         <div className="relative">
           {item.image && (
@@ -34,7 +34,7 @@ export default function PortfolioNFT({
           <div className="flex flex-col w-full justify-center py-3">
             <div className="flex justify-between">
               <p className="text-xs text-white whitespace-nowrap">
-                {item.collectionId.name}
+                {item.contract.name}
               </p>
               <p className="text-sm text-white whitespace-nowrap border-white">
                 #{item.tokenId}

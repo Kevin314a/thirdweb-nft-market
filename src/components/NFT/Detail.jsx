@@ -39,7 +39,7 @@ export const NFTDetail = ({ nft }) => {
             <div className="lg:w-[62%] md:w-1/2 w-full">
               <div className="w-full flex flex-col">
                 <span className="w-full flex flex-row text-golden-1000 text-sm">{'Posse'}{<img className="ml-2" src={ImageVerifiedBadge.src} style={{ width: '1rem', height: '1rem' }} alt="verified" />}</span>
-                <span className="mt-2 text-white text-2xl font-bold">{`${nft.collectionId.name} #${nft.tokenId}`}</span>
+                <span className="mt-2 text-white text-2xl font-bold">{`${nft.contract.name} #${nft.tokenId}`}</span>
                 <span className="mt-2 text-golden-1000 text-sm">{nft.description}</span>
                 <div className="mt-8 w-full flex flex-row gap-4">
                   <div className="text-white text-sm flex items-center justify-center">Owned by<span className="ml-2 font-semibold text-golden-1000">{'2B543'}</span></div>

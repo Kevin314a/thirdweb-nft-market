@@ -92,6 +92,10 @@ export async function listNFT(contractAddr: string, tokenId: string) {
   }
 }
 
+export async function deListNFT(contractAddr: string, tokenId: string) {
+
+}
+
 export async function verifyNFTtoList(contractAddr: string, tokenId: string) {
   try {
 
@@ -127,17 +131,18 @@ export async function getToken(contractAddr: string, tokenId: string) {
   try {
     const item = await getNFT(contractAddr, BigInt(tokenId));
     const token: PosseViewNFT = {
-      collectionId: {
-        type: item.collectionId.type,
-        address: item.collectionId.address,
-        name: item.collectionId.name,
-        description: item.collectionId.description,
-        symbol: item.collectionId.symbol,
-        image: item.collectionId.image,
-        royaltyBps: String(item.collectionId.royaltyBps),
-        owner: item.collectionId.owner,
-        traitTypes: item.collectionId.traitTypes,
+      contract: {
+        type: item.contract.type,
+        address: item.contract.address,
+        name: item.contract.name,
+        description: item.contract.description,
+        symbol: item.contract.symbol,
+        image: item.contract.image,
+        royaltyBps: String(item.contract.royaltyBps),
+        owner: item.contract.owner,
+        traitTypes: item.contract.traitTypes,
       },
+      contractAddr: item.contract.address,
       tokenId: String(item.tokenId),
       type: item.type,
       name: item.name,
@@ -181,25 +186,26 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
     }
 
     const sort = _sort === "NAME" ? { name: 1 }
-      : (_sort === "CREATEDASC" ? { _id: 1 }
-        : { _id: 1 });
+      : (_sort === "CREATEDASC" ? { createdAt: 1 }
+        : { createdAt: 1 });
 
     const page = _page;
 
     const data = await getNFTs(conds, sort, page);
 
     const nfts: PosseViewNFT[] = data?.map(item => ({
-      collectionId: {
-        type: item.collectionId.type,
-        address: item.collectionId.address,
-        name: item.collectionId.name,
-        description: item.collectionId.description,
-        symbol: item.collectionId.symbol,
-        image: item.collectionId.image,
-        royaltyBps: String(item.collectionId.royaltyBps),
-        owner: item.collectionId.owner,
-        traitTypes: item.collectionId.traitTypes,
+      contract: {
+        type: item.contract.type,
+        address: item.contract.address,
+        name: item.contract.name,
+        description: item.contract.description,
+        symbol: item.contract.symbol,
+        image: item.contract.image,
+        royaltyBps: String(item.contract.royaltyBps),
+        owner: item.contract.owner,
+        traitTypes: item.contract.traitTypes,
       },
+      contractAddr: item.contract.address,
       tokenId: String(item.tokenId),
       type: item.type,
       name: item.name,

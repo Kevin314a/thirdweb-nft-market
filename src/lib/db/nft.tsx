@@ -12,12 +12,16 @@ export const storeNFT = async (newNFT: PosseFormNFT) => {
 
     const old = await getNFT(newNFT.collection, BigInt(newNFT.tokenId));
     if (old) {
-      return;
+      return old._id;
     }
 
-    const collection = await getContract(newNFT.collection);
+    const myContract = await getContract(newNFT.collection);
+    if (!myContract) {
+      throw new Error("contract is not exist");
+    }
     const nft = new NFTModel({
-      collectionId: collection._id,
+      contract: myContract._id,
+      contractAddr: newNFT.collection,
       tokenId: BigInt(newNFT.tokenId),
       type: newNFT.type,
       name: newNFT.name,
@@ -27,6 +31,7 @@ export const storeNFT = async (newNFT: PosseFormNFT) => {
       supply: BigInt(newNFT.supply || 0),
       // externalLink: newNFT.externalLink,
       traits: newNFT.traits,
+      isListed: newNFT.isListed,
     });
 
     return await nft.save();
@@ -47,7 +52,7 @@ export const getNFTs = async (
       .sort(sort)
       .select('-_id')
       .populate({
-        path: 'collectionId',
+        path: 'contract',
         select: '-_id',
       });
   } catch (err) {
@@ -62,8 +67,9 @@ export const getNFT = async (
 ) => {
   try {
     await dbConnect();
-    const contract = await getContract(contractAddr);
-    return !contract ? null : await NFTModel.findOne({ tokenId, collectionId: contract._id });
+    // const contract = await getContract(contractAddr);
+    // return !contract ? null : await NFTModel.findOne({ tokenId, contract: contract._id });
+    return await NFTModel.findOne({ contractAddr, tokenId });
   } catch (err) {
     console.error("[ERROR ON FIND AN NFT on DB]", err);
     throw new Error("Failed to fetch an NFT");
@@ -107,14 +113,14 @@ export const updateNFT = async (
   }
 };
 
-export const deleteNFT = async (collectionAddr: string, tokenId: string, owner: string) => {
+export const deleteNFT = async (contractAddr: string, tokenId: string, owner: string) => {
   try {
     await dbConnect();
-    const contract = await getContract(collectionAddr);
-    if (!contract) {
-      return false;
-    }
-    await NFTModel.deleteOne({ tokenId, owner, collectionId: contract._id });
+    // const contract = await getContract(collectionAddr);
+    // if (!contract) {
+    //   return false;
+    // }
+    await NFTModel.deleteOne({ contractAddr, tokenId, owner });
     return true;
   } catch (err) {
     console.error("[ERROR ON burn YOUR NFT on DB]", err);
@@ -135,30 +141,30 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
         // this nft is not minted via thirdweb!!!!
         // storeContract
         newContractId = await storeContract({
-          type: nft.collectionId.type,
-          address: nft.collectionId.address,
-          name: nft.collectionId.name,
-          description: nft.collectionId.description,
-          symbol: nft.collectionId.symbol,
-          image: nft.collectionId.image,
-          royaltyBps: nft.collectionId.royaltyBps,
-          owner: nft.collectionId.owner,
-          traitTypes: nft.collectionId.traitTypes,
+          type: nft.contract.type,
+          address: nft.contract.address,
+          name: nft.contract.name,
+          description: nft.contract.description,
+          symbol: nft.contract.symbol,
+          image: nft.contract.image,
+          royaltyBps: nft.contract.royaltyBps,
+          owner: nft.contract.owner,
+          traitTypes: nft.contract.traitTypes,
         });
       }
       else {
-        const oldContract = await getContract(nft.collectionId.address);
+        const oldContract = await getContract(nft.contract.address);
         if (oldContract && oldContract.owner === accountAddr) {
           // update oldContract
-          oldContract.type = nft.collectionId.type;
-          oldContract.address = nft.collectionId.address;
-          oldContract.name = nft.collectionId.name;
-          oldContract.description = nft.collectionId.description;
-          oldContract.symbol = nft.collectionId.symbol;
-          oldContract.image = nft.collectionId.image;
-          oldContract.royaltyBps = nft.collectionId.royaltyBps;
-          oldContract.owner = nft.collectionId.owner;
-          oldContract.traitTypes = nft.collectionId.traitTypes;
+          oldContract.type = nft.contract.type;
+          oldContract.address = nft.contract.address;
+          oldContract.name = nft.contract.name;
+          oldContract.description = nft.contract.description;
+          oldContract.symbol = nft.contract.symbol;
+          oldContract.image = nft.contract.image;
+          oldContract.royaltyBps = nft.contract.royaltyBps;
+          oldContract.owner = nft.contract.owner;
+          oldContract.traitTypes = nft.contract.traitTypes;
           oldContract.save();
 
           newContractId = oldContract._id;
@@ -169,15 +175,15 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
         } else {
           // store contract from blockchain to db
           newContractId = await storeContract({
-            type: nft.collectionId.type,
-            address: nft.collectionId.address,
-            name: nft.collectionId.name,
-            description: nft.collectionId.description,
-            symbol: nft.collectionId.symbol,
-            image: nft.collectionId.image,
-            royaltyBps: nft.collectionId.royaltyBps,
-            owner: nft.collectionId.owner,
-            traitTypes: nft.collectionId.traitTypes,
+            type: nft.contract.type,
+            address: nft.contract.address,
+            name: nft.contract.name,
+            description: nft.contract.description,
+            symbol: nft.contract.symbol,
+            image: nft.contract.image,
+            royaltyBps: nft.contract.royaltyBps,
+            owner: nft.contract.owner,
+            traitTypes: nft.contract.traitTypes,
           });
         }
       }
@@ -187,21 +193,22 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
       }
 
       await NFTModel.findOneAndUpdate(
-        { collectionId: newContractId, tokenId: nft.tokenId },
+        { contract: newContractId, tokenId: nft.tokenId },
         {
           $set: {
-            collectionId: newContractId,
+            contract: newContractId,
+            contractAddr: nft.contract.address,
             tokenId: nft.tokenId,
             name: nft.name,
             description: nft.name,
             image: nft.image,
             owner: accountAddr,
             isListed: false,
+            traits: nft.traits,
           },
           $setOnInsert: {
             type: "ERC-721",
             history: [],
-            traits: [],
           },
         },
         { new: true, upsert: true }

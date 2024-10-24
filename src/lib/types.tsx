@@ -20,7 +20,8 @@ export type PosseFormNFT = {
 };
 
 export interface PosseViewNFT {
-  collectionId: PosseViewContract,
+  contract: PosseViewContract,
+  contractAddr: string;
   tokenId: string;
   type: "ERC-721" | "ERC-1155";
   name: string;
@@ -33,8 +34,8 @@ export interface PosseViewNFT {
   owner: string;
 }
 
-export interface PosseDBNFT extends Omit<PosseViewNFT, 'collectionId' | 'tokenId' | 'supply'>, Document {
-  collectionId: mongoose.Schema.Types.ObjectId;
+export interface PosseDBNFT extends Omit<PosseViewNFT, 'contract' | 'tokenId' | 'supply'>, Document {
+  contract: mongoose.Schema.Types.ObjectId;
   tokenId: bigint;
   supply?: bigint;
   history?: PosseDBMarketHistory[];
@@ -93,18 +94,20 @@ export type PosseViewMarket = {
   status: "UNSET" | "CREATED" | "COMPLETED" | "CANCELLED" | "ACTIVE" | "EXPIRED";
   type: "direct-listing" | "english-auction";
   //direct-listing
-  currencyValuePerToken: ViewListBalance;
-  pricePerToken: string;
-  isReservedListing: boolean;
+  currencyValuePerToken?: ViewListBalance;
+  pricePerToken?: string;
+  isReservedListing?: boolean;
   //english-auction
-  minimumBidAmount: string;
-  minimumBidCurrencyValue: ViewListBalance;
-  buyoutBidAmount: string;
-  buyoutCurrencyValue: ViewListBalance;
-  timeBufferInSeconds: string;
-  bidBufferBps: string;
+  minimumBidAmount?: string;
+  minimumBidCurrencyValue?: ViewListBalance;
+  buyoutBidAmount?: string;
+  buyoutCurrencyValue?: ViewListBalance;
+  timeBufferInSeconds?: string;
+  bidBufferBps?: string;
 };
 
+// in fact, under out rules, PosseFormMarket is almost equal to PosseViewMarket,
+// but this data isn't from user's interface, it comes from thirdweb-api. so bigint, and other types are exist
 export type PosseFormMarket = {
   id: bigint;
   creatorAddress: string;

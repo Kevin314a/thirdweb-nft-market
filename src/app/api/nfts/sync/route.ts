@@ -49,7 +49,7 @@ export async function GET(request: Request) {
 
             let nfts: PosseViewNFT[] = (json.items || []).flatMap((contract: any) => {
               return contract.token_instances?.map((t: any) => ({
-                collectionId: {
+                contract: {
                   type: contract.token.type,
                   address: contract.token.address,
                   name: contract.token.name,
@@ -60,6 +60,7 @@ export async function GET(request: Request) {
                   owner: address,
                   traitTypes: t?.metadata?.attributes?.map((attr: any) => attr.trait_type),
                 },
+                contractAddr: contract.token.address,
                 tokenId: BigInt(t.id),
                 type: t.token_type,
                 name: t?.metadata?.name,
@@ -86,7 +87,7 @@ export async function GET(request: Request) {
                     contract: getContract({
                       client,
                       chain: soneiumMinato,
-                      address: nft.collectionId.address,
+                      address: nft.contractAddr,
                     }),
                     tokenId: BigInt(nft.tokenId),
                   });
@@ -106,7 +107,7 @@ export async function GET(request: Request) {
                   console.error("[ERROR] WITH getting data via thirdweb", err);
                 }
               }
-              controller.enqueue(encoder.encode(`data: Fetching an NFT #${nft.tokenId} of ${nft.collectionId.address}...\n\n`));
+              controller.enqueue(encoder.encode(`data: Fetching an NFT #${nft.tokenId} of ${nft.contractAddr}...\n\n`));
             });
 
             await Promise.all(fetchPromises);
