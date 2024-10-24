@@ -118,10 +118,10 @@ export const Navbar = () => {
 }
 
 const NAV_ITEMS = [
-  // {
-  //   label: 'Marketplace',
-  //   href: '/',
-  // },
+  {
+    label: 'Marketplace',
+    href: '/market',
+  },
   // {
   //   label: 'DEX',
   //   href: '#',

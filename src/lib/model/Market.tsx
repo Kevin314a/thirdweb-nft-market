@@ -1,10 +1,12 @@
 import { PosseDBMarket } from "../types";
+import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
 const MarketSchema = new mongoose.Schema<PosseDBMarket>({
 
   id: {
     type: String,
+    unique: true,
     get: (v: any): bigint => {
       try {
         return BigInt(v);
@@ -38,15 +40,9 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
     required: true,
   },
   quantity: {
-    type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
+    type: Decimal128,
+    get: (v: Decimal128) => BigInt(v.toString()),
+    set: (v: bigint) => Decimal128.fromString(v.toString()),
     required: true,
   },
   currencyContractAddress: {
@@ -55,27 +51,15 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
     maxlength: [255, "Name cannot be more than 255 characters"],
   },
   startTimeInSeconds: {
-    type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
+    type: Decimal128,
+    get: (v: Decimal128) => BigInt(v.toString()),
+    set: (v: bigint) => Decimal128.fromString(v.toString()),
     required: true,
   },
   endTimeInSeconds: {
-    type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
+    type: Decimal128,
+    get: (v: Decimal128) => BigInt(v.toString()),
+    set: (v: bigint) => Decimal128.fromString(v.toString()),
     required: true,
   },
   asset: { type: mongoose.Schema.Types.ObjectId, ref: 'NFT', required: true },
@@ -92,18 +76,16 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   //direct-listing
   currencyValuePerToken: {
     value: {
-      type: String,
-      get: (v: any): bigint => {
-        try {
-          return BigInt(v);
-        } catch (err) {
-          return BigInt(0);
-        }
-      },
-      set: (v: bigint): string => v.toString(),
+      type: Decimal128,
+      get: (v: Decimal128) => BigInt(v.toString()),
+      set: (v: bigint) => Decimal128.fromString(v.toString()),
     },
     decimals: { type: Number },
-    displayValue: { type: String },
+    displayValue: {
+      type: Decimal128,
+      get: (v: Decimal128) => v.toString(),
+      set: (v: string) => Decimal128.fromString(v),
+    },
     symbol: { type: String },
     name: { type: String },
   },
