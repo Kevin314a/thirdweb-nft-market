@@ -50,20 +50,11 @@ export type PosseFormContract = {
   // platformFeeBps?: string;
   royaltyBps?: string;
   owner: string;
-  traitTypes: string[];
+  traitTypes?: string[];
 };
 
-export type PosseViewContract = {
-  type: "ERC-721" | "ERC-1155",
-  address: string;
-  name: string;
-  description?: string;
-  symbol?: string;
-  image?: string;
-  // platformFeeBps?: string;
-  royaltyBps?: string;
-  owner: string;
-  traitTypes: string[];
+export type PosseViewContract = PosseFormContract & {
+  
 };
 
 export interface PosseDBContract extends Omit<PosseViewContract, 'royaltyBps' | 'platformFeeBps'>, Document {

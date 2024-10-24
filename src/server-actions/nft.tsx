@@ -1,8 +1,8 @@
 'use server'
 
-import { MARKETPLACE_CONTRACT } from "@/lib/constants";
+import { client, MARKETPLACE_CONTRACT, SONEIUM_MINATO_API_URL } from "@/lib/constants";
 import { getNFTfromMarket, storeNFTtoMarket } from "@/lib/db/market";
-import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket } from "@/lib/db/nft";
+import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket, bulkUpdateNFTs } from "@/lib/db/nft";
 import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";

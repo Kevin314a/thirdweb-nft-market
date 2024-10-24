@@ -13,3 +13,6 @@ export const MARKETPLACE_CONTRACT = getContract({
 	client,
 	chain: soneiumMinato,
 });
+
+export const SONEIUM_MINATO_API_URL = "https://explorer-testnet.soneium.org/api/v2";
+export const SONEIUM_MINATO_DETAIL_URL = "https://explorer-testnet.soneium.org/address";

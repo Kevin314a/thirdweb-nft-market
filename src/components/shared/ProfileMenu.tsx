@@ -40,7 +40,7 @@ export const ProfileMenu = ({
       <MenuItems
         transition
         anchor="bottom end"
-        className="w-auto origin-top-right rounded-xl border border-white/5 bg-black p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-[1999]"
+        className="mt-2 w-auto origin-top-right rounded-xl border border-white/4 bg-black p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0 z-[1999]"
       >
         <MenuItem>
           <ConnectButton />

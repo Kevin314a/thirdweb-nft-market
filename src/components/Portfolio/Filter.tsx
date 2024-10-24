@@ -1,18 +1,21 @@
 'use client'
 
 import { IconMagnify } from "@/assets";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@/components/base";
+import { Button, Menu, MenuButton, MenuItem, MenuItems } from "@/components/base";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import { LuRefreshCw } from "react-icons/lu";
 import { useHotkeys } from "react-hotkeys-hook";
 import Image from "next/image";
 import { Input } from "../base";
 
 export default function PortfolioFilter({
   onChangeFilter,
+  onRefresh,
 }: {
   onChangeFilter: (search: string, sort: string) => void,
+  onRefresh: () => void,
 }) {
 
   const [search, setSearch] = useState<string>("");
@@ -78,12 +81,13 @@ export default function PortfolioFilter({
           )}
         </div>
         <Menu as="div" className="relative inline-block text-left">
-          <MenuButton className="inline-flex justify-between items-center px-4 py-2 bg-gray-600/[30%] shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-black/[80%] text-white rounded-md whitespace-nowrap">
+        
+          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600/[30%] shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
             Sort by: {sort.charAt(0).toUpperCase() + sort.slice(1)}
-            <FaChevronDown className="ml-2" />
+            <FaChevronDown />
           </MenuButton>
 
-          <MenuItems className="absolute right-0 mt-2 w-auto origin-top-right bg-gray-600/[30%] border border-gray-300 rounded-md shadow-lg focus:outline-none">
+          <MenuItems className="absolute right-0 mt-2 w-auto origin-top-right bg-gray-600/[30%] border border-golden-1000 rounded-md shadow-lg">
             <MenuItem>
               {({ focus }) => (
                 <button
@@ -108,6 +112,15 @@ export default function PortfolioFilter({
             </MenuItem>
           </MenuItems>
         </Menu>
+        <Button
+          type="button"
+          variant="common"
+          className="inline-flex justify-center items-center gap-2 rounded-lg text-white text-sm lg:text-sm xxl:text-lg px-4 py-1"
+          onClick={onRefresh}
+        >
+          <LuRefreshCw size={16} />
+          Refresh
+        </Button>
       </div>
     </form>
   );

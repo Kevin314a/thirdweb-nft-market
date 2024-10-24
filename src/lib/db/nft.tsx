@@ -1,7 +1,10 @@
-import { PosseFormNFT } from "@/lib/types";
+import { PosseFormNFT, PosseViewNFT } from "@/lib/types";
 import { dbConnect } from "./connect";
-import { getContract } from "./contract";
+import { getContract, storeContract } from "./contract";
 import NFTModel from "../model/NFT";
+import mongoose from "mongoose";
+
+const ObjectId = mongoose.Types.ObjectId;
 
 export const storeNFT = async (newNFT: PosseFormNFT) => {
   try {
@@ -26,7 +29,7 @@ export const storeNFT = async (newNFT: PosseFormNFT) => {
       traits: newNFT.traits,
     });
 
-    await nft.save();
+    return await nft.save();
   } catch (err) {
     console.error("[ERROR ON STORING NFT to DB]", err);
     throw new Error("Failed to store your NFT");
@@ -117,4 +120,93 @@ export const deleteNFT = async (collectionAddr: string, tokenId: string, owner: 
     console.error("[ERROR ON burn YOUR NFT on DB]", err);
     throw new Error("Failed to burn your NFT");
   }
+};
+
+export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) => {
+
+  try {
+    await dbConnect();
+
+    for (let i = 0; i < nfts.length; ++i) {
+      const nft = nfts[i];
+
+
+      let newContractId = null;
+      if (!!nft.name) {
+        // this nft is not minted via thirdweb!!!!
+        // storeContract
+        newContractId = await storeContract({
+          type: nft.collectionId.type,
+          address: nft.collectionId.address,
+          name: nft.collectionId.name,
+          description: nft.collectionId.description,
+          symbol: nft.collectionId.symbol,
+          image: nft.collectionId.image,
+          royaltyBps: nft.collectionId.royaltyBps,
+          owner: nft.collectionId.owner,
+          traitTypes: nft.collectionId.traitTypes,
+        });
+      }
+      else {
+        const oldContract = await getContract(nft.collectionId.address);
+        if (oldContract && oldContract.owner === accountAddr) {
+          // update oldContract
+          oldContract.type = nft.collectionId.type;
+          oldContract.address = nft.collectionId.address;
+          oldContract.name = nft.collectionId.name;
+          oldContract.description = nft.collectionId.description;
+          oldContract.symbol = nft.collectionId.symbol;
+          oldContract.image = nft.collectionId.image;
+          oldContract.royaltyBps = nft.collectionId.royaltyBps;
+          oldContract.owner = nft.collectionId.owner;
+          oldContract.traitTypes = nft.collectionId.traitTypes;
+          oldContract.save();
+
+          newContractId = oldContract._id;
+
+        } else if (oldContract && oldContract.owner !== accountAddr) {
+          // there is do nothing
+          newContractId = oldContract._id;
+        } else {
+          // store contract from blockchain to db
+          newContractId = await storeContract({
+            type: nft.collectionId.type,
+            address: nft.collectionId.address,
+            name: nft.collectionId.name,
+            description: nft.collectionId.description,
+            symbol: nft.collectionId.symbol,
+            image: nft.collectionId.image,
+            royaltyBps: nft.collectionId.royaltyBps,
+            owner: nft.collectionId.owner,
+            traitTypes: nft.collectionId.traitTypes,
+          });
+        }
+      }
+
+      if (!newContractId) {
+        continue;
+      }
+
+      console.log('ggggggggggggggggggggggg', newContractId, nft.tokenId, nft);
+
+      await NFTModel.findOneAndUpdate(
+        { collectionId: newContractId, tokenId: nft.tokenId },
+        {
+          $set: {
+            collectionId: newContractId,
+            tokenId: nft.tokenId,
+            name: nft.name,
+            description: nft.name,
+            image: nft.image,
+            isListed: false,
+          },
+        },
+        { new: true, upsert: true }
+      );
+    }
+  } catch (err) {
+    console.error("[ERROR ON STORING NFT to DB]", err);
+    throw new Error("Failed to store your NFT");
+  }
+
 };

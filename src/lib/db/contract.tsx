@@ -8,7 +8,7 @@ export const storeContract = async (newContract: PosseFormContract) => {
 
     const old = await getContract(newContract.address);
     if (old) {
-      return;
+      return old._id;
     }
 
     const contract = new ContractModel({
@@ -23,7 +23,7 @@ export const storeContract = async (newContract: PosseFormContract) => {
       owner: newContract.owner,
       traitTypes: newContract.traitTypes,
     });
-    await contract.save();
+    return await contract.save();
   } catch (err) {
     console.error("[ERROR ON STORING CONTRACT to DB]", err);
     throw new Error("Failed to store your contract");

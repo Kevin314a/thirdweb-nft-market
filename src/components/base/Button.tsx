@@ -20,7 +20,7 @@ const buttonVariants = cva(
         secondary:
           "bg-golden-1200 hover:bg-gray-700 text-white",
         common:
-          "bg-gray-600/[30%] text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-black/[80%] data-[open]:bg-black/[80%] data-[focus]:outline-1 data-[focus]:outline-white",
+          "bg-gray-600/[30%] text-white shadow-inner shadow-white/10 focus:outline-none hover:bg-black/[80%] open:bg-black/[80%] focus:outline-1 focus:outline-white",
       },
       size: {
         default: "rounded-lg p-[7px] px-3",

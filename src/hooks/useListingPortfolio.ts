@@ -33,6 +33,9 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
   const [isOperating, setIsOperating] = useState<boolean>(false);
   const [listingItem, setListingItem] = useState<PosseViewNFT>();
 
+
+  const [eventSource, setEventSource] = useState<EventSource | null>(null);
+
   const currencies: PosseCurrency[] = [
     {
       address: NATIVE_TOKEN_ADDRESS,
@@ -60,6 +63,36 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     });
     const _nfts = await props.getOwnedNFTs(filters.search, filters.sort, filters.page + 1);
     // setNfts(_nfts);
+  };
+
+  const onRefresh = async () => {
+    if (!account) {
+      toast.error("Please connect your wallet!");
+      return;
+    }
+    if (eventSource) return; // Avoid opening multiple connections
+
+    // Create an EventSource to connect to the server action SSE
+    const newEventSource = new EventSource(`/api/sync/nft?address=${account.address}`);
+
+    // Listen for SSE messages and update state
+    newEventSource.onmessage = (event) => {
+      console.log('qwerqwer', event.data);
+      toast.success(event.data);
+    };
+
+    // Handle error or closure of the connection
+    newEventSource.onerror = () => {
+      newEventSource.close();
+      setIsLoading(false);
+
+      // TODO refetching nfts
+
+    };
+
+    setEventSource(newEventSource);
+    setIsLoading(true); // Set listening state to true
+
   };
 
   const handleList = async (listInfo: PosseFormListing) => {
@@ -166,6 +199,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     filters,
     onChangeFilter,
     // onLoadMore,
+    onRefresh,
     listingItem,
     setListingItem,
     handleList,

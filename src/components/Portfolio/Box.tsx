@@ -15,7 +15,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { register, handleSubmit: useSubmit, formState: { errors } } = useForm<PosseFormListing>({});
-  const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/
+  const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/ onRefresh,
     listingItem, setListingItem, handleList, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
 
   // useEffect(() => {
@@ -24,7 +24,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
 
   return (
     <>
-      <PortfolioFilter onChangeFilter={onChangeFilter} />
+      <PortfolioFilter onChangeFilter={onChangeFilter} onRefresh={onRefresh} />
       <div
         className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] py-4 gap-4"
       >
