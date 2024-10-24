@@ -1,5 +1,5 @@
-'use server'
-
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { client, SONEIUM_MINATO_API_URL } from "@/lib/constants";
 import { bulkUpdateNFTs } from "@/lib/db/nft";
 import { PosseViewNFT } from "@/lib/types";
@@ -107,10 +107,10 @@ export async function GET(request: Request) {
                   continue;
                 }
               }
-              console.log('uuuuuuuuuuuuuuuuuu', nfts[i]);
+              controller.enqueue(encoder.encode(`data: Fetching an NFT #${nfts[i].tokenId} of ${nfts[i].collectionId.address}...\n\n`));
             }
 
-            controller.enqueue(encoder.encode(`data: Refreshing your NFTs...\n\n`));
+            controller.enqueue(encoder.encode(`data: Updating your NFTs...\n\n`));
             await bulkUpdateNFTs(address, nfts); // upsert data to portfolio collection
 
             if (!json.next_page_params) {

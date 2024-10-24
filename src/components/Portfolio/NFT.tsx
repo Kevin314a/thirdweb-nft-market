@@ -26,6 +26,7 @@ export default function PortfolioNFT({
               src={item.image}
               client={client}
               className="object-cover object-center h-[160px]"
+              style={{ objectFit: "cover" }}
             />
           )}
         </div>

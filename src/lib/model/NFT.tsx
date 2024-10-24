@@ -1,14 +1,19 @@
 import { PosseDBNFT } from "../types";
-import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
 const NFTSchema = new mongoose.Schema<PosseDBNFT>({
   collectionId: { type: mongoose.Schema.Types.ObjectId, ref: 'Contract', required: true },
   tokenId: {
-    type: Decimal128,
+    type: String,
     required: true,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    get: (v: any): bigint => {
+      try {
+        return BigInt(v);
+      } catch (err) {
+        return BigInt(0);
+      }
+    },
+    set: (v: bigint): string => v.toString(),
   },
   type: {
     type: String,
@@ -27,9 +32,15 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
     type: String,
   },
   supply: {
-    type: Decimal128,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: String,
+    get: (v: any): bigint => {
+      try {
+        return BigInt(v);
+      } catch (err) {
+        return BigInt(0);
+      }
+    },
+    set: (v: bigint): string => v.toString(),
   },
   // externalLink: {
   //   type: String,
@@ -52,16 +63,28 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
       buyer: { type: String },
       action: { type: String, enum: ["DIRECT-LIST", "ENGLISH-AUCTION"] },
       orginPrice: {
-        type: Decimal128,
-        get: (v: Decimal128) => BigInt(v.toString()),
-        set: (v: bigint) => Decimal128.fromString(v.toString()),
+        type: String,
+        get: (v: any): bigint => {
+          try {
+            return BigInt(v);
+          } catch (err) {
+            return BigInt(0);
+          }
+        },
+        set: (v: bigint): string => v.toString(),
       },
       nativePrice: { type: Number },
       qty: { type: Number },
       purchasedAt: {
-        type: Decimal128,
-        get: (v: Decimal128) => BigInt(v.toString()),
-        set: (v: bigint) => Decimal128.fromString(v.toString()),
+        type: String,
+        get: (v: any): bigint => {
+          try {
+            return BigInt(v);
+          } catch (err) {
+            return BigInt(0);
+          }
+        },
+        set: (v: bigint): string => v.toString(),
       },
     }],
     default: [],

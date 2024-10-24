@@ -130,7 +130,6 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
     for (let i = 0; i < nfts.length; ++i) {
       const nft = nfts[i];
 
-
       let newContractId = null;
       if (!!nft.name) {
         // this nft is not minted via thirdweb!!!!
@@ -187,8 +186,6 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
         continue;
       }
 
-      console.log('ggggggggggggggggggggggg', newContractId, nft.tokenId, nft);
-
       await NFTModel.findOneAndUpdate(
         { collectionId: newContractId, tokenId: nft.tokenId },
         {
@@ -198,7 +195,13 @@ export const bulkUpdateNFTs = async (accountAddr: string, nfts: PosseViewNFT[]) 
             name: nft.name,
             description: nft.name,
             image: nft.image,
+            owner: accountAddr,
             isListed: false,
+          },
+          $setOnInsert: {
+            type: "ERC-721",
+            history: [],
+            traits: [],
           },
         },
         { new: true, upsert: true }

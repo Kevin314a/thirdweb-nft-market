@@ -1,5 +1,4 @@
 import { PosseDBContract } from "../types";
-import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
 const ContractSchema = new mongoose.Schema<PosseDBContract>({
@@ -28,9 +27,15 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
   //   set: (v: bigint) => Decimal128.fromString(v.toString()),
   // },
   royaltyBps: {
-    type: Decimal128,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: String,
+    get: (v: any): bigint => {
+      try {
+        return BigInt(v);
+      } catch (err) {
+        return BigInt(0);
+      }
+    },
+    set: (v: bigint): string => v.toString(),
   },
   owner: {
     type: String,

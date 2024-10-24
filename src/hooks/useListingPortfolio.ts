@@ -3,13 +3,14 @@ import { NATIVE_TOKEN_ADDRESS } from "thirdweb";
 import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
 import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { soneiumMinato } from "thirdweb/chains";
 import { getContract, sendAndConfirmTransaction } from "thirdweb";
 import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
 import { type DirectListing, createListing, cancelListing, getAllValidListings, totalListings, getAllListings, getListing, totalAuctions, getAllAuctions } from "thirdweb/extensions/marketplace";
+import axios from "axios";
 import toast from "react-hot-toast";
 
 interface ListingPortfolioProps {
@@ -44,6 +45,15 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     }
   ].concat(SUPPORTED_CURRENCIES);
 
+  useEffect(() => {
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+        setEventSource(null);
+      }
+    };
+  }, [eventSource]);
+
   const onChangeFilter = async (_search: string, _sort: string) => {
     setIsLoading(true);
     setFilters({
@@ -70,29 +80,47 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
       toast.error("Please connect your wallet!");
       return;
     }
+    if (isLoading) {
+      return;
+    }
     if (eventSource) return; // Avoid opening multiple connections
 
     // Create an EventSource to connect to the server action SSE
-    const newEventSource = new EventSource(`/api/sync/nft?address=${account.address}`);
+    const newEventSource = new EventSource(`/api/nfts/sync?address=${account.address}`);
 
     // Listen for SSE messages and update state
     newEventSource.onmessage = (event) => {
-      console.log('qwerqwer', event.data);
       toast.success(event.data);
     };
 
     // Handle error or closure of the connection
-    newEventSource.onerror = () => {
+    newEventSource.onerror = async () => {
       newEventSource.close();
-      setIsLoading(false);
 
-      // TODO refetching nfts
-
+      toast.success("Loading NFTs...", { duration: 5000 });
+      await fnReload();
+      toast.success("Successfully Load your NFTs...");
     };
 
     setEventSource(newEventSource);
     setIsLoading(true); // Set listening state to true
+  };
 
+  const fnReload = async () => {
+    if (!account) {
+      return;
+    }
+    try {
+      const response = await axios.get(`/api/nfts/own`, {
+        params: { address: account.address, search: filters.search, sort: filters.sort, page: 0 }
+      });
+
+      setNfts(JSON.parse(response.data.nfts));
+    } catch (err) {
+      console.error("error on fetching data from backend", err);
+      toast.error("Please reload this page");
+    }
+    setIsLoading(false);
   };
 
   const handleList = async (listInfo: PosseFormListing) => {

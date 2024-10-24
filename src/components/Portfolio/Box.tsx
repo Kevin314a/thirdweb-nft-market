@@ -24,7 +24,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
 
   return (
     <>
-      <PortfolioFilter onChangeFilter={onChangeFilter} onRefresh={onRefresh} />
+      <PortfolioFilter onChangeFilter={onChangeFilter} onRefresh={onRefresh} isLoading={isLoading} />
       <div
         className="grid grid-cols-[repeat(auto-fill,minmax(160px,1fr))] py-4 gap-4"
       >

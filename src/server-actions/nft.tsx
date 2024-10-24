@@ -188,7 +188,7 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
 
     const data = await getNFTs(conds, sort, page);
 
-    const nfts: PosseViewNFT[] = data.map(item => ({
+    const nfts: PosseViewNFT[] = data?.map(item => ({
       collectionId: {
         type: item.collectionId.type,
         address: item.collectionId.address,
