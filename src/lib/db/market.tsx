@@ -130,20 +130,26 @@ export const bulkUpdateMarket = async (accountAddress: string | undefined, liste
       // part of contract of this asset(NFT)
       const oldContract = await getContractDB(listedItem.assetContractAddress);
       if (!oldContract) {
-        const contract3rd = getContract({
-          client,
-          chain: soneiumMinato,
-          address: listedItem.assetContractAddress,
-        });
-        const contractOwner = await owner({ contract: contract3rd });
-        const contractMetadata = await getContractMetadata({ contract: contract3rd });
-        await storeContract({
-          type: "ERC-721",
-          address: listedItem.assetContractAddress,
-          name: contractMetadata.name,
-          symbol: contractMetadata.symbol,
-          owner: contractOwner,
-        });
+        try {
+          const contract3rd = getContract({
+            client,
+            chain: soneiumMinato,
+            address: listedItem.assetContractAddress,
+          });
+          const contractOwner = await owner({ contract: contract3rd });
+          const contractMetadata = await getContractMetadata({ contract: contract3rd });
+          await storeContract({
+            type: "ERC-721",
+            address: listedItem.assetContractAddress,
+            name: contractMetadata?.name || "",
+            symbol: contractMetadata?.symbol,
+            owner: contractOwner,
+          });
+        } catch (err) {
+          console.error("121212121212", listedItem);
+          console.error("what is this?", err);
+          continue;
+        }
       }
 
       // part of asset(NFT)

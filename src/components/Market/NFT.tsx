@@ -60,7 +60,7 @@ export default function MarketNFT({
                 Price:
               </p>
               <p className="text-xs text-white">
-                {item.currencyValuePerToken?.displayValue} {item.currencyValuePerToken?.symbol}
+                {`${item.currencyValuePerToken?.displayValue}`} {item.currencyValuePerToken?.symbol}
               </p>
             </span>
             {/* <span className="flex w-full justify-between items-center">

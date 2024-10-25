@@ -1,7 +1,7 @@
 'use server'
 
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { getNFTfromMarketbyId, getNFTsfromMarket, getValidNFTs, removeNFTfromMarketbyId, removeNFTsfromMarket } from "@/lib/db/market";
+import { getValidNFTs, removeNFTsfromMarket } from "@/lib/db/market";
 import { markNFTisonMarket, updateNFT } from "@/lib/db/nft";
 import { PosseViewMarket } from "@/lib/types";
 

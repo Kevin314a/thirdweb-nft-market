@@ -24,29 +24,53 @@ export async function GET(request: Request) {
     const readableStream = new ReadableStream({
       async start(controller) {
         try {
-          const promises = [];
           controller.enqueue(encoder.encode(`data: Started Synchronizing...\n\n`));
 
           let i = 0n;
+
           const totalListed = await totalListings({ contract: MARKETPLACE_CONTRACT });
+          const maxRetries = 3;
+
           while (i <= totalListed) {
-            const promise = (async () => {
+            // Retry mechanism for handling failed requests
+            const executeWithRetries = async (fn: () => Promise<void>, retries: number) => {
+              let attempt = 0;
+              while (attempt < retries) {
+                try {
+                  await fn();
+                  break;  // Exit loop if successful
+                } catch (error) {
+                  attempt++;
+                  if (attempt >= retries) {
+                    throw error;  // After max retries, throw error
+                  }
+                  controller.enqueue(encoder.encode(`data: Retry attempt ${attempt}...\n\n`));
+                }
+              }
+            };
+
+            // Define the async task, but do not immediately execute it.
+            const promise = async () => {
               controller.enqueue(encoder.encode(`data: Fetching NFTs from Marketplace #${i} ~ #${i + 50n}...\n\n`));
+
               const result = await getAllValidListings({
                 contract: MARKETPLACE_CONTRACT,
                 start: Number(i),
                 count: 50n,
               });
-              controller.enqueue(encoder.encode(`data: Updating database...\n\n`));
 
+              controller.enqueue(encoder.encode(`data: Updating database...\n\n`));
               await bulkUpdateMarket(address, result);
               controller.enqueue(encoder.encode(`data: Synchronized DB with valid listed NFTs...\n\n`));
-            })();
+            };
 
-            promises.push(promise);
+            // Execute the promise with retries
+            await executeWithRetries(promise, maxRetries);
+
+            // Increment for the next batch
             i += 50n;
           }
-          await Promise.all(promises);  // results have all direct-listed nfts which are `active` not `cancel`, `complete`, `unset`, etc
+
           controller.enqueue(encoder.encode(`data: Completed Synchronizing.\n\n`));
           controller.close();
 
