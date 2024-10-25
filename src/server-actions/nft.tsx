@@ -2,7 +2,7 @@
 
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { getNFTfromMarket, getNFTfromMarketbyId, getNFTsfromMarket, removeNFTfromMarketbyId, storeNFTtoMarket } from "@/lib/db/market";
-import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket, bulkUpdateNFTs } from "@/lib/db/nft";
+import { storeNFT, getNFTs, getNFT, updateNFT, findOneAndUpdateNFT } from "@/lib/db/nft";
 import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";
@@ -52,23 +52,28 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       }
     }
 
-    await markNFTisonMarket(contractAddr, BigInt(tokenId), true);
+    await findOneAndUpdateNFT({ contractAddr, tokenId }, { $set: { listedId: lastListing[0].id } }, { new: true });
 
     const listedNFT: PosseFormMarket = {
-      id: lastListing[0].id,
+      mid: lastListing[0].id.toString(),
       creatorAddress: lastListing[0].creatorAddress,
       assetContractAddress: lastListing[0].assetContractAddress,
-      tokenId: lastListing[0].tokenId,
-      quantity: lastListing[0].quantity,
+      tokenId: lastListing[0].tokenId.toString(),
+      quantity: lastListing[0].quantity.toString(),
       currencyContractAddress: lastListing[0].currencyContractAddress,
-      startTimeInSeconds: lastListing[0].startTimeInSeconds,
-      endTimeInSeconds: lastListing[0].endTimeInSeconds,
-      asset: "",
+      startTimeInSeconds: lastListing[0].startTimeInSeconds.toString(),
+      endTimeInSeconds: lastListing[0].endTimeInSeconds.toString(),
       status: lastListing[0].status,
       type: lastListing[0].type,
       //direct-listing
-      currencyValuePerToken: lastListing[0].currencyValuePerToken,
-      pricePerToken: lastListing[0].pricePerToken,
+      currencyValuePerToken: {
+        value: lastListing[0].currencyValuePerToken.value.toString(),
+        decimals: lastListing[0].currencyValuePerToken.decimals,
+        displayValue: lastListing[0].currencyValuePerToken.displayValue,
+        symbol: lastListing[0].currencyValuePerToken.symbol,
+        name: lastListing[0].currencyValuePerToken.name,
+      },
+      pricePerToken: lastListing[0].pricePerToken.toString(),
       isReservedListing: lastListing[0].isReservedListing,
     };
     await storeNFTtoMarket(listedNFT);
@@ -95,17 +100,17 @@ export async function deListNFT(marketId: string, contractAddr: string, tokenId:
   try {
 
     const oldMarketItem = await getNFTfromMarketbyId(marketId);
-    if (oldMarketItem.assetContractAddress !== contractAddr || oldMarketItem.tokenId !== BigInt(tokenId)) {
+    if (oldMarketItem.assetContractAddress !== contractAddr || oldMarketItem.tokenId !== tokenId) {
       throw new Error("conractAddr or tokenId of Your NFT is not invalid");
     }
 
     await removeNFTfromMarketbyId(marketId);
 
     const otherItems = await getNFTsfromMarket(contractAddr, tokenId);
-    if (otherItems) {
-
+    if (otherItems.length > 0) {
+      await updateNFT({ contractAddr, tokenId }, { $set: { listedId: otherItems[0].mid } });
     } else {
-      await markNFTisonMarket(contractAddr, BigInt(tokenId), false);
+      await updateNFT({ contractAddr, tokenId }, { $set: { listedId: "0" } });
     }
 
     const res = {
@@ -159,7 +164,7 @@ export async function verifyNFTtoList(contractAddr: string, tokenId: string) {
 
 export async function getToken(contractAddr: string, tokenId: string) {
   try {
-    const item = await getNFT(contractAddr, BigInt(tokenId));
+    const item = await getNFT(contractAddr, tokenId);
     const token: PosseViewNFT = {
       contract: {
         type: item.contract.type,
@@ -168,18 +173,17 @@ export async function getToken(contractAddr: string, tokenId: string) {
         description: item.contract.description,
         symbol: item.contract.symbol,
         image: item.contract.image,
-        royaltyBps: String(item.contract.royaltyBps),
+        royaltyBps: item.contract.royaltyBps,
         owner: item.contract.owner,
         traitTypes: item.contract.traitTypes,
       },
       contractAddr: item.contract.address,
-      tokenId: String(item.tokenId),
+      tokenId: item.tokenId,
       type: item.type,
       name: item.name,
       description: item.description,
       image: item.image,
-      supply: String(item.supply),
-      // externalLink: item.externalLink,
+      supply: item.supply,
       traits: item.traits,
       owner: item.owner,
     };
@@ -197,7 +201,7 @@ export async function getToken(contractAddr: string, tokenId: string) {
   }
 }
 
-export async function getOwnedNFTs(_search: string, _sort: string, _page: number) { //: Promise<PosseViewNFT[]> {
+export async function getOwnedNFTs(_search: string, _sort: string, _page: number) {
   try {
     const cookieStore = cookies();
     const accountAddr = cookieStore.get('userAddr')?.value;
@@ -231,23 +235,22 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
         description: item.contract.description,
         symbol: item.contract.symbol,
         image: item.contract.image,
-        royaltyBps: String(item.contract.royaltyBps),
+        royaltyBps: item.contract.royaltyBps,
         owner: item.contract.owner,
         traitTypes: item.contract.traitTypes,
       },
       contractAddr: item.contract.address,
-      tokenId: String(item.tokenId),
+      tokenId: item.tokenId,
       type: item.type,
       name: item.name,
       description: item.description,
       image: item.image,
-      supply: String(item.supply),
-      // externalLink: item.externalLink,
+      supply: item.supply,
       traits: item.traits?.map((trait: PosseTrait) => ({
         type: trait.type,
         name: trait.name,
       })),
-      isListed: item.isListed,
+      listedId: item.listedId,
       owner: item.owner,
     }));
 

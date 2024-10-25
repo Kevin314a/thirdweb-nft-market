@@ -190,7 +190,7 @@ export function useMarket(props: MarketProps) {
 
       const transaction = buyFromListing({
         contract: MARKETPLACE_CONTRACT,
-        listingId: BigInt(item.id),
+        listingId: BigInt(item.mid),
         quantity: BigInt(item.quantity),
         recipient: account.address,
       });
@@ -205,12 +205,12 @@ export function useMarket(props: MarketProps) {
       });
 
       const response = await axios.put(`/api/market`, {
-        address: account.address, marketId: item.id, contractAddr: item.assetContractAddress, tokenId: item.tokenId
+        address: account.address, marketId: item.mid, contractAddr: item.assetContractAddress, tokenId: item.tokenId
       });
 
       if (!response.data.result.error) {
         if (!!nfts) {
-          const newNFTs = nfts.filter(nft => nft.id != item.id);
+          const newNFTs = nfts.filter(nft => nft.mid != item.mid);
           setNfts(newNFTs);
         }
         toast.success("Purchase completed! The asset(s) should arrive in your account shortly");
@@ -240,7 +240,7 @@ export function useMarket(props: MarketProps) {
     try {
       const transaction = cancelListing({
         contract: MARKETPLACE_CONTRACT,
-        listingId: BigInt(item.id),
+        listingId: BigInt(item.mid),
       });
 
       await sendAndConfirmTransaction({
@@ -249,12 +249,12 @@ export function useMarket(props: MarketProps) {
       });
 
       const response = await axios.delete(`/api/market`, {
-        data: { address: account.address, marketId: item.id, contractAddr: item.assetContractAddress, tokenId: item.tokenId }
+        data: { address: account.address, marketId: item.mid, contractAddr: item.assetContractAddress, tokenId: item.tokenId }
       });
 
       if (!response.data.result.error) {
         if (!!nfts) {
-          const newNFTs = nfts.filter(nft => nft.id != item.id);
+          const newNFTs = nfts.filter(nft => nft.mid != item.mid);
           setNfts(newNFTs);
         }
         toast.success("Delisted successfully");
@@ -264,11 +264,15 @@ export function useMarket(props: MarketProps) {
 
       // TODO: refeching dailo contes;
     } catch (err) {
-      console.error("error on delisting this selected NFT", err);
-      toast.error("You have an error on delisting with this error");
-    } finally {
-      setIsOperating(false);
-    }
+      console.error("[ERROR ON DELISTING YOUR NFT]", err);
+      const error = err as { code: number, message: string };
+      if (!!error.code) {
+        toast.error(error.message);
+      } else {
+        toast.error(typeof err === 'string' ? err : "An Error occured in delisting your NFT");
+      }
+    } 
+    setIsOperating(false);
   };
 
   return {

@@ -1,11 +1,11 @@
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+import { removeAllInvalidNFTs, updateAllValidNFTs } from "@/server-actions/market";
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
-import { bulkUpdateMarket } from "@/lib/db/market";
-import { removeAllInvalidNFTs } from "@/server-actions/market";
 import { cookies } from "next/headers";
 import { NextResponse } from 'next/server';
 import { getAllValidListings, totalListings } from "thirdweb/extensions/marketplace";
+import { removeDuplicatedNFTs } from "@/lib/db/nft";
 
 // Define the server action to return the SSE stream
 export async function GET(request: Request) {
@@ -65,7 +65,8 @@ export async function GET(request: Request) {
               result.forEach((item) => validListingIds.push(item.id.toString()));
 
               controller.enqueue(encoder.encode(`data: Updating database...\n\n`));
-              await bulkUpdateMarket(address, result);
+              await updateAllValidNFTs(address, result);
+              
               controller.enqueue(encoder.encode(`data: Synchronized DB with valid listed NFTs...\n\n`));
             };
 
@@ -76,9 +77,8 @@ export async function GET(request: Request) {
             i += 50n;
           }
 
-          console.log('gggggggggggggggggggggggg', validListingIds);
           await removeAllInvalidNFTs(validListingIds);
-
+          await removeDuplicatedNFTs();
           controller.enqueue(encoder.encode(`data: Completed Synchronizing.\n\n`));
           controller.close();
 

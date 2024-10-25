@@ -6,14 +6,15 @@ import { shortenString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
 import MarQuee from "react-fast-marquee";
-import toast from "react-hot-toast";
 
 export default function PortfolioNFT({
   item,
   openListPanel,
+  onDelist,
 }: {
   item: PosseViewNFT,
   openListPanel: (item: PosseViewNFT) => void,
+  onDelist: (item: PosseViewNFT) => void,
 }) {
   const router = useRouter();
   return (
@@ -30,6 +31,9 @@ export default function PortfolioNFT({
               className="object-cover object-center h-[160px]"
               style={{ objectFit: "cover" }}
             />
+          )}
+          {item.listedId !== "0" && (
+            <div className="bg-golden-1200 rounded-full border border-golden-1000 w-[20px] h-[20px] absolute left-2 top-2"> </div>
           )}
         </div>
         <div className="flex w-full px-3">
@@ -48,13 +52,13 @@ export default function PortfolioNFT({
                 {"Last sale:"}
               </p>
               <p className="text-xs text-white">
-                {"unknown"}
+                {"N/A"}
               </p>
             </span>
           </div>
         </div>
       </div>
-      {!item.isListed ? (
+      {item.listedId === "0" ? (
         <button
           className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
           onClick={() => openListPanel(item)}
@@ -64,7 +68,7 @@ export default function PortfolioNFT({
       ) : (
         <button
           className="absolute bottom-0 left-0 w-full transform -translate-x-0 bg-black/[80%] text-white shadow-inner shadow-white/10 focus:outline-none py-2 px-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs lg:text-md"
-          onClick={() => toast.error("comming soon")}
+          onClick={() => onDelist(item)}
         >
           DeList
         </button>

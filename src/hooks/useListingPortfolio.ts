@@ -9,7 +9,7 @@ import { soneiumMinato } from "thirdweb/chains";
 import { getContract, sendAndConfirmTransaction } from "thirdweb";
 import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
-import { type DirectListing, createListing, cancelListing, getAllValidListings, totalListings, getAllListings, getListing, totalAuctions, getAllAuctions } from "thirdweb/extensions/marketplace";
+import { createListing, cancelListing } from "thirdweb/extensions/marketplace";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -98,7 +98,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
       newEventSource.close();
       setEventSource(null);
       setIsLoading(false);
-      
+
       toast.success("Loading NFTs...", { duration: 5000 });
       await fnReload();
       toast.success("Successfully Load your NFTs...");
@@ -220,7 +220,62 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     }
 
     setIsOperating(false);
+    await fnReload();
     setIsListPanelOpen(false);
+  };
+
+  const handleDelist = async (listedItem: PosseViewNFT) => {
+    if (isOperating) {
+      return;
+    }
+    if (!account) {
+      connect({ client });
+      return;
+    }
+    if (!listedItem || !listedItem.listedId || listedItem.listedId === "0") {
+      toast.error("Please select the item to delist.");
+      return;
+    }
+
+    setIsOperating(true);
+    try {
+
+      if (activeWalletChain?.id !== soneiumMinato.id) {
+        await switchChain(soneiumMinato);
+      }
+
+      const transaction = cancelListing({
+        contract: MARKETPLACE_CONTRACT,
+        listingId: BigInt(listedItem.listedId),
+      });
+
+      await sendAndConfirmTransaction({
+        transaction,
+        account,
+      });
+
+      const response = await axios.delete(`/api/market`, {
+        data: { address: account.address, marketId: listedItem.listedId, contractAddr: listedItem.contractAddr, tokenId: listedItem.tokenId }
+      });
+
+      if (!response.data.result.error) {
+        toast.success("Delisted successfully");
+      } else {
+        toast.error(response.data.result.message);
+      }
+      await fnReload();
+
+    } catch (err) {
+      console.error("[ERROR ON DELISTING YOUR NFT]", err);
+      const error = err as { code: number, message: string };
+      if (!!error.code) {
+        toast.error(error.message);
+      } else {
+        toast.error(typeof err === 'string' ? err : "An Error occured in delisting your NFT");
+      }
+    }
+
+    setIsOperating(false);
   };
 
   return {
@@ -234,6 +289,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     listingItem,
     setListingItem,
     handleList,
+    handleDelist,
     isOperating,
     isListPanelOpen,
     setIsListPanelOpen,

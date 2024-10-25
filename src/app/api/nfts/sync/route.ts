@@ -56,22 +56,22 @@ export async function GET(request: Request) {
                   description: contract.token.description,
                   symbol: contract.token.symbol,
                   image: contract.token.icon_url,
-                  royaltyBps: 0, //contract.royalties,
+                  royaltyBps: "0", //contract.royalties,
                   owner: address,
                   traitTypes: t?.metadata?.attributes?.map((attr: any) => attr.trait_type),
                 },
                 contractAddr: contract.token.address,
-                tokenId: BigInt(t.id),
+                tokenId: t.id,
                 type: t.token_type,
                 name: t?.metadata?.name,
                 description: t?.metadata?.description,
                 image: t?.metadata?.image,
-                supply: 0,      // only suggest in ERC-1155
+                supply: "0",      // only suggest in ERC-1155
                 traits: t?.metadata?.attributes?.map((attr: any) => ({
                   type: attr.trait_type,
                   name: attr.value,
                 })),
-                isListed: false,
+                listedId: "0",
                 owner: address,
               }));
             });

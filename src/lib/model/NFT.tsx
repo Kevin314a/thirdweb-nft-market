@@ -10,14 +10,6 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
   tokenId: {
     type: String,
     required: true,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
   type: {
     type: String,
@@ -37,18 +29,7 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
   },
   supply: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
-  // externalLink: {
-  //   type: String,
-  // },
   traits: {
     type: [{
       type: { type: String },
@@ -56,7 +37,9 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
     }],
     default: [],
   },
-  isListed: { type: Boolean, default: false },
+  listedId: {
+    type: String,
+  },
   owner: {
     type: String,
     required: true,
@@ -68,14 +51,6 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
       action: { type: String, enum: ["DIRECT-LIST", "ENGLISH-AUCTION"] },
       orginPrice: {
         type: String,
-        get: (v: any): bigint => {
-          try {
-            return BigInt(v);
-          } catch (err) {
-            return BigInt(0);
-          }
-        },
-        set: (v: bigint): string => v.toString(),
       },
       nativePrice: { type: Number },
       qty: { type: Number },

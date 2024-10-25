@@ -1,7 +1,7 @@
 'use server'
 
 import { PosseFormContract, PosseViewContract } from "@/lib/types";
-import { getContracts, storeContract } from "../lib/db/contract";
+import { getContracts, storeContract } from "@/lib/db/contract";
 
 export async function deployContract(newContract: PosseFormContract) {
   try {
@@ -36,8 +36,7 @@ export async function getOwnContracts(owner: string) { //: Promise<PosseViewCont
       description: item.description,
       symbol: item.symbol,
       image: item.image,
-      // platformFeeBps: String(item.platformFeeBps),
-      royaltyBps: String(item.royaltyBps),
+      royaltyBps: item.royaltyBps,
       owner: item.owner,
       traitTypes: item.traitTypes,
     }));

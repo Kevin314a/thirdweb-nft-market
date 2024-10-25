@@ -16,7 +16,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
   const formRef = useRef<HTMLFormElement | null>(null);
   const { register, handleSubmit: useSubmit, formState: { errors } } = useForm<PosseFormListing>({});
   const { nfts, isLoading, currencies, filters, onChangeFilter, /* onLoadMore,*/ onRefresh,
-    listingItem, setListingItem, handleList, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
+    listingItem, setListingItem, handleList, handleDelist, isOperating, isListPanelOpen, setIsListPanelOpen } = useListingPortfolio(props);
 
   // useEffect(() => {
   //   account && onChangeFilter(filters.search, filters.sort);
@@ -35,6 +35,9 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
             openListPanel={(item: PosseViewNFT) => {
               setListingItem(item);
               setIsListPanelOpen(true);
+            }}
+            onDelist={(item: PosseViewNFT) => {
+              handleDelist(item);
             }}
           />
         ))}

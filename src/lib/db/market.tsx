@@ -1,29 +1,29 @@
-import NFTModel from "@/lib/model/NFT";
 import MarketModel from "@/lib/model/Market";
-import { client } from "@/lib/constants";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { PosseFormMarket } from "@/lib/types";
 import { DirectListing } from "thirdweb/extensions/marketplace";
 import { dbConnect } from "./connect";
-import { getNFT, markNFTisonMarket, storeNFT } from "./nft";
-import { resolveScheme } from "thirdweb/storage";
-import { getContract } from "thirdweb";
-import { getContract as getContractDB, storeContract } from "./contract";
-import { getContractMetadata, owner } from "thirdweb/extensions/common";
-import { soneiumMinato } from "thirdweb/chains";
+import { getNFT } from "./nft";
 
-export const storeNFTtoMarket = async (listedNFT: PosseFormMarket) => {
+export const storeNFTtoMarket = async (
+  listedNFT: PosseFormMarket
+) => {
   try {
     await dbConnect();
 
-    const old = await MarketModel.findOne({ assetContractAddress: listedNFT.assetContractAddress, tokenId: listedNFT.tokenId });
-    if (old) {
-      return old._id;
+    const oldOne = await MarketModel.findOne({
+      assetContractAddress: listedNFT.assetContractAddress,
+      tokenId: listedNFT.tokenId
+    });
+
+    if (oldOne) {
+      return oldOne._id;
     }
 
     const nft = await getNFT(listedNFT.assetContractAddress, listedNFT.tokenId);
+
     const listedOnMarket = new MarketModel({
-      id: listedNFT.id,
+      mid: listedNFT.mid,
       creatorAddress: listedNFT.creatorAddress,
       assetContractAddress: listedNFT.assetContractAddress,
       tokenId: listedNFT.tokenId,
@@ -38,6 +38,7 @@ export const storeNFTtoMarket = async (listedNFT: PosseFormMarket) => {
       pricePerToken: listedNFT.pricePerToken,
       isReservedListing: listedNFT.isReservedListing,
     });
+
     return await listedOnMarket.save();
   } catch (err) {
     console.error("[ERROR ON STORING NFTonMarket to DB]", err);
@@ -45,63 +46,77 @@ export const storeNFTtoMarket = async (listedNFT: PosseFormMarket) => {
   }
 };
 
-export const getNFTsfromMarket = async (contractAddr: string, tokenId: string) => {
+export const getNFTsfromMarket = async (
+  assetContractAddress: string,
+  tokenId: string
+) => {
   try {
     await dbConnect();
-    return await MarketModel.find({ assetContractAddress: contractAddr, tokenId: BigInt(tokenId) });
+    return await MarketModel.find({ assetContractAddress, tokenId, status: "ACTIVE" });
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
   }
 };
 
-export const getNFTfromMarket = async (contractAddr: string, tokenId: string) => {
+export const getNFTfromMarket = async (
+  assetContractAddress: string,
+  tokenId: string
+) => {
   try {
     await dbConnect();
-    return await MarketModel.findOne({ assetContractAddress: contractAddr, tokenId });
+    return await MarketModel.findOne({ assetContractAddress, tokenId,  status: "ACTIVE" });
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
   }
 };
 
-export const getNFTfromMarketbyId = async (marketId: string) => {
+export const getNFTfromMarketbyId = async (
+  mid: string
+) => {
   try {
     await dbConnect();
-    return await MarketModel.findOne({ id: marketId });
+    return await MarketModel.findOne({ mid });
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
   }
 };
 
-export const removeNFTfromMarketbyId = async (marketId: string) => {
+export const removeNFTfromMarketbyId = async (
+  mid: string
+) => {
   try {
     await dbConnect();
-    return await MarketModel.deleteOne({ id: marketId });
+    return await MarketModel.deleteOne({ mid });
   } catch (err) {
     console.error("[ERROR ON REMOVING NFTonMarket from DB]", err);
     throw new Error("Failed to removing info about your NFT from POSSE Market");
   }
 };
 
-export const removeNFTsfromMarket = async (contractAddr: string, tokenId: string) => {
+export const removeNFTsfromMarket = async (
+  assetContractAddress: string,
+  tokenId: string
+) => {
   try {
     await dbConnect();
-    return await MarketModel.deleteMany({ assetContractAddress: contractAddr, tokenId: tokenId });
+    return await MarketModel.deleteMany({ assetContractAddress, tokenId });
   } catch (err) {
     console.error("[ERROR ON REMOVING NFTonMarket from DB]", err);
     throw new Error("Failed to removing info about your NFT from POSSE Market");
   }
 };
 
-export const hasOwnAstrNFT = async (walletAddress: string) => {
+export const hasOwnAstrNFT = async (
+  walletAddress: string
+) => {
   try {
     await dbConnect();
 
     const startOfToday = new Date();
     startOfToday.setHours(0, 0, 0, 0);
-
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
@@ -124,91 +139,6 @@ export const hasOwnAstrNFT = async (walletAddress: string) => {
 export const bulkUpdateMarket = async (accountAddress: string | undefined, listedItems: DirectListing[]) => {
   try {
     await dbConnect();
-
-    for (const listedItem of listedItems) {
-      if (listedItem.currencyValuePerToken.symbol !== "ETH" && listedItem.currencyValuePerToken.symbol !== "ASTR") {
-        continue;
-      }
-
-      // part of contract of this asset(NFT)
-      const oldContract = await getContractDB(listedItem.assetContractAddress);
-      let newContractId = oldContract?._id;
-      if (!oldContract) {
-        try {
-          const contract3rd = getContract({
-            client,
-            chain: soneiumMinato,
-            address: listedItem.assetContractAddress,
-          });
-          const contractOwner = await owner({ contract: contract3rd });
-          const contractMetadata = await getContractMetadata({ contract: contract3rd });
-          newContractId = await storeContract({
-            type: "ERC-721",
-            address: listedItem.assetContractAddress,
-            name: contractMetadata?.name || "",
-            symbol: contractMetadata?.symbol,
-            owner: contractOwner,
-          });
-        } catch (err) {
-          console.error("121212121212", listedItem);
-          console.error("what is this?", err);
-          continue;
-        }
-      }
-
-      // part of asset(NFT)
-      let repairedImage: string = "";
-      const imageUrl = listedItem.asset.metadata.image;
-      try {
-        if (!!imageUrl) {
-          repairedImage = resolveScheme({
-            client,
-            uri: imageUrl,
-          });
-        }
-      } catch (err) {
-        repairedImage = imageUrl ?? "";
-      }
-
-      const newAsset = await NFTModel.findOneAndUpdate(
-        { contractAddr: listedItem.assetContractAddress, tokenId: listedItem.tokenId.toString() },
-        {
-          $set: {
-            contract: newContractId,
-            contractAddr: listedItem.assetContractAddress,
-            tokenId: listedItem.tokenId,
-            type: listedItem.asset.type === "ERC721" ? "ERC-721" : "ERC-1155",
-            name: listedItem.asset.metadata.name || "",
-            description: listedItem.asset.metadata.description,
-            image: repairedImage,
-            isListed: true,
-            owner: listedItem.creatorAddress,
-          },
-        },
-        { new: true, upsert: true }
-      );
-
-      await markNFTisonMarket(listedItem.assetContractAddress, listedItem.tokenId, true);
-
-      // part of market
-      await storeNFTtoMarket({
-        id: listedItem.id,
-        creatorAddress: listedItem.creatorAddress,
-        assetContractAddress: listedItem.assetContractAddress,
-        tokenId: listedItem.tokenId,
-        quantity: listedItem.quantity,
-        currencyContractAddress: listedItem.currencyContractAddress,
-        startTimeInSeconds: listedItem.startTimeInSeconds,
-        endTimeInSeconds: listedItem.endTimeInSeconds,
-        asset: newAsset._id,
-        status: listedItem.status,
-        type: listedItem.type,
-        //direct-listing
-        currencyValuePerToken: listedItem.currencyValuePerToken,
-        pricePerToken: listedItem.pricePerToken,
-        isReservedListing: listedItem.isReservedListing,
-      });
-    }
 
   } catch (err) {
     console.error("[ERROR ON BULK UPDATING LISTED ITEMS ON MARKET]", err);
@@ -270,7 +200,7 @@ export const removeInvalidNFTs = async (
 ) => {
   try {
     await dbConnect();
-    await MarketModel.deleteMany({ id: { $nin: ids } });
+    await MarketModel.deleteMany({ mid: { $nin: ids } });
   } catch (err) {
     console.error("[ERROR ON REMOVING INVALID NFTS of Marketplace on DB]", err);
     throw new Error("Failed to removing invalid NFTs on Marketplace");

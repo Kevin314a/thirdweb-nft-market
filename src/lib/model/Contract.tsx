@@ -21,21 +21,9 @@ const ContractSchema = new mongoose.Schema<PosseDBContract>({
   image: {
     type: String,
   },
-  // platformFeeBps: {
-  //   type: Decimal128,
-  //   get: (v: Decimal128) => BigInt(v.toString()),
-  //   set: (v: bigint) => Decimal128.fromString(v.toString()),
-  // },
   royaltyBps: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
+    default: "0",
   },
   owner: {
     type: String,

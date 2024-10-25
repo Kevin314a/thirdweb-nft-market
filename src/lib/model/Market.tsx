@@ -3,18 +3,8 @@ import { Decimal128 } from "mongodb";
 import mongoose from "mongoose";
 
 const MarketSchema = new mongoose.Schema<PosseDBMarket>({
-
-  id: {
+  mid: {
     type: String,
-    unique: true,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
     required: true,
   },
   creatorAddress: {
@@ -29,20 +19,10 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   },
   tokenId: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
     required: true,
   },
   quantity: {
-    type: Decimal128,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: String,
     required: true,
   },
   currencyContractAddress: {
@@ -51,15 +31,11 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
     maxlength: [255, "Name cannot be more than 255 characters"],
   },
   startTimeInSeconds: {
-    type: Decimal128,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: String,
     required: true,
   },
   endTimeInSeconds: {
-    type: Decimal128,
-    get: (v: Decimal128) => BigInt(v.toString()),
-    set: (v: bigint) => Decimal128.fromString(v.toString()),
+    type: String,
     required: true,
   },
   asset: { type: mongoose.Schema.Types.ObjectId, ref: 'NFT', required: true },
@@ -75,30 +51,14 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   },
   //direct-listing
   currencyValuePerToken: {
-    value: {
-      type: Decimal128,
-      get: (v: Decimal128) => BigInt(v.toString()),
-      set: (v: bigint) => Decimal128.fromString(v.toString()),
-    },
+    value: { type: String },
     decimals: { type: Number },
-    displayValue: {
-      type: Decimal128,
-      get: (v: Decimal128) => v.toString(),
-      set: (v: string) => Decimal128.fromString(v),
-    },
+    displayValue: { type: String },
     symbol: { type: String },
     name: { type: String },
   },
   pricePerToken: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
   isReservedListing: {
     type: Boolean,
@@ -106,26 +66,10 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   //english-auction
   minimumBidAmount: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
   minimumBidCurrencyValue: {
     value: {
       type: String,
-      get: (v: any): bigint => {
-        try {
-          return BigInt(v);
-        } catch (err) {
-          return BigInt(0);
-        }
-      },
-      set: (v: bigint): string => v.toString(),
     },
     decimals: { type: Number },
     displayValue: { type: String },
@@ -134,26 +78,10 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   },
   buyoutBidAmount: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
   buyoutCurrencyValue: {
     value: {
       type: String,
-      get: (v: any): bigint => {
-        try {
-          return BigInt(v);
-        } catch (err) {
-          return BigInt(0);
-        }
-      },
-      set: (v: bigint): string => v.toString(),
     },
     decimals: { type: Number },
     displayValue: { type: String },
@@ -162,30 +90,13 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
   },
   timeBufferInSeconds: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
   bidBufferBps: {
     type: String,
-    get: (v: any): bigint => {
-      try {
-        return BigInt(v);
-      } catch (err) {
-        return BigInt(0);
-      }
-    },
-    set: (v: bigint): string => v.toString(),
   },
 }, {
   toJSON: { getters: true },
   toObject: { getters: true },
-  strict: false,
   timestamps: true,
 });
 

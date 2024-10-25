@@ -66,14 +66,6 @@ export default function MarketNFT({
                 {`${item.currencyValuePerToken?.displayValue}`} {item.currencyValuePerToken?.symbol}
               </p>
             </span>
-            {/* <span className="flex w-full justify-between items-center">
-              <p className="text-xs text-white">
-                {"Last sale:"}
-              </p>
-              <p className="text-xs text-white">
-                {"unknown"}
-              </p>
-            </span> */}
           </div>
         </div>
       </div>
