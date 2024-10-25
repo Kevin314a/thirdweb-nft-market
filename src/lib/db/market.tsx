@@ -86,7 +86,7 @@ export const bulkUpdateMarket = async (accountAddress: string | undefined, liste
     await dbConnect();
 
     for (const listedItem of listedItems) {
-      
+
       // part of contract of this asset(NFT)
       const oldContract = await getContractDB(listedItem.assetContractAddress);
       if (!oldContract) {
@@ -179,7 +179,13 @@ export const getValidNFTs = async (
       { $match: conds },
       {
         $addFields: {
-          priceToSort: { $toDouble: "$currencyValuePerToken.displayValue" }
+
+          priceToSort: { $toDouble: "$currencyValuePerToken.displayValue" },
+          quantity: { $toString: "$quantity" },
+          startTimeInSeconds: { $toDouble: "$startTimeInSeconds" },
+          endTimeInSeconds: { $toDouble: "$endTimeInSeconds" },
+          "currencyValuePerToken.value": { $toString: "$currencyValuePerToken.value" },
+          "currencyValuePerToken.displayValue": { $toString: "$currencyValuePerToken.displayValue" },
         }
       },
       { $sort: sort },

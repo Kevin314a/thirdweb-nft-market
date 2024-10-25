@@ -4,6 +4,7 @@ import { client } from "@/lib/constants";
 import { PosseViewMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
+import { shortenAddress } from "thirdweb/utils";
 import { Spinner } from "../shared/Spinner";
 
 export default function MarketNFT({
@@ -35,12 +36,17 @@ export default function MarketNFT({
               style={{ objectFit: "cover" }}
             />
           )}
+          {(item.currencyValuePerToken?.symbol === "ETH") ? (
+            <img src="/currency/minato-eth.png" style={{ position: 'absolute', right: 2, top: 4 }} width="24" height="24" className="mr-2" />
+          ) : ((item.currencyValuePerToken?.symbol === "ASTR") ? (
+            <img src="/currency/astr.png" style={{ position: 'absolute', right: 2, top: 4 }} width="24" height="24" className="mr-2" />
+          ) : null)}
         </div>
         <div className="flex w-full px-3">
           <div className="flex flex-col w-full justify-center py-3">
             <div className="flex justify-between">
               <p className="text-xs text-white whitespace-nowrap">
-                {item.asset?.contract?.name}
+                {item.asset?.contract?.name || shortenAddress(item.assetContractAddress)}
               </p>
               <p className="text-sm text-white whitespace-nowrap border-white">
                 #{item.tokenId}
@@ -51,12 +57,20 @@ export default function MarketNFT({
             </p>
             <span className="flex w-full justify-between items-center">
               <p className="text-xs text-white">
+                Price:
+              </p>
+              <p className="text-xs text-white">
+                {item.currencyValuePerToken?.displayValue} {item.currencyValuePerToken?.symbol}
+              </p>
+            </span>
+            {/* <span className="flex w-full justify-between items-center">
+              <p className="text-xs text-white">
                 {"Last sale:"}
               </p>
               <p className="text-xs text-white">
                 {"unknown"}
               </p>
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
