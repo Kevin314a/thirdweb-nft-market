@@ -1,7 +1,7 @@
 'use server'
 
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { getNFTfromMarket, getNFTfromMarketbyId, getValidNFTs, removeNFTsfromMarket } from "@/lib/db/market";
+import { getNFTfromMarket, getNFTfromMarketbyId, getValidNFTs, removeInvalidNFTs, removeNFTsfromMarket } from "@/lib/db/market";
 import { getNFT, markNFTisonMarket, updateNFT } from "@/lib/db/nft";
 import { PosseViewMarket } from "@/lib/types";
 
@@ -87,6 +87,15 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
       hasMore: false,
       page: 0,
     }
+  }
+}
+
+export async function removeAllInvalidNFTs(validIds: string[]) {
+  try {
+    return await removeInvalidNFTs(validIds);
+  } catch (err) {
+    console.error("[REMOVE INVALID NFTS ON MARKET]", err);
+    return false;
   }
 }
 

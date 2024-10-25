@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { bulkUpdateMarket } from "@/lib/db/market";
+import { removeAllInvalidNFTs } from "@/server-actions/market";
 import { cookies } from "next/headers";
 import { NextResponse } from 'next/server';
 import { getAllValidListings, totalListings } from "thirdweb/extensions/marketplace";
@@ -25,6 +26,8 @@ export async function GET(request: Request) {
       async start(controller) {
         try {
           controller.enqueue(encoder.encode(`data: Started Synchronizing...\n\n`));
+
+          const validListingIds: string[] = [];
 
           let i = 0n;
 
@@ -59,6 +62,8 @@ export async function GET(request: Request) {
                 count: 50n,
               });
 
+              result.forEach((item) => validListingIds.push(item.id.toString()));
+
               controller.enqueue(encoder.encode(`data: Updating database...\n\n`));
               await bulkUpdateMarket(address, result);
               controller.enqueue(encoder.encode(`data: Synchronized DB with valid listed NFTs...\n\n`));
@@ -70,6 +75,9 @@ export async function GET(request: Request) {
             // Increment for the next batch
             i += 50n;
           }
+
+          console.log('gggggggggggggggggggggggg', validListingIds);
+          await removeAllInvalidNFTs(validListingIds);
 
           controller.enqueue(encoder.encode(`data: Completed Synchronizing.\n\n`));
           controller.close();

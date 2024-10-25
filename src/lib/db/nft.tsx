@@ -82,13 +82,18 @@ export const markNFTisonMarket = async (
   flag: boolean,
 ) => {
   try {
-    const oldOne = await getNFT(contractAddr, tokenId);
-    if (!oldOne) {
-      throw new Error("Failed to get an NFT to mark");
-    }
-    oldOne.isListed = flag;
-    await oldOne.save();
-    return true;
+    await dbConnect();
+    const result = await NFTModel.updateOne(
+      {
+        contractAddr, tokenId
+      },
+      {
+        $set: {
+          isListed: flag,
+        }
+      }
+    );
+    return result.modifiedCount > 0;
   } catch (err) {
     console.error("[ERROR ON FIND AN NFT on DB]", err);
     throw new Error("Failed to fetch an NFT");
