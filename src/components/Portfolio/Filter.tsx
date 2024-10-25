@@ -5,6 +5,7 @@ import { Button, Menu, MenuButton, MenuItem, MenuItems } from "@/components/base
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
+import { GrSort } from "react-icons/gr";
 import { LuRefreshCw } from "react-icons/lu";
 import { useHotkeys } from "react-hotkeys-hook";
 import Image from "next/image";
@@ -86,7 +87,7 @@ export default function PortfolioFilter({
         <Menu as="div" className="relative inline-block text-left">
 
           <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
-            Sort by: {sort.charAt(0).toUpperCase() + sort.slice(1)}
+            <GrSort />{sort.charAt(0).toUpperCase() + sort.slice(1)}
             <FaChevronDown />
           </MenuButton>
 

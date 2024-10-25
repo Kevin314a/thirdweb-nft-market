@@ -2,10 +2,10 @@ import { PosseDBNFT } from "../types";
 import mongoose from "mongoose";
 
 const NFTSchema = new mongoose.Schema<PosseDBNFT>({
-  contract:{ type: mongoose.Schema.Types.ObjectId, ref: 'Contract', required: true },
-  contractAddr: { 
-    type: String, 
-    required: true 
+  contract: { type: mongoose.Schema.Types.ObjectId, ref: 'Contract', required: true },
+  contractAddr: {
+    type: String,
+    required: true
   },
   tokenId: {
     type: String,
@@ -80,15 +80,10 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
       nativePrice: { type: Number },
       qty: { type: Number },
       purchasedAt: {
-        type: String,
-        get: (v: any): bigint => {
-          try {
-            return BigInt(v);
-          } catch (err) {
-            return BigInt(0);
-          }
-        },
-        set: (v: bigint): string => v.toString(),
+        type: Date,
+        default: Date.now,
+        get: (v: Date) => v ? v.toISOString() : '',
+        set: (v: string) => new Date(v),
       },
     }],
     default: [],

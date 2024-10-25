@@ -95,8 +95,8 @@ export async function deListNFT(marketId: string, contractAddr: string, tokenId:
   try {
 
     const oldMarketItem = await getNFTfromMarketbyId(marketId);
-    if (oldMarketItem.assetContractAddress !== contractAddr || oldMarketItem.tokenId !== tokenId) {
-      throw new Error("Your NFT is not invalid");
+    if (oldMarketItem.assetContractAddress !== contractAddr || oldMarketItem.tokenId !== BigInt(tokenId)) {
+      throw new Error("conractAddr or tokenId of Your NFT is not invalid");
     }
 
     await removeNFTfromMarketbyId(marketId);
@@ -116,7 +116,7 @@ export async function deListNFT(marketId: string, contractAddr: string, tokenId:
 
     return res;
   } catch (err) {
-    console.error('[ERROR ON DELISTING AN NFT]', contractAddr, "#", tokenId);
+    console.error('[ERROR ON DELISTING AN NFT]', contractAddr, "#", tokenId, err);
     const res = {
       error: true,
       message: "Sorry, an error occured deListing your NFT.",

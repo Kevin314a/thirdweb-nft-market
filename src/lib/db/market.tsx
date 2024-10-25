@@ -126,6 +126,9 @@ export const bulkUpdateMarket = async (accountAddress: string | undefined, liste
     await dbConnect();
 
     for (const listedItem of listedItems) {
+      if (listedItem.currencyValuePerToken.symbol !== "ETH" && listedItem.currencyValuePerToken.symbol !== "ASTR") {
+        continue;
+      }
 
       // part of contract of this asset(NFT)
       const oldContract = await getContractDB(listedItem.assetContractAddress);

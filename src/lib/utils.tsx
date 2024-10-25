@@ -38,3 +38,11 @@ export function formatOrderNumber(id: number) {
 export function removeOrderNumberFormatting(id: number) {
   return Number(String(id).split(String(orderNumberPrefix))[1]);
 }
+
+export function shortenString(str: string, len: number) {
+  if (!str || str.length <= len ) {
+    return str;
+  }
+
+  return str.substring(0, len).concat('...');
+}

@@ -1,5 +1,4 @@
-import { deListNFT } from "@/server-actions/nft";
-import { getAllValidNFTs, buyNFT } from "@/server-actions/market";
+import { getAllValidNFTs } from "@/server-actions/market";
 import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
 import { PosseCurrency, PosseViewMarket } from "@/lib/types";
@@ -15,8 +14,6 @@ import toast from "react-hot-toast";
 
 interface MarketProps {
   getAllValidNFTs: typeof getAllValidNFTs,
-  deListNFT: typeof deListNFT,
-  buyNFT: typeof buyNFT,
 }
 
 export function useMarket(props: MarketProps) {
@@ -28,7 +25,7 @@ export function useMarket(props: MarketProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filters, setFilters] = useState<{ search: string, sort: string, currency: string, page: number, hasMore: boolean }>({ search: "", sort: "", currency: "ALL", page: 0, hasMore: false });
-  const [nfts, setNfts] = useState<PosseViewMarket[]>([]);
+  const [nfts, setNfts] = useState<PosseViewMarket[] | null>(null);
 
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
@@ -53,7 +50,7 @@ export function useMarket(props: MarketProps) {
 
   const onChangeFilter = async (_search: string, _sort: string, _currency: string) => {
     setIsLoading(true);
-    const {nfts, hasMore, page} = await props.getAllValidNFTs(_search, _sort, _currency, 0);
+    const { nfts, hasMore, page } = await props.getAllValidNFTs(_search, _sort, _currency, 0);
     setFilters({
       search: _search,
       sort: _sort,
@@ -84,7 +81,7 @@ export function useMarket(props: MarketProps) {
         hasMore: response.data.hasMore,
       });
 
-      setNfts((prevItems) => [...prevItems, ...JSON.parse(response.data.nfts)]);
+      setNfts((!!nfts ? nfts : []).concat(JSON.parse(response.data.nfts)));
 
     } catch (err) {
       console.error("error on fetching data from backend", err);
@@ -156,7 +153,6 @@ export function useMarket(props: MarketProps) {
     if (isOperating) {
       return;
     }
-
     if (!account) {
       return;
     }
@@ -166,7 +162,6 @@ export function useMarket(props: MarketProps) {
     }
 
     setIsOperating(true);
-    
     try {
       if (item.currencyContractAddress.toLowerCase() !== NATIVE_TOKEN_ADDRESS.toLowerCase()) {
         const customTokenContract = getContract({
@@ -209,10 +204,19 @@ export function useMarket(props: MarketProps) {
         chain: soneiumMinato,
       });
 
-      await props.buyNFT(account.address, item.id, item.assetContractAddress, item.tokenId);
+      const response = await axios.put(`/api/market`, {
+        address: account.address, marketId: item.id, contractAddr: item.assetContractAddress, tokenId: item.tokenId
+      });
 
-      toast.success("Purchase completed! The asset(s) should arrive in your account shortly");
-
+      if (!response.data.result.error) {
+        if (!!nfts) {
+          const newNFTs = nfts.filter(nft => nft.id != item.id);
+          setNfts(newNFTs);
+        }
+        toast.success("Purchase completed! The asset(s) should arrive in your account shortly");
+      } else {
+        toast.error(response.data.result.message);
+      }
       // TODO: refreching all datas
     } catch (err) {
       console.error(err);
@@ -244,10 +248,20 @@ export function useMarket(props: MarketProps) {
         account,
       });
 
-      
-      await props.deListNFT(item.id, item.assetContractAddress, item.tokenId);
-      
-      toast.success("Listing cancelled successfully");
+      const response = await axios.delete(`/api/market`, {
+        data: { address: account.address, marketId: item.id, contractAddr: item.assetContractAddress, tokenId: item.tokenId }
+      });
+
+      if (!response.data.result.error) {
+        if (!!nfts) {
+          const newNFTs = nfts.filter(nft => nft.id != item.id);
+          setNfts(newNFTs);
+        }
+        toast.success("Delisted successfully");
+      } else {
+        toast.error(response.data.result.message);
+      }
+
       // TODO: refeching dailo contes;
     } catch (err) {
       console.error("error on delisting this selected NFT", err);

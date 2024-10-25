@@ -1,8 +1,7 @@
 'use server'
 
 import { MarketBox } from "@/components/Market";
-import { deListNFT } from "@/server-actions/nft";
-import { getAllValidNFTs, buyNFT } from "@/server-actions/market";
+import { getAllValidNFTs } from "@/server-actions/market";
 
 export default async function MarketPage() {
   return (
@@ -15,7 +14,7 @@ export default async function MarketPage() {
         </h4>
       </div>
       <div className="max-w-[1920px] lg:px-[42px] min-h-[20vw] px-5 mx-auto z-10 relative">
-        <MarketBox getAllValidNFTs={getAllValidNFTs} deListNFT={deListNFT} buyNFT={buyNFT} />
+        <MarketBox getAllValidNFTs={getAllValidNFTs} />
       </div>
     </section>
   );

@@ -2,8 +2,10 @@
 
 import { client } from "@/lib/constants";
 import { PosseViewNFT } from "@/lib/types";
+import { shortenString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
+import MarQuee from "react-fast-marquee";
 import toast from "react-hot-toast";
 
 export default function PortfolioNFT({
@@ -33,16 +35,14 @@ export default function PortfolioNFT({
         <div className="flex w-full px-3">
           <div className="flex flex-col w-full justify-center py-3">
             <div className="flex justify-between">
-              <p className="text-xs text-white whitespace-nowrap">
-                {item.contract.name}
+              <p className="text-sm text-white whitespace-nowrap">
+                {shortenString(item.contract.name, 8)}
               </p>
-              <p className="text-sm text-white whitespace-nowrap border-white">
+              <p className="text-sm text-white whitespace-nowrap">
                 #{item.tokenId}
               </p>
             </div>
-            <p className="text-xs font-bold text-white py-2 overflow-x-hidden">
-              {item.name}
-            </p>
+            <MarQuee speed={20} className="text-sm font-semibold text-white py-2">{item.name}</MarQuee>
             <span className="flex w-full justify-between items-center">
               <p className="text-xs text-white">
                 {"Last sale:"}

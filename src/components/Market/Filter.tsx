@@ -1,12 +1,14 @@
 'use client'
 
-import { IconMagnify } from "@/assets";
+import { IconMagnify, ImageCurrency } from "@/assets";
 import { PosseCurrency } from "@/lib/types";
 import { Button, Input, Menu, MenuButton, MenuItem, MenuItems } from "@/components/base";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useRef, useEffect } from "react";
+import { BiCoinStack } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
 import { LuRefreshCw } from "react-icons/lu";
+import { GrSort } from "react-icons/gr";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Spinner } from "../shared/Spinner";
 import { useActiveAccount } from "thirdweb/react";
@@ -91,7 +93,7 @@ export default function MarketFilter({
         <Menu as="div" className="relative inline-block text-left">
 
           <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
-            Sort by: {sort.charAt(0).toUpperCase() + sort.slice(1)}
+            <GrSort />{sort.charAt(0).toUpperCase() + sort.slice(1)}
             <FaChevronDown />
           </MenuButton>
 
@@ -157,7 +159,10 @@ export default function MarketFilter({
         <Menu as="div" className="relative inline-block text-left">
 
           <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
-            Currency: {currency}
+            {currency === "ALL" ? <BiCoinStack /> :
+              (currency === "ETH" ? <img src={'/currency/minato-eth.png'} width="24" height="24" className="mr-2" /> :
+                (currency === "ETH" ? <img src={'/currency/astr.png'} width="24" height="24" className="mr-2" /> : null))
+            } {currency}
             <FaChevronDown />
           </MenuButton>
 
@@ -169,7 +174,8 @@ export default function MarketFilter({
                     } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
                   onClick={() => setCurrency("ALL")}
                 >
-                  All
+                  <BiCoinStack size="24" className="mr-2" />
+                  {'ALL'}
                 </button>
               )}
             </MenuItem>

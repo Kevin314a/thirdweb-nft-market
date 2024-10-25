@@ -1,8 +1,8 @@
 'use server'
 
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { getValidNFTs, removeNFTsfromMarket } from "@/lib/db/market";
-import { markNFTisonMarket, updateNFT } from "@/lib/db/nft";
+import { getNFTfromMarket, getNFTfromMarketbyId, getValidNFTs, removeNFTsfromMarket } from "@/lib/db/market";
+import { getNFT, markNFTisonMarket, updateNFT } from "@/lib/db/nft";
 import { PosseViewMarket } from "@/lib/types";
 
 export async function getAllValidNFTs(_search: string, _sort: string, _currency: string, _page: number) {
@@ -93,19 +93,32 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
 export async function buyNFT(accountAddr: string, marketId: string, contractAddr: string, tokenId: string) {
   try {
     // TODO must compoare with cookie with accountAddr to verify 
+    const oldOneMarket = await getNFTfromMarketbyId(marketId);
+
+    const oldOne = await getNFT(contractAddr, BigInt(tokenId));
 
     await updateNFT({
       contractAddr,
       tokenId,
     }, {
-      owner: accountAddr,
-      isListed: false,
+      $set: {
+        owner: accountAddr,
+        isListed: false,
+      },
+      $addToSet: {
+        history: {
+          seller: oldOne.owner,
+          buyer: accountAddr,
+          action: "DIRECT-LIST",
+          orginPrice: oldOneMarket.currencyValuePerToken.value,
+          nativePrice: oldOneMarket.currencyValuePerToken.displayValue,
+          qty: 1,
+          purchasedAt: new Date().toISOString(),
+        }
+      },
     });
 
-    //  TODO make history of nft
-
     await removeNFTsfromMarket(contractAddr, tokenId);
-    // await markNFTisonMarket(contractAddr, BigInt(tokenId), false);
 
     const res = {
       error: false,

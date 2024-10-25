@@ -1,11 +1,13 @@
 'use client'
 
+import { ImageHat } from "@/assets";
 import { client } from "@/lib/constants";
 import { PosseViewMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
 import { Spinner } from "../shared/Spinner";
+import MarQuee from "react-fast-marquee";
 
 export default function MarketNFT({
   item,
@@ -37,24 +39,25 @@ export default function MarketNFT({
             />
           )}
           {(item.currencyValuePerToken?.symbol === "ETH") ? (
-            <img src="/currency/minato-eth.png" style={{ position: 'absolute', right: 2, top: 4 }} width="24" height="24" className="mr-2" />
+            <img src="/currency/minato-eth.png" style={{ position: 'absolute', right: '0.5rem', top: '0.5rem' }} width="20" height="20" />
           ) : ((item.currencyValuePerToken?.symbol === "ASTR") ? (
-            <img src="/currency/astr.png" style={{ position: 'absolute', right: 2, top: 4 }} width="24" height="24" className="mr-2" />
+            <img src="/currency/astr.png" style={{ position: 'absolute', right: '0.5rem', top: '0.5rem' }} width="20" height="20" />
           ) : null)}
+          {item.asset.owner === account?.address && (
+            <div className="bg-golden-1200 rounded-full border border-golden-1000 w-[20px] h-[20px] absolute left-2 top-2"> </div>
+          )}
         </div>
         <div className="flex w-full px-3">
           <div className="flex flex-col w-full justify-center py-3">
             <div className="flex justify-between">
-              <p className="text-xs text-white whitespace-nowrap">
+              <p className="text-sm text-white whitespace-nowrap">
                 {item.asset?.contract?.name || shortenAddress(item.assetContractAddress)}
               </p>
               <p className="text-sm text-white whitespace-nowrap border-white">
                 #{item.tokenId}
               </p>
             </div>
-            <p className="text-xs font-bold text-white py-2 overflow-x-hidden">
-              {item.asset.name}
-            </p>
+            <MarQuee speed={20} className="text-sm font-semibold text-white py-2">{item.asset.name}</MarQuee>
             <span className="flex w-full justify-between items-center">
               <p className="text-xs text-white">
                 Price:

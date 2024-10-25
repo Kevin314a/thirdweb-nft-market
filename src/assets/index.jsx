@@ -36,6 +36,7 @@ import ImageSwap from '@/assets/images/swap.png';
 import ImageVerifiedBadge from '@/assets/images/verified-badge.png';
 import ImageProfileBack from '@/assets/images/profile-back.jpg';
 
+import ImageCurrency from '@/assets/images/currency-mark.png';
 import TempImageNFT from '@/assets/images/z-temp-nft.png';
 import TempImageNFTMore from '@/assets/images/z-temp-nft-more.png';
 import TempImageCreateBack from '@/assets/images/z-temp-create-back.png';
@@ -81,4 +82,5 @@ export {
   TempImageNFT,
   TempImageNFTMore,
   TempImageCreateBack,
+  ImageCurrency,
 }

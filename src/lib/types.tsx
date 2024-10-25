@@ -184,7 +184,7 @@ export type PosseDBMarketHistory = {
   orginPrice: bigint;
   nativePrice: number;
   qty: number;
-  purchasedAt: bigint;
+  purchasedAt: string;
 };
 
 export type PosseFormListing = {

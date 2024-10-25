@@ -27,6 +27,7 @@
     "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
+    "react-fast-marquee": "^1.6.5",
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "react-hotkeys-hook": "^4.5.1",
