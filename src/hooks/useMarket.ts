@@ -27,8 +27,9 @@ export function useMarket(props: MarketProps) {
   const { connect } = useConnectModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [filters, setFilters] = useState<{ search: string, sort: string, currency: string, page: number }>({ search: "", sort: "", currency: "ALL", page: 0 });
+  const [filters, setFilters] = useState<{ search: string, sort: string, currency: string, page: number, hasMore: boolean }>({ search: "", sort: "", currency: "ALL", page: 0, hasMore: false });
   const [nfts, setNfts] = useState<PosseViewMarket[]>([]);
+
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
@@ -52,24 +53,44 @@ export function useMarket(props: MarketProps) {
 
   const onChangeFilter = async (_search: string, _sort: string, _currency: string) => {
     setIsLoading(true);
+    const {nfts, hasMore, page} = await props.getAllValidNFTs(_search, _sort, _currency, 0);
     setFilters({
       search: _search,
       sort: _sort,
       currency: _currency,
-      page: 0,
+      page: page,
+      hasMore: hasMore,
     });
-    const json_nfts = await props.getAllValidNFTs(_search, _sort, _currency, 0);
-    setNfts(JSON.parse(json_nfts));
+    setNfts(JSON.parse(nfts));
     setIsLoading(false);
   };
 
   const onLoadMore = async () => {
-    setFilters({
-      ...filters,
-      page: filters.page + 1,
-    });
-    const _nfts = await props.getAllValidNFTs(filters.search, filters.sort, filters.currency, filters.page + 1);
-    // setNfts(_nfts);
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/market`, {
+        params: { address: account.address, search: filters.search, sort: filters.sort, currency: filters.currency, page: filters.page }
+      });
+
+      setFilters({
+        search: filters.search,
+        sort: filters.sort,
+        currency: filters.currency,
+        page: response.data.page,
+        hasMore: response.data.hasMore,
+      });
+
+      setNfts((prevItems) => [...prevItems, ...JSON.parse(response.data.nfts)]);
+
+    } catch (err) {
+      console.error("error on fetching data from backend", err);
+      toast.error("Please reload this page");
+    }
+    setIsLoading(false);
   };
 
   const onRefresh = async () => {
@@ -115,7 +136,15 @@ export function useMarket(props: MarketProps) {
         params: { address: account.address, search: filters.search, sort: filters.sort, currency: filters.currency, page: 0 }
       });
 
+      setFilters({
+        search: filters.search,
+        sort: filters.sort,
+        currency: filters.currency,
+        page: response.data.page,
+        hasMore: response.data.hasMore,
+      });
       setNfts(JSON.parse(response.data.nfts));
+
     } catch (err) {
       console.error("error on fetching data from backend", err);
       toast.error("Please reload this page");
@@ -234,7 +263,7 @@ export function useMarket(props: MarketProps) {
     currencies,
     filters,
     onChangeFilter,
-    // onLoadMore,
+    onLoadMore,
     onRefresh,
     onBuy,
     onDelist,

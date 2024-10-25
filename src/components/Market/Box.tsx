@@ -3,11 +3,12 @@
 import { useMarket } from "@/hooks/useMarket";
 import { deListNFT } from "@/server-actions/nft";
 import { getAllValidNFTs, buyNFT } from "@/server-actions/market";
+import { Button } from "../base";
 import { MarketFilter, MarketNFT } from ".";
 
 export default function MarketBox(props: { getAllValidNFTs: typeof getAllValidNFTs, deListNFT: typeof deListNFT, buyNFT: typeof buyNFT }) {
 
-  const { nfts, isLoading, currencies, onChangeFilter, /* onLoadMore,*/ onRefresh, onBuy, onDelist, isOperating } = useMarket(props);
+  const { nfts, isLoading, currencies, filters, onChangeFilter, onLoadMore, onRefresh, onBuy, onDelist, isOperating } = useMarket(props);
 
   return (
     <>
@@ -26,9 +27,12 @@ export default function MarketBox(props: { getAllValidNFTs: typeof getAllValidNF
         ))}
       </div>
       <div className="flex justify-center items-center w-full">
-        {!isLoading && !nfts.length && (
+        {!isLoading && (!filters.hasMore ? (
           <span className="text-white">No NFTs in Marketplace.</span>
-        )}
+        ):(
+          <Button onClick={onLoadMore}>{'Load More'}</Button>
+        ))
+      }
       </div>
     </>
   );

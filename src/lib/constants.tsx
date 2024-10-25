@@ -17,4 +17,4 @@ export const MARKETPLACE_CONTRACT = getContract({
 export const SONEIUM_MINATO_API_URL = "https://explorer-testnet.soneium.org/api/v2";
 export const SONEIUM_MINATO_DETAIL_URL = "https://explorer-testnet.soneium.org/address";
 
-export const ITEM_PER_PAGE = 20;
+export const ITEMS_PER_PAGE = 20;

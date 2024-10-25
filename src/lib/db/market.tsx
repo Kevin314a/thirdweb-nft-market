@@ -1,7 +1,7 @@
 import NFTModel from "@/lib/model/NFT";
 import MarketModel from "@/lib/model/Market";
 import { client } from "@/lib/constants";
-import { ITEM_PER_PAGE } from "@/lib/constants";
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { PosseFormMarket } from "@/lib/types";
 import { DirectListing } from "thirdweb/extensions/marketplace";
 import { dbConnect } from "./connect";
@@ -229,8 +229,8 @@ export const getValidNFTs = async (
         }
       },
       { $sort: sort },
-      { $skip: page * ITEM_PER_PAGE },
-      { $limit: ITEM_PER_PAGE },
+      { $skip: page * ITEMS_PER_PAGE },
+      { $limit: ITEMS_PER_PAGE },
       {
         $project: {
           _id: 0,

@@ -1,5 +1,6 @@
 'use server'
 
+import { ITEMS_PER_PAGE } from "@/lib/constants";
 import { getNFTfromMarketbyId, getNFTsfromMarket, getValidNFTs, removeNFTfromMarketbyId, removeNFTsfromMarket } from "@/lib/db/market";
 import { markNFTisonMarket, updateNFT } from "@/lib/db/nft";
 import { PosseViewMarket } from "@/lib/types";
@@ -71,11 +72,21 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
       isReservedListing: item.isReservedListing,
     }));
 
-    return JSON.stringify(nfts);
+    const hasMore = nfts.length === ITEMS_PER_PAGE;
+
+    return {
+      nfts: JSON.stringify(nfts),
+      hasMore,
+      page: page + 1,
+    }
 
   } catch (err) {
     console.error('[ERROR ON FETCHING OWN NFT]', err);
-    return JSON.stringify([]);
+    return {
+      nfts: JSON.stringify([]),
+      hasMore: false,
+      page: 0,
+    }
   }
 }
 
@@ -92,7 +103,7 @@ export async function buyNFT(accountAddr: string, marketId: string, contractAddr
     });
 
     //  TODO make history of nft
-    
+
     await removeNFTsfromMarket(contractAddr, tokenId);
     // await markNFTisonMarket(contractAddr, BigInt(tokenId), false);
 

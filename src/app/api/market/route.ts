@@ -16,8 +16,8 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });
     }
 
-    const json_nfts = await getAllValidNFTs(_search ,_sort , _currency, _page);
-    return NextResponse.json({ nfts: json_nfts });
+    const result = await getAllValidNFTs(_search ,_sort , _currency, _page);
+    return NextResponse.json(result);
 
   } catch (err) {
     console.error("[MINATO_CHAIN_NET_API_MARKET_ERROR]", err);
