@@ -45,6 +45,16 @@ export const storeNFTtoMarket = async (listedNFT: PosseFormMarket) => {
   }
 };
 
+export const getNFTsfromMarket = async (contractAddr: string, tokenId: string) => {
+  try {
+    await dbConnect();
+    return await MarketModel.find({ assetContractAddress: contractAddr, tokenId });
+  } catch (err) {
+    console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
+    throw new Error("Failed to fetching info about your NFT to POSSE Market");
+  }
+};
+
 export const getNFTfromMarket = async (contractAddr: string, tokenId: string) => {
   try {
     await dbConnect();
@@ -52,6 +62,36 @@ export const getNFTfromMarket = async (contractAddr: string, tokenId: string) =>
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
+  }
+};
+
+export const getNFTfromMarketbyId = async (marketId: string) => {
+  try {
+    await dbConnect();
+    return await MarketModel.findOne({ id: marketId });
+  } catch (err) {
+    console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
+    throw new Error("Failed to fetching info about your NFT to POSSE Market");
+  }
+};
+
+export const removeNFTfromMarketbyId = async (marketId: string) => {
+  try {
+    await dbConnect();
+    return await MarketModel.deleteOne({ id: marketId });
+  } catch (err) {
+    console.error("[ERROR ON REMOVING NFTonMarket from DB]", err);
+    throw new Error("Failed to removing info about your NFT from POSSE Market");
+  }
+};
+
+export const removeNFTsfromMarket = async (contractAddr: string, tokenId: string) => {
+  try {
+    await dbConnect();
+    return await MarketModel.deleteMany({ assetContractAddress: contractAddr, tokenId: tokenId });
+  } catch (err) {
+    console.error("[ERROR ON REMOVING NFTonMarket from DB]", err);
+    throw new Error("Failed to removing info about your NFT from POSSE Market");
   }
 };
 

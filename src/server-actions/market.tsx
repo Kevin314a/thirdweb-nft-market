@@ -1,6 +1,7 @@
 'use server'
 
-import { getValidNFTs } from "@/lib/db/market";
+import { getNFTfromMarketbyId, getNFTsfromMarket, getValidNFTs, removeNFTfromMarketbyId, removeNFTsfromMarket } from "@/lib/db/market";
+import { markNFTisonMarket, updateNFT } from "@/lib/db/nft";
 import { PosseViewMarket } from "@/lib/types";
 
 export async function getAllValidNFTs(_search: string, _sort: string, _currency: string, _page: number) {
@@ -78,6 +79,37 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
   }
 }
 
-export async function buyNFT(marketId: string) {
+export async function buyNFT(accountAddr: string, marketId: string, contractAddr: string, tokenId: string) {
+  try {
+    // TODO must compoare with cookie with accountAddr to verify 
 
+    await updateNFT({
+      contractAddr,
+      tokenId,
+    }, {
+      owner: accountAddr,
+      isListed: false,
+    });
+
+    //  TODO make history of nft
+    
+    await removeNFTsfromMarket(contractAddr, tokenId);
+    // await markNFTisonMarket(contractAddr, BigInt(tokenId), false);
+
+    const res = {
+      error: false,
+      message: "Your new NFT is Delisted to POSSE market",
+      actions: "Success, your own NFT has been delisted",
+    };
+
+    return res;
+  } catch (err) {
+    console.error('[ERROR ON DELISTING AN NFT]', contractAddr, "#", tokenId);
+    const res = {
+      error: true,
+      message: "Sorry, an error occured deListing your NFT.",
+      actions: "Please try again",
+    };
+    return res;
+  }
 }

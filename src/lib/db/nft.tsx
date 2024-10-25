@@ -79,13 +79,14 @@ export const getNFT = async (
 export const markNFTisonMarket = async (
   contractAddr: string,
   tokenId: bigint,
+  flag: boolean,
 ) => {
   try {
     const oldOne = await getNFT(contractAddr, tokenId);
     if (!oldOne) {
       throw new Error("Failed to get an NFT to mark");
     }
-    oldOne.isListed = true;
+    oldOne.isListed = flag;
     await oldOne.save();
     return true;
   } catch (err) {

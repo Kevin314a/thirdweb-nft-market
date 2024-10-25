@@ -1,7 +1,7 @@
 'use server'
 
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
-import { getNFTfromMarket, storeNFTtoMarket } from "@/lib/db/market";
+import { getNFTfromMarket, getNFTfromMarketbyId, getNFTsfromMarket, removeNFTfromMarketbyId, storeNFTtoMarket } from "@/lib/db/market";
 import { storeNFT, getNFTs, getNFT, updateNFT, markNFTisonMarket, bulkUpdateNFTs } from "@/lib/db/nft";
 import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
 import { cookies } from "next/headers";
@@ -52,7 +52,7 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       }
     }
 
-    await markNFTisonMarket(contractAddr, BigInt(tokenId));
+    await markNFTisonMarket(contractAddr, BigInt(tokenId), true);
 
     const listedNFT: PosseFormMarket = {
       id: lastListing[0].id,
@@ -81,7 +81,6 @@ export async function listNFT(contractAddr: string, tokenId: string) {
 
     return res;
   } catch (err) {
-    console.error('[ERROR][ERROR][ERROR]', err);
     console.error('[ERROR ON LISTING AN NFT]', contractAddr, "#", tokenId);
     const res = {
       error: true,
@@ -92,8 +91,39 @@ export async function listNFT(contractAddr: string, tokenId: string) {
   }
 }
 
-export async function deListNFT(contractAddr: string, tokenId: string) {
+export async function deListNFT(marketId: string, contractAddr: string, tokenId: string) {
+  try {
 
+    const oldMarketItem = await getNFTfromMarketbyId(marketId);
+    if (oldMarketItem.assetContractAddress !== contractAddr || oldMarketItem.tokenId !== tokenId) {
+      throw new Error("Your NFT is not invalid");
+    }
+
+    await removeNFTfromMarketbyId(marketId);
+
+    const otherItems = await getNFTsfromMarket(contractAddr, tokenId);
+    if (otherItems) {
+
+    } else {
+      await markNFTisonMarket(contractAddr, BigInt(tokenId), false);
+    }
+
+    const res = {
+      error: false,
+      message: "Your new NFT is Delisted to POSSE market",
+      actions: "Success, your own NFT has been delisted",
+    };
+
+    return res;
+  } catch (err) {
+    console.error('[ERROR ON DELISTING AN NFT]', contractAddr, "#", tokenId);
+    const res = {
+      error: true,
+      message: "Sorry, an error occured deListing your NFT.",
+      actions: "Please try again",
+    };
+    return res;
+  }
 }
 
 export async function verifyNFTtoList(contractAddr: string, tokenId: string) {

@@ -124,14 +124,20 @@ export function useMarket(props: MarketProps) {
   };
 
   const onBuy = async (item: PosseViewMarket) => {
-    if (isOperating) return;
+    if (isOperating) {
+      return;
+    }
 
-    if (!account) return;
+    if (!account) {
+      return;
+    }
 
     if (activeWalletChain?.id !== soneiumMinato.id) {
       await switchChain(soneiumMinato);
     }
+
     setIsOperating(true);
+    
     try {
       if (item.currencyContractAddress.toLowerCase() !== NATIVE_TOKEN_ADDRESS.toLowerCase()) {
         const customTokenContract = getContract({
@@ -173,6 +179,9 @@ export function useMarket(props: MarketProps) {
         client,
         chain: soneiumMinato,
       });
+
+      await props.buyNFT(account.address, item.id, item.assetContractAddress, item.tokenId);
+
       toast.success("Purchase completed! The asset(s) should arrive in your account shortly");
 
       // TODO: refreching all datas
@@ -191,12 +200,11 @@ export function useMarket(props: MarketProps) {
 
     if (!account) {
       toast.error("Please connect your wallet!");
-      return null;
+      return;
     }
 
     setIsOperating(true);
     try {
-
       const transaction = cancelListing({
         contract: MARKETPLACE_CONTRACT,
         listingId: BigInt(item.id),
@@ -207,8 +215,10 @@ export function useMarket(props: MarketProps) {
         account,
       });
 
+      
+      await props.deListNFT(item.id, item.assetContractAddress, item.tokenId);
+      
       toast.success("Listing cancelled successfully");
-
       // TODO: refeching dailo contes;
     } catch (err) {
       console.error("error on delisting this selected NFT", err);
