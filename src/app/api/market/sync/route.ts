@@ -15,90 +15,56 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url);
     const address = searchParams.get("address");
+    const strStart = searchParams.get("start") || "-1";
+
+    const iStart: number = isNaN(parseInt(strStart)) ? -1 : parseInt(strStart);
 
     if (!address || accountAddr !== address || address !== process.env.NEXT_PUBLIC_ADMIN_ID) {
       return NextResponse.json({ message: "Bad Request" }, { status: 400 });
     }
 
-    // sync NFTs on the POSSE market with mongodb
-    const encoder = new TextEncoder();
-    const readableStream = new ReadableStream({
-      async start(controller) {
-        try {
-          controller.enqueue(encoder.encode(`data: Started Synchronizing...\n\n`));
+    if (iStart < 0) {
+      return NextResponse.json({ message: "Bad Start Request" }, { status: 400 });
+    }
+    const validIds: string[] = [];
 
-          const validListingIds: string[] = [];
-
-          let i = 0n;
-
-          const totalListed = await totalListings({ contract: MARKETPLACE_CONTRACT });
-          const maxRetries = 3;
-
-          while (i <= totalListed) {
-            // Retry mechanism for handling failed requests
-            const executeWithRetries = async (fn: () => Promise<void>, retries: number) => {
-              let attempt = 0;
-              while (attempt < retries) {
-                try {
-                  await fn();
-                  break;  // Exit loop if successful
-                } catch (error) {
-                  attempt++;
-                  if (attempt >= retries) {
-                    throw error;  // After max retries, throw error
-                  }
-                  controller.enqueue(encoder.encode(`data: Retry attempt ${attempt}...\n\n`));
-                }
-              }
-            };
-
-            // Define the async task, but do not immediately execute it.
-            const promise = async () => {
-              controller.enqueue(encoder.encode(`data: Fetching NFTs from Marketplace #${i} ~ #${i + 50n}...\n\n`));
-
-              const result = await getAllValidListings({
-                contract: MARKETPLACE_CONTRACT,
-                start: Number(i),
-                count: 50n,
-              });
-
-              result.forEach((item) => validListingIds.push(item.id.toString()));
-
-              controller.enqueue(encoder.encode(`data: Updating database...\n\n`));
-              await updateAllValidNFTs(address, result);
-              
-              controller.enqueue(encoder.encode(`data: Synchronized DB with valid listed NFTs...\n\n`));
-            };
-
-            // Execute the promise with retries
-            await executeWithRetries(promise, maxRetries);
-
-            // Increment for the next batch
-            i += 50n;
-          }
-
-          await removeAllInvalidNFTs(validListingIds);
-          await removeDuplicatedNFTs();
-          controller.enqueue(encoder.encode(`data: Completed Synchronizing.\n\n`));
-          controller.close();
-
-        } catch (err) {
-          controller.enqueue(encoder.encode(`data: Error in fetching NFTs via SSE\n\n`));
-          controller.close();
-        }
-      },
+    const result = await getAllValidListings({
+      contract: MARKETPLACE_CONTRACT,
+      start: Number(iStart),
+      count: 10n,
     });
 
-    return new Response(readableStream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        "Connection": "keep-alive",
-      },
-    });
+    result.forEach((item) => validIds.push(item.id.toString()));
+
+    await updateAllValidNFTs(address, result);
+    await removeDuplicatedNFTs();
+
+    return NextResponse.json({ validIds });
 
   } catch (err) {
     console.error("[MINATO_THIRDWEB_API_MARKET_ERROR]", err);
-    return NextResponse.json({ message: "Internal Error" }, { status: 500 });
+    return NextResponse.json({ validIds: [], message: "Internal Error" }, { status: 500 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const {
+      address, validIds,
+    }: {
+      address: string,
+      validIds: string[],
+    } = await request.json();
+
+    if (!address) {
+      return NextResponse.json({ message: "Bad Request" }, { status: 400 });
+    }
+
+    const result = await removeAllInvalidNFTs(validIds);
+
+    return NextResponse.json({ result: true });
+  } catch (err) {
+    console.error("[MINATO_CHAIN_NET_API_MARKET_ERROR]", err);
+    return NextResponse.json({ result: false, message: "Internal Error" }, { status: 500 });
   }
 }

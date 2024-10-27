@@ -8,7 +8,7 @@ import { allowance, approve, decimals } from "thirdweb/extensions/erc20"; import
 import { type Hex, NATIVE_TOKEN_ADDRESS, sendTransaction, toTokens, waitForReceipt, getContract, sendAndConfirmTransaction } from "thirdweb";
 // import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 // import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
-import { buyFromListing, cancelListing } from "thirdweb/extensions/marketplace";
+import { buyFromListing, cancelListing, totalListings } from "thirdweb/extensions/marketplace";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -29,7 +29,6 @@ export function useMarket(props: MarketProps) {
 
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
-  const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
   const currencies: PosseCurrency[] = [
     {
@@ -38,15 +37,6 @@ export function useMarket(props: MarketProps) {
       icon: NATIVE_TOKEN_ICON_MAP[MARKETPLACE_CONTRACT.chain.id] || "",
     }
   ].concat(SUPPORTED_CURRENCIES);
-
-  useEffect(() => {
-    return () => {
-      if (eventSource) {
-        eventSource.close();
-        setEventSource(null);
-      }
-    };
-  }, [eventSource]);
 
   const onChangeFilter = async (_search: string, _sort: string, _currency: string) => {
     setIsLoading(true);
@@ -98,29 +88,49 @@ export function useMarket(props: MarketProps) {
     if (isLoading) {
       return;
     }
-    if (eventSource) return; // Avoid opening multiple connections
 
-    // Create an EventSource to connect to the server action SSE
-    const newEventSource = new EventSource(`/api/market/sync?address=${account.address}`);
+    let i = 0n;
+    const validListingIds: string[] = [];
 
-    // Listen for SSE messages and update state
-    newEventSource.onmessage = (event) => {
-      toast.success(event.data);
-    };
+    setIsLoading(true);
 
-    // Handle error or closure of the connection
-    newEventSource.onerror = async () => {
-      newEventSource.close();
-      setEventSource(null);
-      setIsLoading(false);
+    toast.success("Started Synchronizing...");
+
+    try {
+
+      const totalListed = await totalListings({ contract: MARKETPLACE_CONTRACT });
+      while (i < totalListed) {
+        try {
+          toast.success(`Updating NFTs on the Marketplace #${i} ~ #${i + 10n}...`);
+
+          const response = await axios.get(`/api/market/sync`, {
+            params: { address: account.address, start: i.toString() }
+          });
+
+          validListingIds.push(...response.data.validIds);
+
+        } catch (err) {
+          console.error("Error synchronizing NFTs from market", err);
+          toast.error(`fetching NFTs of #${i} ~ #${i + 10n} in market failed.`);
+        } finally {
+          i += 10n;
+        }
+      }
+
+      const responsep = await axios.put(`/api/market/sync`, {
+        address: account.address, validIds: validListingIds
+      });
 
       toast.success("Loading NFTs...", { duration: 5000 });
       await fnReload();
-      toast.success("Successfully Load your NFTs...");
-    };
+      toast.success("Successfully Loaded your NFTs...");
 
-    setEventSource(newEventSource);
-    setIsLoading(true); // Set listening state to true
+    } catch (err) {
+      console.error("Error refreshing data with thirdweb via databsse", err);
+      toast.error("Please reload this page");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fnReload = async () => {
@@ -271,7 +281,7 @@ export function useMarket(props: MarketProps) {
       } else {
         toast.error(typeof err === 'string' ? err : "An Error occured in delisting your NFT");
       }
-    } 
+    }
     setIsOperating(false);
   };
 
