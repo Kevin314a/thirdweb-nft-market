@@ -49,10 +49,12 @@ export function useMintNFT(props: MintNFTProps) {
       uri = (!file) ? "" : await upload({ client, files: [file] });
       if (!uri) {
         toast.error("please insert the artwork of the NFT");
+        setIsLoading(false);
         return;
       }
     } catch (err) {
       toast.error("Uploading icon file for collection is failed.");
+      setIsLoading(false);
       return;
     }
 
@@ -135,7 +137,7 @@ export function useMintNFT(props: MintNFTProps) {
         setIsLoading(false);
         if (!res.error) {
           // router.refresh();
-          setErrorFile("none");
+          setErrorFile(null);
           setFile(null);
           toast.success(res.message);
         } else {

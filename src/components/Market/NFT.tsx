@@ -1,6 +1,5 @@
 'use client'
 
-import { ImageHat } from "@/assets";
 import { client } from "@/lib/constants";
 import { PosseViewMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";

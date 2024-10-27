@@ -1,8 +1,12 @@
+'use client'
+
+import { client } from "@/lib/constants";
 import classNames from "classnames";
 import { useCallback, useState } from "react";
-import Dropzone, { DropzoneOptions } from "react-dropzone";
-import toast from "react-hot-toast";
 import { HiOutlineUpload } from "react-icons/hi";
+import Dropzone, { DropzoneOptions } from "react-dropzone";
+import { MediaRenderer } from "thirdweb/react";
+import toast from "react-hot-toast";
 
 export default function XUpload({
   onFileChange,
@@ -27,7 +31,7 @@ export default function XUpload({
       }
 
       // Check for accepted file types
-      const acceptedTypes = ["image/jpeg", "image/png", "image/gif", "image/svg+xml", "video/mp4"];
+      const acceptedTypes = ["image/jpeg", "image/png", "image/gif", "video/mp4", "audio/mpeg"];
       if (!acceptedTypes.includes(firstFile.type)) {
         onError("invalid-ext");
         setFile(null);
@@ -60,12 +64,14 @@ export default function XUpload({
                 isError && "border-destructive"
               )}
             >
-              <input {...getInputProps()} accept=".jpg, .jpeg, .png, .gif, .svg, .mp4" />
+              <input {...getInputProps()} accept=".jpg, .jpeg, .png, .gif, .mp4, .mp3" />
               {!!file ? (
                 <>
-                  <img
+                  <MediaRenderer
                     src={file}
+                    client={client}
                     className="max-h-56 rounded-2xl"
+                    style={{ objectFit: "cover" }}
                   />
                   {/* <Button
                     type="button"
@@ -86,7 +92,7 @@ export default function XUpload({
                   <span className="text-lg font-medium text-white">Drag & drop media</span>
                   <span className="text-sm font-medium text-golden-1000">Browse files</span>
                   <span className="text-xs text-gray-400">Max size: 500KB</span>
-                  <span className="text-xs text-gray-400">JPG, PNG, GIF, SVG, MP4</span>
+                  <span className="text-xs text-gray-400">JPG, PNG, GIF, MP3, MP4</span>
                 </>
               )}
             </div>
