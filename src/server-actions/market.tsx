@@ -13,7 +13,7 @@ import { resolveScheme } from "thirdweb/storage";
 
 export async function getAllValidNFTs(_search: string, _sort: string, _currency: string, _page: number) {
   try {
-    let conds: { [key: string]: any } = {};
+    let conds: { [key: string]: any } = { "status": "ACTIVE" };
 
     if (!!_search) {
       conds = {
@@ -33,11 +33,11 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
     }
 
     const sort = _sort === "NAME" ? { 'asset.name': 1 }
-      : (_sort === "CREATEDAT" ? { mid: 1 }
-        : (_sort === "LISTEDAT" ? { createdAt: 1 }
+      : (_sort === "CREATEDAT" ? { midToSort: 1 }
+        : (_sort === "LISTEDAT" ? { midToSort: -1 }
           : (_sort === "PRICEASC" ? { priceToSort: 1 }
             : (_sort === "PRICEDESC" ? { priceToSort: -1 }
-              : { mid: 1 }))));
+              : { midToSort: -1 }))));
 
     const page = _page;
 

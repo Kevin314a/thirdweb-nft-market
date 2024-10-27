@@ -28,7 +28,7 @@ export default function MarketFilter({
 
   const account = useActiveAccount();
   const [search, setSearch] = useState<string>("");
-  const [sort, setSort] = useState<"NAME" | "CREATEDAT" | "LISTEDAT" | "PRICEASC" | "PRICEDESC">("NAME");
+  const [sort, setSort] = useState<"NAME" | "CREATEDAT" | "LISTEDAT" | "PRICEASC" | "PRICEDESC">("LISTEDAT");
   const [currency, setCurrency] = useState<string>("ALL");
   const searchRef = useRef<HTMLInputElement>(null);
   const [seeShortcut, setSeeShortcut] = useState(true);

@@ -42,8 +42,10 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       count: 35n,
     });
 
-    const lastListing = lastListings.filter((ll: DirectListing) => String(ll.assetContractAddress) === String(contractAddr) && String(ll.tokenId) === String(tokenId));
-    if (!lastListing.length) {
+    const lastListing = lastListings.filter((ll: DirectListing) => String(ll.assetContractAddress) === String(contractAddr) && String(ll.tokenId) === String(tokenId) && ll.status === "ACTIVE");
+
+    const lastestNFT = lastListing.pop();
+    if (!lastestNFT) {
       console.error('[ERROR ON FINDING THE LAST LISTED YOUR NFT]', contractAddr, "#", tokenId);
       return {
         error: true,
@@ -52,29 +54,29 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       }
     }
 
-    await findOneAndUpdateNFT({ contractAddr, tokenId }, { $set: { listedId: lastListing[0].id } }, { new: true });
+    await findOneAndUpdateNFT({ contractAddr, tokenId }, { $set: { listedId: lastestNFT.id } }, { new: true });
 
     const listedNFT: PosseFormMarket = {
-      mid: lastListing[0].id.toString(),
-      creatorAddress: lastListing[0].creatorAddress,
-      assetContractAddress: lastListing[0].assetContractAddress,
-      tokenId: lastListing[0].tokenId.toString(),
-      quantity: lastListing[0].quantity.toString(),
-      currencyContractAddress: lastListing[0].currencyContractAddress,
-      startTimeInSeconds: lastListing[0].startTimeInSeconds.toString(),
-      endTimeInSeconds: lastListing[0].endTimeInSeconds.toString(),
-      status: lastListing[0].status,
-      type: lastListing[0].type,
+      mid: lastestNFT.id.toString(),
+      creatorAddress: lastestNFT.creatorAddress,
+      assetContractAddress: lastestNFT.assetContractAddress,
+      tokenId: lastestNFT.tokenId.toString(),
+      quantity: lastestNFT.quantity.toString(),
+      currencyContractAddress: lastestNFT.currencyContractAddress,
+      startTimeInSeconds: lastestNFT.startTimeInSeconds.toString(),
+      endTimeInSeconds: lastestNFT.endTimeInSeconds.toString(),
+      status: lastestNFT.status,
+      type: lastestNFT.type,
       //direct-listing
       currencyValuePerToken: {
-        value: lastListing[0].currencyValuePerToken.value.toString(),
-        decimals: lastListing[0].currencyValuePerToken.decimals,
-        displayValue: lastListing[0].currencyValuePerToken.displayValue,
-        symbol: lastListing[0].currencyValuePerToken.symbol,
-        name: lastListing[0].currencyValuePerToken.name,
+        value: lastestNFT.currencyValuePerToken.value.toString(),
+        decimals: lastestNFT.currencyValuePerToken.decimals,
+        displayValue: lastestNFT.currencyValuePerToken.displayValue,
+        symbol: lastestNFT.currencyValuePerToken.symbol,
+        name: lastestNFT.currencyValuePerToken.name,
       },
-      pricePerToken: lastListing[0].pricePerToken.toString(),
-      isReservedListing: lastListing[0].isReservedListing,
+      pricePerToken: lastestNFT.pricePerToken.toString(),
+      isReservedListing: lastestNFT.isReservedListing,
     };
     await storeNFTtoMarket(listedNFT);
 

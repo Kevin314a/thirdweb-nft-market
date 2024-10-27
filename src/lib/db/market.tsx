@@ -171,8 +171,8 @@ export const getValidNFTs = async (
       { $match: conds },
       {
         $addFields: {
-
           priceToSort: { $toDouble: "$currencyValuePerToken.displayValue" },
+          midToSort: {$toDouble: "$mid"},
           quantity: { $toString: "$quantity" },
           startTimeInSeconds: { $toDouble: "$startTimeInSeconds" },
           endTimeInSeconds: { $toDouble: "$endTimeInSeconds" },
