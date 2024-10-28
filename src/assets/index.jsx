@@ -40,6 +40,7 @@ import ImageCurrency from '@/assets/images/currency-mark.png';
 import TempImageNFT from '@/assets/images/z-temp-nft.png';
 import TempImageNFTMore from '@/assets/images/z-temp-nft-more.png';
 import TempImageCreateBack from '@/assets/images/z-temp-create-back.png';
+import DropNoneBack from '@/assets/images/drop-none-back.jpg';
 
 export {
   IconLogo,
@@ -83,4 +84,5 @@ export {
   TempImageNFTMore,
   TempImageCreateBack,
   ImageCurrency,
+  DropNoneBack,
 }

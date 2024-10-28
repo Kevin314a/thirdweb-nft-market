@@ -20,6 +20,9 @@ module.exports = {
         "black-1000": '#3B160E',
         "green-1000": '#10BD7A',
         "gray-1000": '#514F4F',
+        "gray-1100": '#453e3d ',
+        "gray-1200": '#58423c ',
+        "gray-1300": '#6b5d48 ',
       },
       screens: {
         'xs': '375px',

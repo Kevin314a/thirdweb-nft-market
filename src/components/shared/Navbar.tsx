@@ -130,10 +130,10 @@ const NAV_ITEMS = [
   //   label: 'Yeehaw',
   //   href: '#',
   // },
-  // {
-  //   label: 'Drops',
-  //   href: '/drops',
-  // },
+  {
+    label: 'Drops',
+    href: '/drops',
+  },
   // {
   //   label: 'Stats',
   //   href: '/stats',
