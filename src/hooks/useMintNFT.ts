@@ -132,6 +132,7 @@ export function useMintNFT(props: MintNFTProps) {
       }
 
       newNFT.owner = account.address;
+      newNFT.listedId = "0";
 
       props.mintNFT(newNFT).then((res) => {
         setIsLoading(false);
