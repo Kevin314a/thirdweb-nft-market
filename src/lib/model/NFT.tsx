@@ -54,6 +54,8 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
       },
       nativePrice: { type: Number },
       qty: { type: Number },
+      currency: { type: String },
+      netName: { type: String },
       purchasedAt: {
         type: Date,
         default: Date.now,

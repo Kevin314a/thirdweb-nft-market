@@ -128,6 +128,8 @@ export async function buyNFT(accountAddr: string, marketId: string, contractAddr
           orginPrice: oldOneMarket.currencyValuePerToken.value,
           nativePrice: oldOneMarket.currencyValuePerToken.displayValue,
           qty: 1,
+          currency: oldOneMarket.currencyValuePerToken.symbol,
+          netName: oldOneMarket.currencyValuePerToken.name,
           purchasedAt: new Date().toISOString(),
         }
       },

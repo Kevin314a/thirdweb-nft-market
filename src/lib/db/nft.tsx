@@ -280,11 +280,16 @@ export const hasBoughtNFT = async (
       // Match NFTs that have at least one history entry meeting the conditions
       {
         $match: {
-          'history.purchasedAt': {
-            $gte: startOfToday,
-            $lte: endOfToday
-          },
-          'history.buyer': { $regex: regex }
+          history: {
+            $elemMatch: {
+              purchasedAt: {
+                $gte: startOfToday,
+                $lte: endOfToday
+              },
+              buyer: { $regex: regex },
+              currency: "ASTR",
+            }
+          }
         }
       },
       // Project only the matching history items
@@ -302,11 +307,17 @@ export const hasBoughtNFT = async (
                 $and: [
                   { $gte: ['$$historyItem.purchasedAt', startOfToday] },
                   { $lte: ['$$historyItem.purchasedAt', endOfToday] },
+                  { $eq: ['$$historyItem.currency', "ASTR"] },
                   { $regexMatch: { input: '$$historyItem.buyer', regex: regex } },
                 ]
               }
             }
           }
+        }
+      },
+      {
+        $match: {
+          'history.0': { $exists: true } // Ensures that the history array is not empty after filtering
         }
       }
     ]).exec();
