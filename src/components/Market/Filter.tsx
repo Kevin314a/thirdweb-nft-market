@@ -48,8 +48,8 @@ export default function MarketFilter({
       onFocus={() => setSeeShortcut(false)}
       onBlur={() => setSeeShortcut(true)}
     >
-      <div className="flex w-full justify-center items-center gap-2 z-[2000]">
-        <div className="relative w-full flex justify-center items-center w-8 h-8 border border-golden-1300 rounded-full bg-golden-1300">
+      <div className="flex w-full flex-col md:flex-row justify-center items-center gap-2 z-[2000]">
+        <div className="relative w-full flex mt-2 md:mt-0 justify-center items-center border border-golden-1300 rounded-full bg-golden-1300">
           <Input
             ref={searchRef}
             type="text"
@@ -61,7 +61,7 @@ export default function MarketFilter({
             required={true}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <div className="absolute top-1/2 -translate-y-1/2  md:translate-x-auto -translate-x-1/2 left-1/2 -ml-0.5 md:left-5">
+          <div className="absolute top-1/2 -translate-y-1/2  md:translate-x-auto -translate-x-1/2 -ml-0.5 left-5">
             <Image
               width={24}
               height={24}
@@ -71,7 +71,7 @@ export default function MarketFilter({
               alt="" />
           </div>
           {seeShortcut && (
-            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-white">
+            <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-white hidden md:flex">
               <kbd className="kbd">Ctrl</kbd>+
               <kbd className="kbd">K</kbd>
             </div>
@@ -90,127 +90,130 @@ export default function MarketFilter({
             </div>
           )}
         </div>
-        <Menu as="div" className="relative inline-block text-left">
 
-          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
-            <GrSort />{sort.charAt(0).toUpperCase() + sort.slice(1)}
-            <FaChevronDown />
-          </MenuButton>
+        <div className="relative flex mt-2 md:mt-0 justify-end items-center gap-2">
+          <Menu as="div" className="relative inline-block text-left">
 
-          <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setSort("NAME")}
-                >
-                  Name
-                </button>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setSort("CREATEDAT")}
-                >
-                  Recently Created
-                </button>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setSort("LISTEDAT")}
-                >
-                  Recently Listed
-                </button>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setSort("PRICEDESC")}
-                >
-                  Price High to Low
-                </button>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setSort("PRICEASC")}
-                >
-                  Price Low to High
-                </button>
-              )}
-            </MenuItem>
-          </MenuItems>
-        </Menu>
+            <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
+              <GrSort /><span className="">{sort.charAt(0).toUpperCase() + sort.slice(1)}</span>
+              <FaChevronDown />
+            </MenuButton>
 
-        <Menu as="div" className="relative inline-block text-left">
-
-          <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
-            {currency === "ALL" ? <BiCoinStack /> :
-              (currency === "ETH" ? <img src={'/currency/minato-eth.png'} width="24" height="24" className="mr-2" /> :
-                (currency === "ETH" ? <img src={'/currency/astr.png'} width="24" height="24" className="mr-2" /> : null))
-            } {currency}
-            <FaChevronDown />
-          </MenuButton>
-
-          <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
-            <MenuItem>
-              {({ focus }) => (
-                <button
-                  className={`${focus ? 'bg-gray-500' : ''
-                    } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                  onClick={() => setCurrency("ALL")}
-                >
-                  <BiCoinStack size="24" className="mr-2" />
-                  {'ALL'}
-                </button>
-              )}
-            </MenuItem>
-            {currencies.map((currency, i) => (
-              <MenuItem key={i}>
+            <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
+              <MenuItem>
                 {({ focus }) => (
                   <button
                     className={`${focus ? 'bg-gray-500' : ''
                       } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
-                    onClick={() => setCurrency(currency.symbol)}
+                    onClick={() => setSort("NAME")}
                   >
-                    <img src={currency.icon} width="24" height="24" className="mr-2" />
-                    {currency.symbol}
+                    Name
                   </button>
                 )}
               </MenuItem>
-            ))}
-          </MenuItems>
-        </Menu>
+              <MenuItem>
+                {({ focus }) => (
+                  <button
+                    className={`${focus ? 'bg-gray-500' : ''
+                      } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                    onClick={() => setSort("CREATEDAT")}
+                  >
+                    Recently Created
+                  </button>
+                )}
+              </MenuItem>
+              <MenuItem>
+                {({ focus }) => (
+                  <button
+                    className={`${focus ? 'bg-gray-500' : ''
+                      } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                    onClick={() => setSort("LISTEDAT")}
+                  >
+                    Recently Listed
+                  </button>
+                )}
+              </MenuItem>
+              <MenuItem>
+                {({ focus }) => (
+                  <button
+                    className={`${focus ? 'bg-gray-500' : ''
+                      } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                    onClick={() => setSort("PRICEDESC")}
+                  >
+                    Price High to Low
+                  </button>
+                )}
+              </MenuItem>
+              <MenuItem>
+                {({ focus }) => (
+                  <button
+                    className={`${focus ? 'bg-gray-500' : ''
+                      } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                    onClick={() => setSort("PRICEASC")}
+                  >
+                    Price Low to High
+                  </button>
+                )}
+              </MenuItem>
+            </MenuItems>
+          </Menu>
 
-        {account?.address === process.env.NEXT_PUBLIC_ADMIN_ID && (
-          <Button
-            type="button"
-            variant="common"
-            className="inline-flex justify-center items-center gap-2 rounded-lg text-white text-sm lg:text-sm xxl:text-lg px-4 py-1"
-            onClick={() => !isLoading && onRefresh()}
-          >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <LuRefreshCw size={16} />
-            )}
-            Refresh
-          </Button>
-        )}
+          <Menu as="div" className="relative inline-block text-left">
+
+            <MenuButton className="inline-flex justify-center items-center text-sm lg:text-sm xxl:text-lg px-4 py-1 bg-gray-600 shadow-inner shadow-white/10 hover:bg-black/[80%] transition-all ease-out duration-500 font-semibold border border-golden-1000 gap-2 disabled:bg-gray-600 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-md whitespace-nowrap">
+              {currency === "ALL" ? <BiCoinStack /> :
+                (currency === "ETH" ? <img src={'/currency/minato-eth.png'} width="24" height="24" className="mr-2" /> :
+                  (currency === "ETH" ? <img src={'/currency/astr.png'} width="24" height="24" className="mr-2" /> : null))
+              } {currency}
+              <FaChevronDown />
+            </MenuButton>
+
+            <MenuItems className="absolute z-[3000] right-0 mt-2 w-auto origin-top-right bg-gray-600 border border-golden-1000 rounded-md shadow-lg">
+              <MenuItem>
+                {({ focus }) => (
+                  <button
+                    className={`${focus ? 'bg-gray-500' : ''
+                      } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                    onClick={() => setCurrency("ALL")}
+                  >
+                    <BiCoinStack size="24" className="mr-2" />
+                    {'ALL'}
+                  </button>
+                )}
+              </MenuItem>
+              {currencies.map((currency, i) => (
+                <MenuItem key={i}>
+                  {({ focus }) => (
+                    <button
+                      className={`${focus ? 'bg-gray-500' : ''
+                        } group flex w-full items-center px-4 py-2 text-sm text-white whitespace-nowrap`}
+                      onClick={() => setCurrency(currency.symbol)}
+                    >
+                      <img src={currency.icon} width="24" height="24" className="mr-2" />
+                      {currency.symbol}
+                    </button>
+                  )}
+                </MenuItem>
+              ))}
+            </MenuItems>
+          </Menu>
+
+          {account?.address === process.env.NEXT_PUBLIC_ADMIN_ID && (
+            <Button
+              type="button"
+              variant="common"
+              className="inline-flex justify-center items-center gap-2 rounded-lg text-white text-sm lg:text-sm xxl:text-lg px-4 py-1"
+              onClick={() => !isLoading && onRefresh()}
+            >
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <LuRefreshCw size={16} />
+              )}
+              Refresh
+            </Button>
+          )}
+        </div>
       </div>
     </form>
   );
