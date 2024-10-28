@@ -230,7 +230,7 @@ export const removeDuplicatedNFTs = async (
 ) => {
   try {
     await dbConnect();
-    
+
     const duplicates = await NFTModel.aggregate([
       {
         $group: {
@@ -246,7 +246,7 @@ export const removeDuplicatedNFTs = async (
         $match: { count: { $gt: 1 } }  // Only keep groups with duplicates
       }
     ]);
-    
+
     // Iterate through the duplicates and remove them
     for (const doc of duplicates) {
       await NFTModel.deleteMany({
@@ -259,5 +259,61 @@ export const removeDuplicatedNFTs = async (
   } catch (err) {
     console.error("[ERROR ON REMOVING DUPLICATED NFTs FROM DB]", err);
     throw new Error("Failed to removing duplicated NFTs");
+  }
+};
+
+
+export const hasBoughtNFT = async (
+  walletAddress: string
+) => {
+  try {
+    await dbConnect();
+
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
+
+    const regex = new RegExp(walletAddress, 'i');
+
+    const nftDocuments = await NFTModel.aggregate([
+      // Match NFTs that have at least one history entry meeting the conditions
+      {
+        $match: {
+          'history.purchasedAt': {
+            $gte: startOfToday,
+            $lte: endOfToday
+          },
+          'history.buyer': { $regex: regex }
+        }
+      },
+      // Project only the matching history items
+      {
+        $project: {
+          contract: 1,
+          contractAddr: 1,
+          tokenId: 1,
+          name: 1,
+          history: {
+            $filter: {
+              input: '$history',
+              as: 'historyItem',
+              cond: {
+                $and: [
+                  { $gte: ['$$historyItem.purchasedAt', startOfToday] },
+                  { $lte: ['$$historyItem.purchasedAt', endOfToday] },
+                  { $regexMatch: { input: '$$historyItem.buyer', regex: regex } },
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]).exec();
+    return !!nftDocuments.length;
+
+  } catch (err) {
+    console.error("[ERROR ON RETRIEVE THE HISTORY OF BOUGHT NFT from POSSE MARKET]", err);
+    throw new Error("Failed to retrieve the history of bought NFT from the POSSE Market");
   }
 };
