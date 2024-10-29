@@ -31,7 +31,7 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="flex flex-col mx-auto xl:px-10 px-5 max-w-[1920px]">
+    <div className="flex flex-col xl:px-10 px-5 max-w-[1920px]">
       <div className="flex justify-center lg:justify-start">
         <div className="mb-4">
           <img src={ImageHat.src} width={60} className="-ml-2" />

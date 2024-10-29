@@ -12,10 +12,14 @@ export default function XUpload({
   onFileChange,
   onError,
   isError,
+  className,
+  caption,
 }: {
   onFileChange: (file: File | null) => void;
   onError: (err: "none" | "exceed" | "invalid-ext" | "drop-fail" | null) => void;
   isError: boolean,
+  className?: string,
+  caption?: string,
 }) {
   const [file, setFile] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -59,9 +63,9 @@ export default function XUpload({
           <section className="relative">
             <div
               {...getRootProps()}
-              className={classNames(
-                "min-h-[25vw] min-w-[25vw] bg-golden-1300 rounded-2xl flex flex-col items-center justify-center text-white opacity-70 cursor-pointer",
-                isError && "border-destructive"
+              className={classNames(className,
+                "min-h-[25vw] min-w-[25vw] bg-golden-1300 rounded-2xl flex flex-col items-center justify-center text-white opacity-70 cursor-pointer p-4",
+                isError && "border-destructive",
               )}
             >
               <input {...getInputProps()} accept=".jpg, .jpeg, .png, .gif, .mp4, .mp3" />
@@ -88,11 +92,20 @@ export default function XUpload({
                 </>
               ) : (
                 <>
-                  <HiOutlineUpload color="white" size={36} />
-                  <span className="text-lg font-medium text-white">Drag & drop media</span>
-                  <span className="text-sm font-medium text-golden-1000">Browse files</span>
-                  <span className="text-xs text-gray-400">Max size: 500KB</span>
-                  <span className="text-xs text-gray-400">JPG, PNG, GIF, MP3, MP4</span>
+                  {!caption ? (
+                    <>
+                      <HiOutlineUpload color="white" size={36} />
+                      <span className="text-lg font-medium text-white">Drag & drop media</span>
+                      <span className="text-sm font-medium text-golden-1000">Browse files</span>
+                      <span className="text-xs text-gray-400">Max size: 500KB</span>
+                      <span className="text-xs text-gray-400">JPG, PNG, GIF, MP3, MP4</span>
+                    </>
+                  ) : (
+                    <>
+                      <HiOutlineUpload color="white" size={16} />
+                      <span className="text-sm font-medium text-white">{caption}</span>
+                    </>
+                  )}
                 </>
               )}
             </div>
