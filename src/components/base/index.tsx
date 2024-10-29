@@ -12,6 +12,14 @@ import { Input } from "./Input";
 import { Label } from "./Label";
 import { Textarea } from "./Textarea";
 
+import { Switch } from "@headlessui/react";
+import { Tab } from "./Tab";
+import { TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+
+import { MultiSelectListbox as MultiSelect } from "./MultiSelect";
+import { TransitionDialog } from "./TransitionDialog";
+import { XDatePicker } from "./XDatePicker";
+
 export {
   Button,
   Dialog, DialogPanel, DialogTitle, CloseButton,
@@ -21,8 +29,13 @@ export {
   Label,
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
   Menu, MenuButton, MenuItem, MenuItems,
+  MultiSelect,
   Radio, RadioGroup,
+  Switch,
   Textarea,
   Transition,
   TransitionChild,
+  TransitionDialog,
+  Tab, TabGroup, TabList, TabPanel, TabPanels,
+  XDatePicker,
 };
