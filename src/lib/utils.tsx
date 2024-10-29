@@ -40,9 +40,51 @@ export function removeOrderNumberFormatting(id: number) {
 }
 
 export function shortenString(str: string, len: number) {
-  if (!str || str.length <= len ) {
+  if (!str || str.length <= len) {
     return str;
   }
 
   return str.substring(0, len).concat('...');
+}
+
+export function getDateTimeAfter(date: Date | null, days: number | undefined, hours: number | undefined, mins: number | undefined) : Date {
+  // const parsedDays = isNaN(Number(days)) ? 0 : Number(days);
+  // const parsedHours = isNaN(Number(hours)) ? 0 : Number(hours);
+  // const parsedMins = isNaN(Number(mins)) ? 0 : Number(mins);
+
+  const parsedDays = !days ? 0 : days;
+  const parsedHours = !hours ? 0 : hours;
+  const parsedMins = !mins ? 0 : mins;
+
+  const addedTime = parsedDays * 24 * 60 * 60 * 1000 + parsedHours * 60 * 60 * 1000 + parsedMins * 60 * 1000;
+
+  const vDate = !date ? new Date() : date;
+  const newDate = new Date(vDate.getTime() + addedTime);
+  return newDate;
+}
+
+export function formatDate(date: Date): string {
+  // Define options for date formatting
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true, // Use 12-hour format with AM/PM
+  };
+
+  // Format the date to a more readable string
+  const formattedDate = date.toLocaleString('en-US', options);
+
+  // Get the timezone offset in hours and minutes
+  const timezoneOffset = -date.getTimezoneOffset();
+  const offsetHours = Math.floor(Math.abs(timezoneOffset) / 60);
+  const offsetMinutes = Math.abs(timezoneOffset) % 60;
+
+  // Construct the GMT offset string
+  const gmtOffset = `GMT${timezoneOffset >= 0 ? '+' : '-'}${String(offsetHours).padStart(2, '0')}${String(offsetMinutes).padStart(2, '0')}`;
+
+  // Combine formatted date and GMT offset
+  return `${formattedDate} ${gmtOffset}`;
 }

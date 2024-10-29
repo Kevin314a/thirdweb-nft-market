@@ -114,3 +114,33 @@ export type PosseCurrency = {
   symbol: string;
   icon: string;
 };
+
+export type PosseFormDrop = {
+  type: "limited" | "unlimited";
+  address: string;
+  name: string;
+  description?: string;
+  image?: string;
+  payToken: string;
+  numberOfItems: number;
+  mintStartDate?: string;
+  owner: string;
+};
+
+export interface PosseViewDrop extends PosseFormDrop {
+
+};
+
+export interface PosseDBDrop extends PosseViewDrop, Document {
+};
+
+export type PosseDropMintStage = {
+  name: string;
+  price: string;
+  currency: string;
+  durationd: number | undefined;
+  durationh: number | undefined;
+  durationm: number | undefined;
+  perlimit?: number | undefined;
+  allows: { address: string }[];
+};

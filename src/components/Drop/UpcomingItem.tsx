@@ -22,18 +22,18 @@ export const DropUpcomingItem = ({
         className="w-[calc(100vw)] h-[calc(100vw)] md:w-auto md:h-auto object-cover rounded-[15px]"
         alt="upcomingItem"
       />
-      <div className="absolute bottom-0 p-4 w-full">
-        <div className="mb-2">
+      <div className="absolute bottom-0 p-4 lg:py-8 w-full">
+        <div className="mb-2 lg:mb-4">
           <Image
             src={ImageCreator}
             priority
             width={48}
             height={48}
-            className="object-cover rounded-md"
+            className="object-cover rounded-md w-12 h-12 xl:w-16 xl:h-16"
             alt="upcomingItemIcon"
           />
         </div>
-        <div className="flex flex-col w-full mb-8 md:mb-4">
+        <div className="flex flex-col w-full mb-4 lg:mb-8">
           <div className="text-md text-white">{shortenString('Cowboys & Cowgirls by Chris Hat', 25)}</div>
           <span className="text-xs text-white">By Crowboy Master</span>
           <span className="text-xs text-white">Open edition 0.68 CRO</span>
