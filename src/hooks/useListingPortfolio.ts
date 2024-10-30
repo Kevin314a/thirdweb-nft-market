@@ -1,7 +1,7 @@
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
-import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
+import { PosseFormListing, PosseBridgeNFT, PosseCurrency } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { soneiumMinato } from "thirdweb/chains";
@@ -27,11 +27,11 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filters, setFilters] = useState<{ search: string, sort: string, page: number }>({ search: "", sort: "", page: 0 });
-  const [nfts, setNfts] = useState<PosseViewNFT[]>([]);
+  const [nfts, setNfts] = useState<PosseBridgeNFT[]>([]);
   const [isListPanelOpen, setIsListPanelOpen] = useState(false);
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
-  const [listingItem, setListingItem] = useState<PosseViewNFT>();
+  const [listingItem, setListingItem] = useState<PosseBridgeNFT>();
 
 
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
@@ -134,7 +134,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     }
 
     const _qty = BigInt(listInfo.qty ?? 1);
-    if (listingItem.type === "ERC-1155") {
+    if (listingItem.category === "ERC-1155") {
       if (!_qty || _qty <= 0n) {
         toast.error("Please input the valid quantity for list");
         setIsListPanelOpen(false);
@@ -149,7 +149,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
         await switchChain(soneiumMinato);
       }
 
-      const verified = await props.verifyNFTtoList(listingItem.contract.address, listingItem.tokenId);
+      const verified = await props.verifyNFTtoList(listingItem.contract?.address || "", listingItem.tokenId);
       if (verified.error) {
         if (!!verified.actions) {
           throw new Error(verified.message.concat(verified.actions));
@@ -168,7 +168,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
       });
 
       // Check for approval
-      const checkApprove = listingItem.type === "ERC-1155" ? isApprovedForAll1155 : isApprovedForAll721;
+      const checkApprove = listingItem.category === "ERC-1155" ? isApprovedForAll1155 : isApprovedForAll721;
       const isApproved = await checkApprove({
         contract: nftContract,
         owner: account.address,
@@ -176,7 +176,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
       });
 
       if (!isApproved) {
-        const setApproval = listingItem.type === "ERC-1155" ? setApprovalForAll1155 : setApprovalForAll721;
+        const setApproval = listingItem.category === "ERC-1155" ? setApprovalForAll1155 : setApprovalForAll721;
         const approveTx = setApproval({
           contract: nftContract,
           operator: MARKETPLACE_CONTRACT.address,
@@ -192,7 +192,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
         contract: MARKETPLACE_CONTRACT,
         assetContractAddress: nftContract.address,
         tokenId: BigInt(listingItem.tokenId),
-        quantity: listingItem.type === "ERC-721" ? 1n : _qty,
+        quantity: listingItem.category === "ERC-721" ? 1n : _qty,
         currencyContractAddress: listInfo.currency,
         pricePerToken: listInfo.price,
       });
@@ -217,7 +217,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
     setIsListPanelOpen(false);
   };
 
-  const handleDelist = async (listedItem: PosseViewNFT) => {
+  const handleDelist = async (listedItem: PosseBridgeNFT) => {
     if (isOperating) {
       return;
     }

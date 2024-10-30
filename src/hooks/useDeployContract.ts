@@ -33,7 +33,7 @@ export function useDeployContract(props: DeployContractProps) {
       return;
     }
 
-    if (!["ERC-1155", "ERC-721"].includes(newCollection.type)) {
+    if (!["ERC-1155", "ERC-721"].includes(newCollection.category)) {
       toast.error("The type of Contract is invalid.");
       return;
     }
@@ -61,7 +61,7 @@ export function useDeployContract(props: DeployContractProps) {
       const tmpRoyaltyBps = royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps));
       
       // deploy collection to blockchain on server  via thirdweb
-      const deployedContractAddress = newCollection.type === "ERC-1155" ?
+      const deployedContractAddress = newCollection.category === "ERC-1155" ?
         await deployERC1155Contract({
           chain: soneiumMinato,
           client,

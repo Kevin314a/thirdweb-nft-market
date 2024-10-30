@@ -1,7 +1,7 @@
 'use client'
 
 import { useListingPortfolio } from "@/hooks/useListingPortfolio";
-import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
+import { PosseFormListing, PosseBridgeNFT, PosseCurrency } from "@/lib/types";
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
 import { useState, useRef, forwardRef } from "react";
 import { useForm } from "react-hook-form";
@@ -32,11 +32,11 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
           <PortfolioNFT
             key={i}
             item={nft}
-            openListPanel={(item: PosseViewNFT) => {
+            openListPanel={(item: PosseBridgeNFT) => {
               setListingItem(item);
               setIsListPanelOpen(true);
             }}
-            onDelist={(item: PosseViewNFT) => {
+            onDelist={(item: PosseBridgeNFT) => {
               handleDelist(item);
             }}
           />

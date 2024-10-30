@@ -2,7 +2,7 @@ import { PosseDBContract } from "../types";
 import mongoose from "mongoose";
 
 const ContractSchema = new mongoose.Schema<PosseDBContract>({
-  type: {
+  category: {
     type: String,
     enum: ["ERC-721", "ERC-1155"],
     required: true,

@@ -1,7 +1,7 @@
 'use client'
 
 import { ImageNFT, Polygon, Polygon1, Polygon11, Polygon22, TempImageNFTMore, ImageVerifiedBadge } from "@/assets";
-import { PosseViewNFT } from "@/lib/types";
+import { PosseBridgeNFT } from "@/lib/types";
 import { XCard, XGraphCard, XTableCard } from "@/components/XCard";
 import { FaRegListAlt, FaRegHeart } from "react-icons/fa";
 import { FiEye } from "react-icons/fi";

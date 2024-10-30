@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 import { client, SONEIUM_MINATO_API_URL } from "@/lib/constants";
 import { bulkUpdateNFTs } from "@/lib/db/nft";
-import { PosseViewNFT } from "@/lib/types";
+import { PosseBridgeNFT } from "@/lib/types";
 import { NextResponse } from 'next/server';
 import { getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
@@ -47,10 +47,10 @@ export async function GET(request: Request) {
 
             const json = await result.json();
 
-            let nfts: PosseViewNFT[] = (json.items || []).flatMap((contract: any) => {
+            let nfts: PosseBridgeNFT[] = (json.items || []).flatMap((contract: any) => {
               return contract.token_instances?.map((t: any) => ({
                 contract: {
-                  type: contract.token.type,
+                  category: contract.token.type,
                   address: contract.token.address,
                   name: contract.token.name,
                   description: contract.token.description,
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
                 },
                 contractAddr: contract.token.address,
                 tokenId: t.id,
-                type: t.token_type,
+                category: t.token_type,
                 name: t?.metadata?.name,
                 description: t?.metadata?.description,
                 image: t?.metadata?.image,

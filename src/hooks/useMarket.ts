@@ -1,7 +1,7 @@
 import { getAllValidNFTs } from "@/server-actions/market";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
-import { PosseCurrency, PosseViewMarket } from "@/lib/types";
+import { PosseCurrency, PosseBridgeMarket } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { allowance, approve, decimals } from "thirdweb/extensions/erc20"; import { soneiumMinato } from "thirdweb/chains";
@@ -25,7 +25,7 @@ export function useMarket(props: MarketProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filters, setFilters] = useState<{ search: string, sort: string, currency: string, page: number, hasMore: boolean }>({ search: "", sort: "", currency: "ALL", page: 0, hasMore: false });
-  const [nfts, setNfts] = useState<PosseViewMarket[] | null>(null);
+  const [nfts, setNfts] = useState<PosseBridgeMarket[] | null>(null);
 
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
@@ -153,7 +153,7 @@ export function useMarket(props: MarketProps) {
     setIsLoading(false);
   };
 
-  const onBuy = async (item: PosseViewMarket) => {
+  const onBuy = async (item: PosseBridgeMarket) => {
     if (isOperating) {
       return;
     }
@@ -232,7 +232,7 @@ export function useMarket(props: MarketProps) {
 
   };
 
-  const onDelist = async (item: PosseViewMarket) => {
+  const onDelist = async (item: PosseBridgeMarket) => {
     if (isOperating) return;
 
     if (!account) {

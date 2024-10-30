@@ -1,37 +1,15 @@
 import DropModel from "@/lib/model/Drop";
-import { PosseDBDrop, PosseFormDrop } from "@/lib/types";
+import { PosseDBDrop, PosseBridgeDrop } from "@/lib/types";
 import { dbConnect } from "./connect";
 
-export const storeDrop = async (newDrop: PosseFormDrop) => {
+export const storeDrop = async (newDrop: PosseBridgeDrop) => {
   try {
     await dbConnect();
-
     const oldOne = await getDrop(newDrop.address);
     if (oldOne) {
       return oldOne._id;
     }
-
-    const contract = new DropModel({
-      group: newDrop.group,
-      address: newDrop.address,
-      name: newDrop.name,
-      description: newDrop.description,
-      image: newDrop.image,
-      payToken: newDrop.payToken,
-      owner: newDrop.owner,
-      numberOfItems: newDrop.numberOfItems,
-      mintStartAt: new Date(newDrop.mintStartAt),
-      mintStages: newDrop.mintStages?.map((stage) => ({
-        name: stage.name,
-        price: stage.price,
-        currency: stage.currency,
-        durationd: stage.durationd,
-        durationh: stage.durationh,
-        durationm: stage.durationm,
-        perlimit: stage.perlimit,
-        allows: stage.allows?.map((allow) => allow.address),
-      })),
-    });
+    const contract = new DropModel(newDrop);
     return await contract.save();
   } catch (err) {
     console.error("[ERROR ON STORING DROP to DB]", err);

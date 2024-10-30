@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, forwardRef } from "react";
-import { type PosseViewContract } from "@/lib/types";
+import { type PosseBridgeContract } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { LuCheck, LuChevronsUpDown, LuPlus } from "react-icons/lu";
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "../base";
@@ -15,7 +15,7 @@ export const ContractSelect = forwardRef(({
   onBlur: (e: any) => void,
   name: string,
   label?: string,
-  items: PosseViewContract[],
+  items: PosseBridgeContract[],
   defaultValue: string,
 }, ref: React.Ref<HTMLInputElement>) => {
 
@@ -41,7 +41,7 @@ export const ContractSelect = forwardRef(({
     }
   };
 
-  const collection = items.filter((item: PosseViewContract) => item.address === contractAddr)[0];
+  const collection = items.filter((item: PosseBridgeContract) => item.address === contractAddr)[0];
 
   return (
     <>
@@ -61,7 +61,7 @@ export const ContractSelect = forwardRef(({
                 <LuPlus className="h-12 w-12 bg-golden-1300 text-golden-1000 border-2 border-golden-1000 rounded-lg" />
               )}
               <span className="ml-3 block truncate text-xs md:text-lg">
-                {collection?.name ?? "Create a new Collection"}{!!collection?.type ? ` (${collection.type})` : ""}
+                {collection?.name ?? "Create a new Collection"}{!!collection?.category ? ` (${collection.category})` : ""}
               </span>
             </span>
             {!!items.length && (
@@ -75,7 +75,7 @@ export const ContractSelect = forwardRef(({
               transition
               className="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-golden-1300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm"
             >
-              {!!items.length && items.map((item: PosseViewContract, i) => (
+              {!!items.length && items.map((item: PosseBridgeContract, i) => (
                 <ListboxOption
                   key={i}
                   value={item.address}
@@ -83,7 +83,7 @@ export const ContractSelect = forwardRef(({
                 >
                   <div className="flex items-center">
                     <img src={item?.image || defImage.src} className="h-12 w-12" alt="contract image" />
-                    <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">{item.name}{!!item?.type ? ` (${item.type})` : ""}</span>
+                    <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">{item.name}{!!item?.category ? ` (${item.category})` : ""}</span>
                   </div>
                   <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
                     <LuCheck />

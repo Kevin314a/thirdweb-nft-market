@@ -1,5 +1,5 @@
 import { client } from "@/lib/constants";
-import { PosseViewContract, PosseFormNFT, PosseTrait } from "@/lib/types";
+import { PosseBridgeContract, PosseFormNFT, PosseTrait } from "@/lib/types";
 import { mintNFT } from "@/server-actions/nft";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 interface MintNFTProps {
   mintNFT: typeof mintNFT;
-  collections: PosseViewContract[];
+  collections: PosseBridgeContract[];
 }
 
 export function useMintNFT(props: MintNFTProps) {
@@ -116,7 +116,7 @@ export function useMintNFT(props: MintNFTProps) {
       const tx = await sendTransaction({ transaction, account });
       const receipt = await waitForReceipt(tx);
 
-      newNFT.type = !is1155 ? "ERC-721" : "ERC-1155";
+      newNFT.category = !is1155 ? "ERC-721" : "ERC-1155";
 
       newNFT.tokenId = ((!is1155 ?
         await nextTokenIdToMint1155({ contract: masterContract }) :

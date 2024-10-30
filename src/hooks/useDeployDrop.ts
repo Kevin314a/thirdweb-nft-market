@@ -1,6 +1,6 @@
 import { DEFAULT_PLATFORMFEE, client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
-import { PosseDropMintStage, PosseFormDrop } from "@/lib/types";
+import { PosseFormDropMintStage, PosseFormDrop } from "@/lib/types";
 import { getDateTimeAfter } from "@/lib/utils";
 import { type deployDrop } from "@/server-actions/drop";
 import { useForm } from "react-hook-form";
@@ -25,7 +25,7 @@ export function useDeployDrop(props: DeployDropProps) {
   const activeWalletChain = useActiveWalletChain();
   const { connect } = useConnectModal();
   const [file, setFile] = useState<File | null>(null);
-  const [dropGroup, setDropGroup] = useState<"limited" | "unlimited">("limited");
+  const [dropGroup, setDropGroup] = useState<"LIMITED" | "UNLIMITED">("LIMITED");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedPayToken, setSelectedPayToken] = useState<string[]>(["ETH"]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,21 +33,21 @@ export function useDeployDrop(props: DeployDropProps) {
 
   const { register, handleSubmit: useSubmit, formState: { errors }, setValue, reset } = useForm<PosseFormDrop>({
     defaultValues: {
-      group: "limited",
+      group: "LIMITED",
       address: "",
       name: "",
       description: "",
       image: "",
       payToken: ['ETH'],
-      numberOfItems: 0,
-      mintStartAt: (new Date()).toISOString(),
+      numberOfItems: "",
+      mintStartAt: (new Date()).getTime(),
       owner: "",
       mintStages: [],
     }
   });
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
 
-  const [mintStages, setMintStages] = useState<PosseDropMintStage[]>([]);
+  const [mintStages, setMintStages] = useState<PosseFormDropMintStage[]>([]);
   const [selectedStage, setSelectedStage] = useState<number>(-1);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -57,7 +57,7 @@ export function useDeployDrop(props: DeployDropProps) {
       return;
     }
 
-    if (!["limited", "unlimited"].includes(newDrop.group)) {
+    if (!["LIMITED", "UNLIMITED"].includes(newDrop.group)) {
       toast.error("The type of Drop is invalid.");
       return;
     }
@@ -83,7 +83,7 @@ export function useDeployDrop(props: DeployDropProps) {
       }
       newDrop.image = uri;
 
-      const deployedContractAddress = newDrop.group === "limited" ?
+      const deployedContractAddress = newDrop.group === "LIMITED" ?
         await deployERC721Contract({
           chain: soneiumMinato,
           client,
@@ -178,7 +178,7 @@ export function useDeployDrop(props: DeployDropProps) {
   const fnRefresh = () => {
     reset();
     setSelectedDate(new Date());
-    setDropGroup("limited");
+    setDropGroup("LIMITED");
     setSelectedPayToken(["ETH"]);
     setErrorFile(null);
     setFile(null);

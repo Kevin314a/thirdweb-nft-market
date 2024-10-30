@@ -1,7 +1,7 @@
 'use client'
 
 import { client } from "@/lib/constants";
-import { PosseViewMarket } from "@/lib/types";
+import { PosseBridgeMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
@@ -14,10 +14,10 @@ export default function MarketNFT({
   onBuy,
   onDelist,
 }: {
-  item: PosseViewMarket,
+  item: PosseBridgeMarket,
   isOperating: boolean,
-  onBuy: (item: PosseViewMarket) => void,
-  onDelist: (item: PosseViewMarket) => void,
+  onBuy: (item: PosseBridgeMarket) => void,
+  onDelist: (item: PosseBridgeMarket) => void,
 }) {
   const router = useRouter();
   const account = useActiveAccount();
@@ -56,7 +56,7 @@ export default function MarketNFT({
                 #{item.tokenId}
               </p>
             </div>
-            <MarQuee speed={20} className="text-sm font-semibold text-white py-2">{item.asset.name}</MarQuee>
+            <MarQuee speed={20} className="py-1"><span className="text-sm font-semibold text-white px-4">{item.asset.name}</span></MarQuee>
             <span className="flex w-full justify-between items-center">
               <p className="text-xs text-white">
                 Price:

@@ -1,7 +1,7 @@
 'use client'
 
 import { client } from "@/lib/constants";
-import { PosseViewNFT } from "@/lib/types";
+import { PosseBridgeNFT } from "@/lib/types";
 import { shortenString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
@@ -12,9 +12,9 @@ export default function PortfolioNFT({
   openListPanel,
   onDelist,
 }: {
-  item: PosseViewNFT,
-  openListPanel: (item: PosseViewNFT) => void,
-  onDelist: (item: PosseViewNFT) => void,
+  item: PosseBridgeNFT,
+  openListPanel: (item: PosseBridgeNFT) => void,
+  onDelist: (item: PosseBridgeNFT) => void,
 }) {
   const router = useRouter();
   return (
@@ -40,13 +40,13 @@ export default function PortfolioNFT({
           <div className="flex flex-col w-full justify-center py-3">
             <div className="flex justify-between">
               <p className="text-sm text-white whitespace-nowrap">
-                {shortenString(item.contract.name, 8)}
+                {shortenString(item.contract?.name, 8)}
               </p>
               <p className="text-sm text-white whitespace-nowrap">
                 #{item.tokenId}
               </p>
             </div>
-            <MarQuee speed={20} className="text-sm font-semibold text-white py-2">{item.name}</MarQuee>
+            <MarQuee speed={20} className="py-1"><span className="text-sm font-semibold text-white px-4">{item.name}</span></MarQuee>
             <span className="flex w-full justify-between items-center">
               <p className="text-xs text-white">
                 {"Last sale:"}

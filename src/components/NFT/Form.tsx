@@ -1,7 +1,7 @@
 'use client'
 
 import { useMintNFT } from "@/hooks/useMintNFT";
-import { PosseViewContract, PosseFormNFT } from "@/lib/types";
+import { PosseBridgeContract, PosseFormNFT } from "@/lib/types";
 import { mintNFT } from "@/server-actions/nft";
 import { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import { ContractSelect } from "../Contract";
 import { XUpload } from "../XUpload";
 import { NFTTraitCard, NFTTraitDialog } from ".";
 
-export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseViewContract[] }) => {
+export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseBridgeContract[] }) => {
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { register, handleSubmit: useSubmit, formState: { errors }, watch, reset } = useForm<PosseFormNFT>({
@@ -26,7 +26,7 @@ export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseView
 
   useEffect(() => {
     const current = props.collections.filter(col => col.address === selectedContract);
-    if (current[0]?.type === "ERC-721") {
+    if (current[0]?.category === "ERC-721") {
       setShowSupply(false);
     } else {
       setShowSupply(true);

@@ -18,11 +18,11 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
     handleCreateTraitType, handleEditTraitType, handleRemoveTraitType, setIsOpenTraitDialog } = useDeployContract(props);
   const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseFormContract>();
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
-  const [contractType, setContractType] = useState<"ERC-721" | "ERC-1155">("ERC-721");
+  const [category, setCategory] = useState<"ERC-721" | "ERC-1155">("ERC-721");
 
-  const onContractTypeChange = (type: "ERC-721" | "ERC-1155") => {
-    setContractType(type);
-    setValue('type', type);
+  const onCategoryChange = (category: "ERC-721" | "ERC-1155") => {
+    setCategory(category);
+    setValue('category', category);
   };
 
   return (
@@ -52,7 +52,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
             <Label as="p" className="block text-sm font-medium">Select the type of your Contract:</Label>
-            <RadioGroup value={contractType} onChange={onContractTypeChange}>
+            <RadioGroup value={category} onChange={onCategoryChange}>
               <div className="mt-4 flex flex-row items-center gap-2">
                 <Radio
                   value={"ERC-721"}
@@ -97,12 +97,12 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
               </div>
             </RadioGroup>
             <input
-              {...register('type', { required: 'Please select a type of the smart contract.' })}
-              id="type"
+              {...register('category', { required: 'Please select a type of the smart contract.' })}
+              id="category"
               type="hidden"
-              value={contractType}
+              value={category}
             />
-            {errors.type && <span className="text-red-500">{errors.type.message}</span>}
+            {errors.category && <span className="text-red-500">{errors.category.message}</span>}
           </Field>
           <Field>
             <Label htmlFor="name" className="block mb-2">Name *</Label>

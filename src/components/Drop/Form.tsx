@@ -1,12 +1,11 @@
 'use client'
 
 import classNames from "classnames";
-import { PosseDropMintStage, PosseFormDrop } from "@/lib/types";
+import { PosseFormDropMintStage } from "@/lib/types";
 import { formatDate, getDateTimeAfter } from "@/lib/utils";
 import { useDeployDrop } from "@/hooks/useDeployDrop";
 import { type deployDrop } from "@/server-actions/drop";
-import { useState, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useRef } from "react";
 import { LuPlus, LuLoader2 } from "react-icons/lu";
 import { MdCheckCircleOutline, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
@@ -43,7 +42,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
     setIsOpen(false);
   };
 
-  const handleToDone = (v: PosseDropMintStage) => {
+  const handleToDone = (v: PosseFormDropMintStage) => {
     if (selectedStage < 0) {
       const newStages = [...mintStages, v];
       setMintStages(newStages);
@@ -163,7 +162,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               <p className="mt-1 text-xs text-red-600">{errors.payToken.message}</p>
             )}
           </Field>
-          {dropGroup === "limited" && <Field>
+          {dropGroup === "LIMITED" && <Field>
             <Label htmlFor="numberOfItems" className="block mb-2">Number of items</Label>
             <Input
               {...register('numberOfItems', {
@@ -183,7 +182,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               variant="inline"
               xDate={selectedDate}
               onChangeDate={(d) => {
-                setValue("mintStartAt", (!d) ? (new Date()).toISOString() : d.toISOString());
+                setValue("mintStartAt", (!d) ? (new Date()).getTime() : d.getTime());
                 setSelectedDate(d);
               }}
             />

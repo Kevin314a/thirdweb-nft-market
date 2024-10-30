@@ -1,8 +1,8 @@
 import { TempImageNFT } from "@/assets";
-import { PosseViewNFT } from "@/lib/types";
+import { PosseBridgeNFT } from "@/lib/types";
 
 export const NFTBox = ({ nft, onDetail }: {
-  nft: PosseViewNFT,
+  nft: PosseBridgeNFT,
   onDetail: () => void;
 }) => {
   return (

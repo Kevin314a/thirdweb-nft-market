@@ -8,7 +8,7 @@ export type PosseTrait = {
 export type PosseFormNFT = {
   collection: string;
   tokenId: string;
-  type: "ERC-721" | "ERC-1155";
+  category: "ERC-721" | "ERC-1155";
   name: string;
   description?: string;
   image?: string;
@@ -18,28 +18,28 @@ export type PosseFormNFT = {
   owner: string;
 };
 
-export interface PosseViewNFT extends Omit<PosseFormNFT, 'collection'> {
-  contract: PosseViewContract,
-  contractAddr: string;
-}
-
 export type PosseMarketHistory = {
   seller: string;
   buyer: string;
   action: "DIRECT-LIST" | "ENGLISH-AUCTION";
   orginPrice: string;
   nativePrice: number;
-  qty: number;
-  purchasedAt: string;
+  qty: number;                            // bigint?
+  purchasedAt: number;
 };
 
-export interface PosseDBNFT extends Omit<PosseViewNFT, 'contract'>, Document {
+export interface PosseBridgeNFT extends Omit<PosseFormNFT, 'collection'> {
+  contract?: PosseBridgeContract,         // up to down
+  contractAddr: string;
+  history?: PosseMarketHistory[];         // up to down
+};
+
+export interface PosseDBNFT extends Omit<PosseBridgeNFT, 'contract'>, Document {
   contract: mongoose.Schema.Types.ObjectId;
-  history?: PosseMarketHistory[];
 };
 
 export type PosseFormContract = {
-  type: "ERC-721" | "ERC-1155",
+  category: "ERC-721" | "ERC-1155",
   address: string;
   name: string;
   description?: string;
@@ -47,16 +47,14 @@ export type PosseFormContract = {
   image?: string;
   royaltyBps?: string;
   owner: string;
-  traitTypes?: string[];
+  traitTypes?: string[];                  // TODO term `traitTypes` is incorrect
 };
 
-export interface PosseViewContract extends PosseFormContract {
-
+export interface PosseBridgeContract extends PosseFormContract {
 };
 
-export interface PosseDBContract extends PosseViewContract, Document {
+export interface PosseDBContract extends PosseBridgeContract, Document {
 };
-
 
 export type ListBalance = {
   value: string;
@@ -66,9 +64,6 @@ export type ListBalance = {
   name: string;
 };
 
-
-// in fact, under out rules, PosseFormMarket is almost equal to PosseViewMarket,
-// but this data isn't from user's interface, it comes from thirdweb-api. so bigint, and other types are exist
 export type PosseFormMarket = {
   //common
   mid: string;
@@ -79,7 +74,7 @@ export type PosseFormMarket = {
   currencyContractAddress: string;
   startTimeInSeconds: string;
   endTimeInSeconds: string;
-  asset?: PosseViewNFT;
+  asset?: PosseBridgeNFT;
   status: "UNSET" | "CREATED" | "COMPLETED" | "CANCELLED" | "ACTIVE" | "EXPIRED";
   type: "direct-listing" | "english-auction";
   //direct-listing
@@ -95,11 +90,11 @@ export type PosseFormMarket = {
   bidBufferBps?: string;
 };
 
-export interface PosseViewMarket extends Omit<PosseFormMarket, 'asset'> {
-  asset: PosseViewNFT;
+export interface PosseBridgeMarket extends Omit<PosseFormMarket, 'asset'> {
+  asset: PosseBridgeNFT;
 };
 
-export interface PosseDBMarket extends Omit<PosseViewMarket, 'asset'>, Document {
+export interface PosseDBMarket extends Omit<PosseBridgeMarket, 'asset'>, Document {
   asset: mongoose.Schema.Types.ObjectId;
 };
 
@@ -116,27 +111,26 @@ export type PosseCurrency = {
 };
 
 export type PosseFormDrop = {
-  group: "limited" | "unlimited";
+  group: "LIMITED" | "UNLIMITED";
   address: string;
   name: string;
   description?: string;
   image?: string;
   payToken: string[];
-  numberOfItems?: number;
-  mintStartAt: string;
+  numberOfItems?: string;
+  mintStartAt: number;
   owner: string;
-  mintStages: PosseDropMintStage[];
+  mintStages: PosseFormDropMintStage[];
 };
 
-export interface PosseViewDrop extends PosseFormDrop {
-
+export interface PosseBridgeDrop extends Omit<PosseFormDrop, 'mintStages'> {
+  mintStages: PosseBridgeDropMintStage[];
 };
 
-export interface PosseDBDrop extends Omit<PosseViewDrop, 'mintStartAt'>, Document {
-  mintStartAt: Date;
+export interface PosseDBDrop extends PosseBridgeDrop, Document {
 };
 
-export type PosseDropMintStage = {
+export type PosseFormDropMintStage = {
   name: string;
   price: string;
   currency: string;
@@ -145,4 +139,9 @@ export type PosseDropMintStage = {
   durationm: string;
   perlimit?: string;
   allows: { address: string }[];
+};
+
+export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, 'durationd' | 'durationh' | 'durationm' | 'allows'> {
+  duration: number;
+  allows: string[];
 };

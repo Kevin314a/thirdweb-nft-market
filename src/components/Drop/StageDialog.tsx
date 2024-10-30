@@ -1,6 +1,6 @@
 'use client'
 
-import { PosseDropMintStage } from "@/lib/types";
+import { PosseFormDropMintStage } from "@/lib/types";
 import { useState, useRef, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
@@ -19,12 +19,12 @@ export const StageDialog = ({
   open: boolean,
   onClose: () => void,
   title: string,
-  stage: PosseDropMintStage | null,
-  onCreate: (v: PosseDropMintStage) => void,
+  stage: PosseFormDropMintStage | null,
+  onCreate: (v: PosseFormDropMintStage) => void,
 }) => {
 
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { control, register, handleSubmit: useSubmit, setValue, formState: { errors }, reset } = useForm<PosseDropMintStage>({
+  const { control, register, handleSubmit: useSubmit, setValue, formState: { errors }, reset } = useForm<PosseFormDropMintStage>({
     defaultValues: {
       allows: [],
     }
@@ -51,14 +51,14 @@ export const StageDialog = ({
       setValue("name", "");
       setValue("price", "");
       setValue("currency", "");
-      setValue("durationd", undefined);
-      setValue("durationh", undefined);
-      setValue("durationm", undefined);
+      setValue("durationd", "");
+      setValue("durationh", "");
+      setValue("durationm", "");
       setValue("perlimit", undefined);
     }
   }, [stage]);
 
-  const handleSubmit = async (newStage: PosseDropMintStage) => {
+  const handleSubmit = async (newStage: PosseFormDropMintStage) => {
     newStage.currency = "ETH";
     console.log(newStage);
     onCreate(newStage);
@@ -204,6 +204,7 @@ export const StageDialog = ({
           </div>
           <XUpload
             onFileChange={(file) => {
+              // TODO uploading csv, and decoding addresses
               // if (!file) {
               //   setErrorFile("none");
               // }

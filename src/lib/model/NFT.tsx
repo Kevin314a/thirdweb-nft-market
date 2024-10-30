@@ -11,7 +11,7 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
     type: String,
     required: true,
   },
-  type: {
+  category: {
     type: String,
     enum: ["ERC-721", "ERC-1155"],
     required: true,
@@ -49,19 +49,12 @@ const NFTSchema = new mongoose.Schema<PosseDBNFT>({
       seller: { type: String },
       buyer: { type: String },
       action: { type: String, enum: ["DIRECT-LIST", "ENGLISH-AUCTION"] },
-      orginPrice: {
-        type: String,
-      },
+      orginPrice: { type: String },
       nativePrice: { type: Number },
       qty: { type: Number },
       currency: { type: String },
       netName: { type: String },
-      purchasedAt: {
-        type: Date,
-        default: Date.now,
-        get: (v: Date) => v ? v.toISOString() : '',
-        set: (v: string) => new Date(v),
-      },
+      purchasedAt: { type: Number },
     }],
     default: [],
   }

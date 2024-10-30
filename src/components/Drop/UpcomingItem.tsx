@@ -1,7 +1,7 @@
 'use client'
 
 import { DropNoneBack, ImageCreator } from "@/assets";
-import { PosseViewDrop } from "@/lib/types";
+import { PosseBridgeDrop } from "@/lib/types";
 import { shortenString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { MdNotifications } from "react-icons/md";
@@ -11,7 +11,7 @@ import Image from "next/image";
 export const DropUpcomingItem = ({
   drop,
 }: {
-  drop: PosseViewDrop
+  drop: PosseBridgeDrop
 }) => {
   const router = useRouter();
 
