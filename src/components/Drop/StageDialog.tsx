@@ -51,9 +51,9 @@ export const StageDialog = ({
       setValue("name", "");
       setValue("price", "");
       setValue("currency", "");
-      setValue("durationd", undefined);
-      setValue("durationh", undefined);
-      setValue("durationm", undefined);
+      setValue("durationd", "");
+      setValue("durationh", "");
+      setValue("durationm", "");
       setValue("perlimit", undefined);
     }
   }, [stage]);
