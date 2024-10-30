@@ -1,6 +1,5 @@
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
-import { NATIVE_TOKEN_ADDRESS } from "thirdweb";
-import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
+import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
 import { PosseFormListing, PosseViewNFT, PosseCurrency } from "@/lib/types";
 import { useEffect, useState } from "react";
@@ -37,13 +36,7 @@ export function useListingPortfolio(props: ListingPortfolioProps) {
 
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
-  const currencies: PosseCurrency[] = [
-    {
-      address: NATIVE_TOKEN_ADDRESS,
-      symbol: MARKETPLACE_CONTRACT.chain.nativeCurrency?.symbol || "ETH",
-      icon: NATIVE_TOKEN_ICON_MAP[MARKETPLACE_CONTRACT.chain.id] || "",
-    }
-  ].concat(SUPPORTED_CURRENCIES);
+  const currencies: PosseCurrency[] = SUPPORTED_CURRENCIES;
 
   useEffect(() => {
     return () => {

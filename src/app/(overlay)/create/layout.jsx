@@ -27,8 +27,8 @@ export default function CreateLayout({ children }) {
   }, [account]);
 
   return (
-    <section className="pt-20 lg:pt-0 relative w-[100vw] h-full" style={{ zIndex: 1990, overflowX: 'hidden' }}>
-      <div className="fixed py-2.5 w-full z-50 top-0 start-0 bg-transparent">
+    <section className="pt-20 lg:pt-0 relative w-full h-full" style={{ zIndex: 1990, overflowX: 'hidden' }}>
+      <div className="fixed py-2.5 w-[100vw] z-50 top-0 start-0 bg-transparent">
         <div className="max-w-[1920px] flex items-center justify-between mx-auto xl:px-10 px-5 h-[64px]">
           <button
             className="rounded-full bg-[#1e1e1e] hover:bg-[#3f3f3f] p-3 cursor-pointer"
