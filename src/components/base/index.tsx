@@ -19,6 +19,7 @@ import { TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { MultiSelectListbox as MultiSelect } from "./MultiSelect";
 import { TransitionDialog } from "./TransitionDialog";
 import { XDatePicker } from "./XDatePicker";
+import { XSwiper } from "./XSwiper";
 
 export {
   Button,
@@ -38,4 +39,5 @@ export {
   TransitionDialog,
   Tab, TabGroup, TabList, TabPanel, TabPanels,
   XDatePicker,
+  XSwiper,
 };

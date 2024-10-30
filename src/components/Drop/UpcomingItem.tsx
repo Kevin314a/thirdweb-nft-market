@@ -1,21 +1,24 @@
 'use client'
 
 import { DropNoneBack, ImageCreator } from "@/assets";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { MdNotifications } from "react-icons/md";
+import { PosseViewDrop } from "@/lib/types";
 import { shortenString } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { MdNotifications } from "react-icons/md";
+import Image from "next/image";
 
 
 export const DropUpcomingItem = ({
+  drop,
 }: {
-  }) => {
+  drop: PosseViewDrop
+}) => {
   const router = useRouter();
 
   return (
     <div className="relative">
       <Image
-        src={DropNoneBack}
+        src={!drop.image ? DropNoneBack : drop.image}
         priority
         width={709}
         height={409}
@@ -34,9 +37,9 @@ export const DropUpcomingItem = ({
           />
         </div>
         <div className="flex flex-col w-full mb-4 lg:mb-8">
-          <div className="text-md text-white">{shortenString('Cowboys & Cowgirls by Chris Hat', 25)}</div>
-          <span className="text-xs text-white">By Crowboy Master</span>
-          <span className="text-xs text-white">Open edition 0.68 CRO</span>
+          <div className="text-md text-white">{shortenString(drop.name, 25)}</div>
+          <span className="text-xs text-white">{drop.owner}</span>
+          <span className="text-xs text-white">{drop.group} 0.68 {drop.payToken[0]}</span>
         </div>
         <div className="text-white">
           <div className="flex flex-col md:flex-row w-full justify-between items-center gap-1">

@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { Button } from "@/components/base";
 import { CloseButton, Dialog, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { Fragment, ReactNode } from 'react';
 import { MdClose } from "react-icons/md";

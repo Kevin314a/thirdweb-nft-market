@@ -1,5 +1,5 @@
 import DropModel from "@/lib/model/Drop";
-import { PosseFormDrop } from "@/lib/types";
+import { PosseDBDrop, PosseFormDrop } from "@/lib/types";
 import { dbConnect } from "./connect";
 
 export const storeDrop = async (newDrop: PosseFormDrop) => {
@@ -46,6 +46,16 @@ export const getDrops = async (owner: string) => {
   } catch (err) {
     console.error("[ERROR ON FETCHING DROPS on DB]", err);
     throw new Error("Failed to fetch Drops");
+  }
+};
+
+export const getUpcomingDrops = async (): Promise<PosseDBDrop[]> => {
+  try {
+    await dbConnect();
+    return await DropModel.find({});
+  } catch (err) {
+    console.error("[ERROR ON FETCHING UPCOMING DROPS on DB]", err);
+    throw new Error("Failed to fetch upcoming drops");
   }
 };
 
