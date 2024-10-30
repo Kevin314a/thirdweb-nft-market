@@ -46,7 +46,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             isError={!errorFile}
           />
           {errorFile === "none" && <span className="text-md mt-1 w-full text-right">Your artwork is missing.</span>}
-          {errorFile === "exceed" && <span className="text-md mt-1 w-full text-right">Your artwork exceeds 500KB.</span>}
+          {errorFile === "exceed" && <span className="text-md mt-1 w-full text-right">Your artwork exceeds 5MB.</span>}
           {errorFile === "invalid-ext" && <span className="text-md mt-1 w-full text-right">Your artwork's extension type is invalid.</span>}
         </div>
         <Fieldset className="space-y-8 md:w-1/2">

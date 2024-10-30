@@ -23,7 +23,7 @@ export default function XUpload({
   const onDrop = useCallback<NonNullable<DropzoneOptions["onDrop"]>>(([firstFile]: File[]) => {
 
     try {
-      const maxSize = 500 * 1024; // 500KB
+      const maxSize = 5120 * 1024; // 5MB
       if (firstFile.size > maxSize) {
         onError("exceed");
         setFile(null);
@@ -91,7 +91,7 @@ export default function XUpload({
                   <HiOutlineUpload color="white" size={36} />
                   <span className="text-lg font-medium text-white">Drag & drop media</span>
                   <span className="text-sm font-medium text-golden-1000">Browse files</span>
-                  <span className="text-xs text-gray-400">Max size: 500KB</span>
+                  <span className="text-xs text-gray-400">Max size: 5MB</span>
                   <span className="text-xs text-gray-400">JPG, PNG, GIF, MP3, MP4</span>
                 </>
               )}

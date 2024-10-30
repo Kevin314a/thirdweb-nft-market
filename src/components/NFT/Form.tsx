@@ -63,7 +63,7 @@ export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseView
             isError={!errorFile}
           />
           {errorFile === "none" && <span className="text-white text-md mt-1">Your artwork is missing.</span>}
-          {errorFile === "exceed" && <span className="text-white text-md mt-1">Your artwork exceeds 500KB.</span>}
+          {errorFile === "exceed" && <span className="text-white text-md mt-1">Your artwork exceeds 5MB.</span>}
           {errorFile === "invalid-ext" && <span className="text-white text-md mt-1">Your artwork's extension type is invalid.</span>}
         </div>
         <Fieldset className="space-y-8 md:w-1/2">

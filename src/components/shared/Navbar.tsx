@@ -11,6 +11,7 @@ import { Input } from "../base/Input";
 import { ConnectButton } from "./ConnectButton";
 import { ProfileMenu } from "./ProfileMenu";
 import { IconLogo, IconMagnify } from "@/assets";
+import toast from "react-hot-toast";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -102,6 +103,7 @@ export const Navbar = () => {
                 <li key={i}>
                   <Link
                     href={item.href}
+                    onClick={() => item.href==="#" && toast.error("comming soon")}
                     className={classNames("block px-2.5 transition-all hover:text-golden-1000 font-medium xxl:text-lg text-base leading-[27px]", item.href.split('/').at(1) === pathname.split('/').at(1) ? "text-golden-1100 xxl:text-xl" : "text-white")}
                     aria-current="page"
                   >
@@ -119,25 +121,26 @@ export const Navbar = () => {
 
 const NAV_ITEMS = [
   {
-    label: 'Marketplace',
+    label: 'Eldorado',
     href: '/market',
   },
-  // {
-  //   label: 'DEX',
-  //   href: '#',
-  // },
-  // {
-  //   label: 'Yeehaw',
-  //   href: '#',
-  // },
-  // {
-  //   label: 'Drops',
-  //   href: '/drops',
-  // },
-  // {
-  //   label: 'Stats',
-  //   href: '/stats',
-  // },
+  {
+    label: 'Roundup',
+    href: '#',
+  },
+  {
+    label: 'Yeehaw',
+    href: '#',
+  },
+  {
+    label: 'Drops',
+    // href: '/drops',
+    href: '#',
+  },
+  {
+    label: 'Stats',
+    href: '#',
+  },
   {
     label: 'Create',
     href: '/create',
