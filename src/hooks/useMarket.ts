@@ -1,11 +1,11 @@
 import { getAllValidNFTs } from "@/server-actions/market";
-import { NATIVE_TOKEN_ICON_MAP, SUPPORTED_CURRENCIES } from "@/lib/currencies";
+import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { MARKETPLACE_CONTRACT, client } from "@/lib/constants";
 import { PosseCurrency, PosseViewMarket } from "@/lib/types";
 import { useEffect, useState } from "react";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { allowance, approve, decimals } from "thirdweb/extensions/erc20"; import { soneiumMinato } from "thirdweb/chains";
-import { type Hex, NATIVE_TOKEN_ADDRESS, sendTransaction, toTokens, waitForReceipt, getContract, sendAndConfirmTransaction } from "thirdweb";
+import { type Hex, sendTransaction, toTokens, waitForReceipt, getContract, sendAndConfirmTransaction, NATIVE_TOKEN_ADDRESS } from "thirdweb";
 // import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 // import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
 import { buyFromListing, cancelListing, totalListings } from "thirdweb/extensions/marketplace";
@@ -30,13 +30,7 @@ export function useMarket(props: MarketProps) {
 
   const [isOperating, setIsOperating] = useState<boolean>(false);
 
-  const currencies: PosseCurrency[] = [
-    {
-      address: NATIVE_TOKEN_ADDRESS,
-      symbol: MARKETPLACE_CONTRACT.chain.nativeCurrency?.symbol || "ETH",
-      icon: NATIVE_TOKEN_ICON_MAP[MARKETPLACE_CONTRACT.chain.id] || "",
-    }
-  ].concat(SUPPORTED_CURRENCIES);
+  const currencies: PosseCurrency[] = SUPPORTED_CURRENCIES;
 
   const onChangeFilter = async (_search: string, _sort: string, _currency: string) => {
     setIsLoading(true);

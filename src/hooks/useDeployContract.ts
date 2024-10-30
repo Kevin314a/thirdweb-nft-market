@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PosseFormContract } from "@/lib/types";
-import { client } from "@/lib/constants";
+import { DEFAULT_PLATFORMFEE, client } from "@/lib/constants";
 import { type deployContract } from "@/server-actions/contract";
 import { useRouter } from "next/navigation";
 import { soneiumMinato } from "thirdweb/chains";
@@ -8,6 +8,7 @@ import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiv
 import { resolveScheme, upload } from "thirdweb/storage";
 import { deployERC1155Contract, deployERC721Contract } from "thirdweb/deploys";
 import toast from "react-hot-toast";
+import { royaltyBpsToBigInt } from "@/lib/utils";
 
 interface DeployContractProps {
   deployContract: typeof deployContract
@@ -47,12 +48,9 @@ export function useDeployContract(props: DeployContractProps) {
     try {
       // upload image via thirdweb-ipfs, then change it to 
       uri = (!file) ? "" : await upload({ client, files: [file] });
-      // collection might has no icon
-      // if (!uri) {
-      //   return;
-      // }
     } catch (err) {
       toast.error("Uploading icon file for your collection is failed.");
+      setIsLoading(false);
       return;
     }
 
@@ -60,7 +58,8 @@ export function useDeployContract(props: DeployContractProps) {
 
       newCollection.image = uri;
       newCollection.traitTypes = traitTypes;
-
+      const tmpRoyaltyBps = royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps));
+      
       // deploy collection to blockchain on server  via thirdweb
       const deployedContractAddress = newCollection.type === "ERC-1155" ?
         await deployERC1155Contract({
@@ -71,9 +70,10 @@ export function useDeployContract(props: DeployContractProps) {
           params: {
             name: newCollection.name,
             symbol: newCollection.symbol,
+            contractURI: newCollection.image,
             description: newCollection.description,
-            // platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
-            royaltyBps: BigInt(newCollection.royaltyBps || 0),
+            platformFeeBps: DEFAULT_PLATFORMFEE,
+            royaltyBps: tmpRoyaltyBps,
           },
         })
         :
@@ -85,9 +85,10 @@ export function useDeployContract(props: DeployContractProps) {
           params: {
             name: newCollection.name,
             symbol: newCollection.symbol,
+            contractURI: newCollection.image,
             description: newCollection.description,
-            // platformFeeBps: BigInt(newCollection.platformFeeBps || 0),
-            royaltyBps: BigInt(newCollection.royaltyBps || 0),
+            platformFeeBps: DEFAULT_PLATFORMFEE,
+            royaltyBps: tmpRoyaltyBps,
           },
         });
 

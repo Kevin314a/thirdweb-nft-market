@@ -47,14 +47,14 @@ export function shortenString(str: string, len: number) {
   return str.substring(0, len).concat('...');
 }
 
-export function getDateTimeAfter(date: Date | null, days: number | undefined, hours: number | undefined, mins: number | undefined) : Date {
-  // const parsedDays = isNaN(Number(days)) ? 0 : Number(days);
-  // const parsedHours = isNaN(Number(hours)) ? 0 : Number(hours);
-  // const parsedMins = isNaN(Number(mins)) ? 0 : Number(mins);
+export function getDateTimeAfter(date: Date | null, days: string, hours: string, mins: string): Date {
+  const parsedDays = isNaN(Number(days)) ? 0 : Number(days);
+  const parsedHours = isNaN(Number(hours)) ? 0 : Number(hours);
+  const parsedMins = isNaN(Number(mins)) ? 0 : Number(mins);
 
-  const parsedDays = !days ? 0 : days;
-  const parsedHours = !hours ? 0 : hours;
-  const parsedMins = !mins ? 0 : mins;
+  // const parsedDays = !days ? 0 : days;
+  // const parsedHours = !hours ? 0 : hours;
+  // const parsedMins = !mins ? 0 : mins;
 
   const addedTime = parsedDays * 24 * 60 * 60 * 1000 + parsedHours * 60 * 60 * 1000 + parsedMins * 60 * 1000;
 
@@ -87,4 +87,9 @@ export function formatDate(date: Date): string {
 
   // Combine formatted date and GMT offset
   return `${formattedDate} ${gmtOffset}`;
+}
+
+export function royaltyBpsToBigInt(royaltyPercentage: number) {
+  const scaleFactor = 1000; // Scale factor for 3 decimal places
+  return BigInt(Math.round(royaltyPercentage * scaleFactor));
 }

@@ -19,14 +19,9 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { account, setFile, isLoading, handleSubmit,
-    dropType, setDropType, selectedDate, setSelectedDate, selectedPayToken, setSelectedPayToken } = useDeployDrop(props);
-
-  const { register, handleSubmit: useSubmit, formState: { errors }, reset } = useForm<PosseFormDrop>();
-  const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
-
-  const [mintStages, setMintStages] = useState<PosseDropMintStage[]>([]);
-  const [selectedStage, setSelectedStage] = useState<number>(-1);
-  const [isOpen, setIsOpen] = useState(false);
+    dropGroup, setDropGroup, selectedDate, setSelectedDate, selectedPayToken, setSelectedPayToken,
+    register, useSubmit, errors, setValue, reset, errorFile, setErrorFile, mintStages, setMintStages, selectedStage, setSelectedStage, isOpen, setIsOpen,
+  } = useDeployDrop(props);
 
   const handleToAddStage = () => {
     setSelectedStage(-1);
@@ -41,6 +36,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
   const handleToDeleteStage = (idx: number) => {
     const newStages = mintStages.slice(0, idx).concat(mintStages.slice(idx + 1));
     setMintStages(newStages);
+    setValue("mintStages", newStages);
   };
 
   const handleToClose = () => {
@@ -49,10 +45,13 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
 
   const handleToDone = (v: PosseDropMintStage) => {
     if (selectedStage < 0) {
-      setMintStages((prevItems) => [...prevItems, v]);
+      const newStages = [...mintStages, v];
+      setMintStages(newStages);
+      setValue("mintStages", newStages);
     } else {
       const newStages = mintStages.slice(0, selectedStage).concat(v).concat(mintStages.slice(selectedStage + 1));
       setMintStages(newStages);
+      setValue("mintStages", newStages);
     }
     setIsOpen(false);
   };
@@ -66,8 +65,8 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
       >
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
-            <Label as="p" className="block text-sm font-medium">Select the type of your Drop:</Label>
-            <RadioGroup value={dropType} onChange={(v) => setDropType(v)}>
+            <Label as="p" className="block text-sm font-medium">Select the Group of your Drop *</Label>
+            <RadioGroup value={dropGroup} onChange={(v) => setDropGroup(v)}>
               <div className="mt-4 flex flex-row items-center gap-2">
                 <Radio
                   value={"limited"}
@@ -114,12 +113,12 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               </div>
             </RadioGroup>
             <input
-              {...register('type', { required: 'Please select a type of the drop.' })}
-              id="type"
+              {...register('group', { required: 'Please select a group of the drop.' })}
+              id="group"
               type="hidden"
-              value={dropType}
+              value={dropGroup}
             />
-            {errors.type && <span className="text-red-500">{errors.type.message}</span>}
+            {errors.group && <span className="text-red-500">{errors.group.message}</span>}
           </Field>
           <Field>
             <Label htmlFor="name" className="block mb-2">Name *</Label>
@@ -154,14 +153,17 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               variant="inline"
               items={["ETH", "ASTR"]}
               selectedItems={selectedPayToken}
-              onChangeSelectedItems={(v) => setSelectedPayToken(v)}
+              onChangeSelectedItems={(v) => {
+                setValue("payToken", v);
+                setSelectedPayToken(v);
+              }}
               placeholder="Add Token"
             />
             {errors.payToken && (
               <p className="mt-1 text-xs text-red-600">{errors.payToken.message}</p>
             )}
           </Field>
-          {dropType === "limited" && <Field>
+          {dropGroup === "limited" && <Field>
             <Label htmlFor="numberOfItems" className="block mb-2">Number of items</Label>
             <Input
               {...register('numberOfItems', {
@@ -175,12 +177,15 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
             )}
           </Field>}
           <Field>
-            <Label htmlFor="mintStartDate" as="p" className="block mb-2">Mint start date & time</Label>
+            <Label htmlFor="mintStartAt" as="p" className="block mb-2">Mint start date & time</Label>
             <XDatePicker
               className="px-3 py-1 min-w-[25vw]"
               variant="inline"
               xDate={selectedDate}
-              onChangeDate={setSelectedDate}
+              onChangeDate={(d) => {
+                setValue("mintStartAt", (!d) ? (new Date()).toISOString() : d.toISOString());
+                setSelectedDate(d);
+              }}
             />
           </Field>
         </Fieldset>
@@ -234,7 +239,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
                     className="rounded-full"
                     onClick={() => handleToEditStage(i)}
                   >
-                    <MdOutlineEdit color="white"  />
+                    <MdOutlineEdit color="white" />
                   </Button>
                   <Button
                     type="button"
@@ -242,7 +247,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
                     className="rounded-full"
                     onClick={() => handleToDeleteStage(i)}
                   >
-                    <RiDeleteBin2Line color="white"  />
+                    <RiDeleteBin2Line color="white" />
                   </Button>
                 </div>
               </div>
