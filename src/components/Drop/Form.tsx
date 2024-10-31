@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import { PosseFormDropMintStage } from "@/lib/types";
-import { formatDate, getDateTimeAfter } from "@/lib/utils";
+import { formatDate, getDateTimeAfter, isValidBigInt } from "@/lib/utils";
 import { useDeployDrop } from "@/hooks/useDeployDrop";
 import { type deployDrop } from "@/server-actions/drop";
 import { useRef } from "react";
@@ -166,6 +166,8 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
             <Label htmlFor="numberOfItems" className="block mb-2">Number of items</Label>
             <Input
               {...register('numberOfItems', {
+                required: "Number of items is required",
+                validate: (v) => isValidBigInt(v, true) || "Number of items is invalid",
               })}
               id="numberOfItems"
               type="text"

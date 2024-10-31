@@ -267,8 +267,8 @@ export const hasBoughtNFT = async (
           history: {
             $elemMatch: {
               purchasedAt: {
-                $gte: startOfToday,
-                $lte: endOfToday
+                $gte: startOfToday.getTime(),
+                $lte: endOfToday.getTime(),
               },
               buyer: { $regex: regex },
               currency: "ASTR",
@@ -289,8 +289,8 @@ export const hasBoughtNFT = async (
               as: 'historyItem',
               cond: {
                 $and: [
-                  { $gte: ['$$historyItem.purchasedAt', startOfToday] },
-                  { $lte: ['$$historyItem.purchasedAt', endOfToday] },
+                  { $gte: ['$$historyItem.purchasedAt', startOfToday.getTime()] },
+                  { $lte: ['$$historyItem.purchasedAt', endOfToday.getTime()] },
                   { $eq: ['$$historyItem.currency', "ASTR"] },
                   { $regexMatch: { input: '$$historyItem.buyer', regex: regex } },
                 ]

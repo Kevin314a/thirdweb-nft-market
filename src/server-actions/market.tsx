@@ -5,6 +5,7 @@ import { getContract as getContractDB, storeContract } from "@/lib/db/contract";
 import { findOneAndUpdateNFT, getNFT, updateNFT } from "@/lib/db/nft";
 import { getNFTfromMarket, getNFTfromMarketbyId, getValidNFTs, removeInvalidNFTs, removeNFTsfromMarket, storeNFTtoMarket } from "@/lib/db/market";
 import { PosseBridgeMarket } from "@/lib/types";
+import { toNumber } from "@/lib/utils";
 import { getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { getContractMetadata, owner } from "thirdweb/extensions/common";
@@ -126,7 +127,7 @@ export async function buyNFT(accountAddr: string, marketId: string, contractAddr
           buyer: accountAddr,
           action: "DIRECT-LIST",
           orginPrice: oldOneMarket.currencyValuePerToken.value,
-          nativePrice: oldOneMarket.currencyValuePerToken.displayValue,
+          nativePrice: toNumber(oldOneMarket.currencyValuePerToken.displayValue),
           qty: 1,
           currency: oldOneMarket.currencyValuePerToken.symbol,
           netName: oldOneMarket.currencyValuePerToken.name,

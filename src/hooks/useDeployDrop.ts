@@ -1,4 +1,4 @@
-import { DEFAULT_PLATFORMFEE, client } from "@/lib/constants";
+import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { PosseFormDropMintStage, PosseFormDrop } from "@/lib/types";
 import { getDateTimeAfter } from "@/lib/utils";
@@ -93,7 +93,7 @@ export function useDeployDrop(props: DeployDropProps) {
             name: newDrop.name,
             description: newDrop.description,
             contractURI: newDrop.image,
-            platformFeeBps: DEFAULT_PLATFORMFEE,
+            platformFeeBps: DEFAULT_PLATFORMFEE_DROP,
           },
         })
         :

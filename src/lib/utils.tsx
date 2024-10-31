@@ -43,7 +43,7 @@ export function shortenString(str: string | undefined, len: number) {
   if (!str) {
     return "";
   }
-  
+
   if (!!str && str.length <= len) {
     return str;
   }
@@ -98,10 +98,37 @@ export function royaltyBpsToBigInt(royaltyPercentage: number) {
   return BigInt(Math.round(royaltyPercentage * scaleFactor));
 }
 
-export const isValidBigInt = (value: string): boolean => {
+export const isValidBigInt = (value: string | undefined, required: boolean): boolean => {
+  if (!value) {
+    return !required;
+  }
   // Check for valid integer pattern, allowing optional leading "-" for negative numbers
   const integerPattern = /^-?\d+$/;
   return integerPattern.test(value);
+};
+
+export const isValidNumber = (value: string | undefined, required: boolean): boolean => {
+  if (!value) {
+    return !required;
+  }
+  const floatPattern = /^-?\d*\.?\d*$/;
+  return floatPattern.test(value);
+};
+
+export const isNotOverMin = (value: string | undefined, minValue: number): boolean => {
+  if (!value) {
+    return true;
+  }
+  const v = Number(value);
+  return isNaN(v) || v >= minValue;
+};
+
+export const isNotOverMax = (value: string | undefined, maxValue: number) : boolean => {
+  if (!value) {
+    return true;
+  }
+  const v = Number(value);
+  return isNaN(v) || v <= maxValue;
 };
 
 export const toNumber = (value: string): number => {

@@ -10,6 +10,7 @@ import { Button, Field, Fieldset, Input, Label, Menu, MenuButton, MenuItems, Men
 import { Spinner } from "../shared/Spinner";
 import { SlideOver } from "../XSlideOver/SlideOver";
 import { PortfolioFilter, PortfolioNFT } from ".";
+import { isNotOverMin, isValidNumber } from "@/lib/utils";
 
 export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs, listNFT: typeof listNFT, verifyNFTtoList: typeof verifyNFTtoList }) {
 
@@ -62,10 +63,16 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
               <Field>
                 <Label htmlFor="price" className="block mb-2">Price *</Label>
                 <Input
-                  {...register('price', { required: "Price is required" })}
+                  {...register('price', { 
+                    required: "Price is required",
+                    validate: {
+                      isValid: (v) => isValidNumber(v, true) || "Price is invalid",
+                      overFlowMin: (v) => isNotOverMin(v, 0) || "Price must over 0",
+                    }
+                  })}
                   id="price"
-                  type="number"
-                  step="any"
+                  type="text"
+                  // step="any"
                   className="px-3 py-1 bg-gray-600/[30%] focus:border-gray-300 border-gray-300"
                 />
                 {errors.price && (

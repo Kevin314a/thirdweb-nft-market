@@ -10,6 +10,7 @@ import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "..
 import { ContractSelect } from "../Contract";
 import { XUpload } from "../XUpload";
 import { NFTTraitCard, NFTTraitDialog } from ".";
+import { isValidBigInt } from "@/lib/utils";
 
 export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseBridgeContract[] }) => {
 
@@ -102,16 +103,7 @@ export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseBrid
             <Input
               {...register('supply', {
                 required: "Supply is required",
-                validate: (value) => {
-                  try {
-                    const biValue = BigInt(value || 0);
-                    if (biValue.toString().length === String(value).length) {
-                      return true;
-                    }
-                  } catch (err) {
-                    return "Supply is invalid";
-                  }
-                },
+                validate: (v) => isValidBigInt(v, true) || "Supply is invalid",
               })}
               id="supply"
               type="text"

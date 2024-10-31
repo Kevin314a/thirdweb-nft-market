@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PosseFormContract } from "@/lib/types";
-import { DEFAULT_PLATFORMFEE, client } from "@/lib/constants";
+import { DEFAULT_PLATFORMFEE_COLLECTION, client } from "@/lib/constants";
 import { type deployContract } from "@/server-actions/contract";
 import { useRouter } from "next/navigation";
 import { soneiumMinato } from "thirdweb/chains";
@@ -58,7 +58,6 @@ export function useDeployContract(props: DeployContractProps) {
 
       newCollection.image = uri;
       newCollection.traitTypes = traitTypes;
-      const tmpRoyaltyBps = royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps));
       
       // deploy collection to blockchain on server  via thirdweb
       const deployedContractAddress = newCollection.category === "ERC-1155" ?
@@ -72,8 +71,8 @@ export function useDeployContract(props: DeployContractProps) {
             symbol: newCollection.symbol,
             contractURI: newCollection.image,
             description: newCollection.description,
-            platformFeeBps: DEFAULT_PLATFORMFEE,
-            royaltyBps: tmpRoyaltyBps,
+            platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
+            royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),
           },
         })
         :
@@ -87,8 +86,8 @@ export function useDeployContract(props: DeployContractProps) {
             symbol: newCollection.symbol,
             contractURI: newCollection.image,
             description: newCollection.description,
-            platformFeeBps: DEFAULT_PLATFORMFEE,
-            royaltyBps: tmpRoyaltyBps,
+            platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
+            royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),
           },
         });
 

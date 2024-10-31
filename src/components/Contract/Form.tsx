@@ -10,6 +10,7 @@ import { MdCheckCircleOutline } from "react-icons/md";
 import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "../base";
 import { XUpload } from "../XUpload";
 import { ContractTraitCard, ContractTraitDialog } from ".";
+import { isNotOverMax, isNotOverMin, isValidNumber } from "@/lib/utils";
 
 export const ContractForm = (props: { deployContract: typeof deployContract }) => {
 
@@ -150,20 +151,17 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             />
           </Field>
           <Field>
-            <Label htmlFor="royaltyBps" className="block mb-2">Roylaties</Label>
+            <Label htmlFor="royaltyBps" className="block mb-2">Royalties</Label>
             <Input
               {...register('royaltyBps', {
-                min: {
-                  value: 0,
-                  message: "royalties is between 0.0% ~ 10.0%",
-                },
-                max: {
-                  value: 10.0,
-                  message: "royalties is between 0.0% ~ 10.0%",
+                validate: {
+                  isValid: (v) => isValidNumber(v, false) || "Supply is invalid",
+                  overFlowMin: (v) => isNotOverMin(v, 0) || "royalties is between 0.0% ~ 10.0%",
+                  overFlowMax: (v) => isNotOverMax(v, 10) || "royalties is between 0.0% ~ 10.0%",
                 }
               })}
               id="royaltyBps"
-              type="number"
+              type="text"
               className="px-3 py-1 min-w-[25vw]"
             />
             {errors.royaltyBps && (
