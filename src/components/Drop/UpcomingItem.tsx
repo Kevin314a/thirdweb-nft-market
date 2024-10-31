@@ -71,7 +71,12 @@ export const DropUpcomingItem = ({
             </div>
             <div className="flex flex-row w-full justify-end gap-1">
               <div className="bg-gray-1200 hover:bg-gray-1000 rounded-md p-2 flex justify-center items-center cursor-pointer"><MdNotifications /></div>
-              <div className="bg-gray-1300 hover:bg-gray-1000 rounded-md p-2 whitespace-nowrap text-sm cursor-pointer" onClick={() => router.push('/contract/0x1')}>Drop Info</div>
+              <div
+                className="bg-gray-1300 hover:bg-gray-1000 rounded-md p-2 whitespace-nowrap text-sm cursor-pointer"
+                onClick={() => router.push(`/drops/${drop.address}`)}
+              >
+                Drop Info
+              </div>
             </div>
           </div>
         </div>

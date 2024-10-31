@@ -133,7 +133,7 @@ export const NFTDetail = ({ nft }) => {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 -z-10">
-          <Image
+          <Image 
             width={145}
             height={312}
             className="w-[145px] h-auto"

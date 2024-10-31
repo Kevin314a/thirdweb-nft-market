@@ -1,16 +1,16 @@
 'use client'
 
-import classNames from "classnames";
+import { IconLogo, IconMagnify } from "@/assets";
+import { Input } from "@/components/base";
+import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 
-import { Input } from "../base/Input";
 import { ConnectButton } from "./ConnectButton";
 import { ProfileMenu } from "./ProfileMenu";
-import { IconLogo, IconMagnify } from "@/assets";
 import toast from "react-hot-toast";
 
 export const Navbar = () => {
@@ -19,16 +19,16 @@ export const Navbar = () => {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
 
-  useEffect(() => {
-    fetch('/api/save-user', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ wallet: account?.address || "" }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-      });
-  }, [account]);
+  // useEffect(() => {
+  //   fetch('/api/save-user', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ wallet: account?.address || "" }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //     });
+  // }, [account]);
 
   const toggleMenu = () => {
     setActive(pre => !pre);
@@ -97,18 +97,46 @@ export const Navbar = () => {
               </svg>
             </button>
           </div>
-          <div className={`${active ? 'active' : ''} items-center xxl:pr-[54px] xl:pr-8 xl:pl-8 px-6 lg:h-auto h-screen justify-between w-3/4 transition-all z-10 duration-500 lg:static absolute -left-[100%] py-6 lg:py-0 top-20  lg:flex lg:w-auto md:order-1 lg:bg-transparent bg-black`} id="navbar-sticky">
-            <ul className="flex flex-col rtl:space-x-reverse lg:flex-row gap-5 lg:gap-1 ">
+          <div
+            className={`${active ? 'active' : ''
+              } items-center xxl:pr-[54px] xl:pr-8 xl:pl-8 px-6 lg:h-auto h-screen justify-between w-3/4 transition-all z-10 duration-500 lg:static absolute -left-[100%] py-6 lg:py-0 top-20 lg:flex lg:w-auto md:order-1 lg:bg-transparent bg-black`}
+            id="navbar-sticky"
+          >
+            <ul className="flex flex-col rtl:space-x-reverse lg:flex-row gap-5 lg:gap-1">
               {NAV_ITEMS.map((item, i) => (
-                <li key={i}>
+                <li key={i} className="group relative py-4">
                   <Link
                     href={item.href}
-                    onClick={() => item.href==="#" && toast.error("comming soon")}
-                    className={classNames("block px-2.5 transition-all hover:text-golden-1000 font-medium xxl:text-lg text-base leading-[27px]", item.href.split('/').at(1) === pathname.split('/').at(1) ? "text-golden-1100 xxl:text-xl" : "text-white")}
+                    onClick={() => item.href === "#" && toast.error("coming soon")}
+                    className={`block px-2.5 transition-all font-medium xxl:text-lg text-base leading-[27px] ${item.href.split('/').at(1) === pathname.split('/').at(1)
+                      ? 'text-golden-1100 xxl:text-xl'
+                      : 'text-white'
+                      } group-hover:text-golden-1000 hover:text-golden-1000`}
                     aria-current="page"
                   >
-                    {item.label}
+                    <div className="flex justify-center items-center whhitespace-nowrap gap-1">
+                      {item.label}
+                      {item.children && (
+                        <FaChevronDown size={12} className={`${item.href.split('/').at(1) === pathname.split('/').at(1)
+                        ? 'text-golden-1100' : 'text-white'
+                        } group-hover:text-golden-1000 hover:text-golden-1000`} />
+                      )}
+                    </div>
                   </Link>
+                  {item.children && (
+                    <ul className="absolute left-0 mt-4 w-auto bg-black-1300 text-white shadow-lg rounded-lg hidden group-hover:block transition duration-300 ease-in-out">
+                      {item.children.map((child, childIndex) => (
+                        <li key={childIndex} className="border-b border-black-1200">
+                          <Link
+                            href={child.href}
+                            className="block p-4 hover:bg-golden-1300 rounded-lg hover:text-gray-200 whitespace-nowrap"
+                          >
+                            {child.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </li>
               ))}
             </ul>
@@ -135,6 +163,16 @@ const NAV_ITEMS = [
   {
     label: 'Drops',
     href: '/drops',
+    children: [
+      {
+        label: 'Create Drops',
+        href: '/create/drop',
+      },
+      {
+        label: 'My Own Drops',
+        href: '/drops/own',
+      },
+    ]
   },
   {
     label: 'Stats',
@@ -143,5 +181,15 @@ const NAV_ITEMS = [
   {
     label: 'Create',
     href: '/create',
+    children: [
+      {
+        label: 'Create an NFT',
+        href: '/create/nft',
+      },
+      {
+        label: 'Create a Collection',
+        href: '/create/collection',
+      },
+    ]
   },
 ]
