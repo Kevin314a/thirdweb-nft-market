@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${poppins.variable} overflow-hidden`}>
+      <body className={`${inter.variable} ${poppins.variable}`}>
         <Providers>
           <main className="font-poppins overflow-hidden bg-black w-full bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url(${MainBack.src})` }}>
             {children}

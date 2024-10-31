@@ -120,6 +120,7 @@ export type PosseFormDrop = {
   numberOfItems?: string;
   mintStartAt: number;
   owner: string;
+  visible?: boolean;
   mintStages: PosseFormDropMintStage[];
 };
 

@@ -35,7 +35,7 @@ export const Navbar = () => {
   }
 
   return (
-    <div className="fixed py-2.5 w-full z-50 top-0 start-0 bg-black">
+    <header className="fixed py-2.5 w-[100vw] pr-3 z-50 top-0 start-0 bg-black">
       <nav>
         <div className="max-w-[1920px] lg:px-6 px-3 flex items-center justify-between">
           <Link href="/" className="flex items-center relative z-20">
@@ -115,7 +115,7 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
-    </div>
+    </header>
   )
 }
 
