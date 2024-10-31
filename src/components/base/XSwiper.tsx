@@ -1,9 +1,10 @@
 'use client'
 
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import classNames from "classnames";
 import SwiperCore from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -90,37 +91,33 @@ const XSwiper = ({
   spaceBetween?: number,
   breakpoint?: "large" | "medium" | "small",
 }) => {
-  const swiperRef = useRef<SwiperCore | null>(null);
+  // const swiperRef = useRef<SwiperCore | null>(null);
 
-  const handlePrev = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slidePrev();
-    }
-  };
 
-  const handleNext = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideNext();
-    }
-  };
+  // const handlePrev = () => {
+  //   if (swiperRef.current) {
+  //     swiperRef.current.slidePrev();
+  //   }
+  // };
+
+  // const handleNext = () => {
+  //   if (swiperRef.current) {
+  //     swiperRef.current.slideNext();
+  //   }
+  // };
 
   return (
     <div className="max-w-full mx-auto relative pl-0">
       <Swiper
-        onBeforeInit={(swiper) => {
-          swiperRef.current = swiper;
-        }}
         spaceBetween={spaceBetween || 26}
         slidesPerView={slidesPerView || 3}
+        navigation={true}
         pagination={{ clickable: true }}
         breakpoints={breakpoint ? breakpoints[breakpoint] : breakpoints['medium']}
+        modules={[Navigation, Pagination]}
       >
         {children}
       </Swiper>
-      <div className="lg:flex justify-between mt-4">
-        <SwiperLeftIcon onPrev={handlePrev} />
-        <SwiperRightIcon onNext={handleNext} />
-      </div>
     </div>
   );
 };

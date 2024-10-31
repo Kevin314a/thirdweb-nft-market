@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    -webkit-user-select: none;
+    /* Safari */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* IE10+/Edge */
+    user-select: none;
+    /* Standard */
+}
 
 #default-tab button[aria-selected="true"] {
     background: linear-gradient(97deg, #C3976A 1.98%, #C3976A 43.12%, #C3976A 99.93%);
@@ -15,7 +25,7 @@ select:not([size]) {
     background-repeat: no-repeat;
 }
 
-#navbar-sticky.active{
+#navbar-sticky.active {
     @apply left-0
 }
 
@@ -46,17 +56,17 @@ select:not([size]) {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type=number] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 .stacking-approve-box-minibox-inputbox {
     background-color: transparent;
-    border: none!important;
+    border: none !important;
     font-size: 1.4em;
     text-align: end;
     color: white;
@@ -76,29 +86,47 @@ input[type=number] {
     align-items: center;
 }
 
+.swiper {
+    .swiper-button-next, .swiper-button-prev {
+        background-color: #C3976A;
+        color: white;
+        transition-duration: 300ms;
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 1.4rem;
+        padding-right: 1.4rem;
+        border-radius: 9999px;
+    }
 
-.slider {
-    margin: 0 20px 0 0;
-    overflow: hidden;
-    padding: 1rem 0;
-}
+    /* .swiper-button-prev {
+        left: 0rem;
+    }
+    .swiper-button-next {
+        right: 0rem;
+    } */
+    
+    .swiper-button-prev::after, .swiper-button-next::after {
+        font-size: 1rem;
+    }
+    .swiper-button-prev:hover, .swiper-button-next:hover {
+        background-color: #924A36;
+    }
 
-.slider img {
-    width: 100%;
-    border-radius: 10px;
-}
+    .swiper-pagination.swiper-pagination-bullets {
+        position: relative !important;
+        margin-top: 1rem;
+        bottom: 0 !important;
 
-.react-multi-carousel-list {
-    padding: 0rem 0 2rem 0;
-}
+        .swiper-pagination-bullet {
+            background: #c3976a !important;
+            width: 1.2rem !important;
+            height: 1.2rem !important;
 
-.custom-dot-list-style button {
-    border: none;
-    background: #c3976a;
-    width: 1.2rem !important;
-    height: 1.2rem !important;
-}
-
-.react-multi-carousel-dot.react-multi-carousel-dot--active button {
-    background: #924936 !important;
+            .swiper-pagination-bullet-active {
+                background: #924936 !important;
+            }
+        }
+    }
 }

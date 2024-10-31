@@ -19,6 +19,20 @@ export const DropUpcoming = ({
           />
         </XSwiper.SwiperSlide>
       ))}
+      {items.map((item, i) => (
+        <XSwiper.SwiperSlide key={i}>
+          <DropUpcomingItem
+            drop={item}
+          />
+        </XSwiper.SwiperSlide>
+      ))}
+      {items.map((item, i) => (
+        <XSwiper.SwiperSlide key={i}>
+          <DropUpcomingItem
+            drop={item}
+          />
+        </XSwiper.SwiperSlide>
+      ))}
     </XSwiper>
   );
 };
