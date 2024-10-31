@@ -3,8 +3,9 @@
 import { client, ITEMS_PER_PAGE } from "@/lib/constants";
 import { getContract as getContractDB, storeContract } from "@/lib/db/contract";
 import { findOneAndUpdateNFT, getNFT, updateNFT } from "@/lib/db/nft";
-import { getNFTfromMarketbyId, getValidNFTs, removeInvalidNFTs, removeNFTsfromMarket, storeNFTtoMarket } from "@/lib/db/market";
-import { PosseViewMarket } from "@/lib/types";
+import { getNFTfromMarket, getNFTfromMarketbyId, getValidNFTs, removeInvalidNFTs, removeNFTsfromMarket, storeNFTtoMarket } from "@/lib/db/market";
+import { PosseBridgeMarket } from "@/lib/types";
+import { toNumber } from "@/lib/utils";
 import { getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { getContractMetadata, owner } from "thirdweb/extensions/common";
@@ -43,7 +44,7 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
 
     const data = await getValidNFTs(conds, sort, page);
 
-    const nfts: PosseViewMarket[] = data?.map((item: any) => ({
+    const nfts: PosseBridgeMarket[] = data?.map((item: any) => ({
       mid: item.mid,
       creatorAddress: item.creatorAddress,
       assetContractAddress: item.assetContractAddress,
@@ -56,7 +57,7 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
         contract: item.asset.contract,
         contractAddr: item.asset.contractAddr,
         tokenId: item.asset.tokenId,
-        type: item.asset.type,
+        category: item.asset.category,
         name: item.asset.name,
         description: item.asset.description,
         image: item.asset.image,
@@ -87,7 +88,7 @@ export async function getAllValidNFTs(_search: string, _sort: string, _currency:
     }
 
   } catch (err) {
-    console.error('[ERROR ON FETCHING OWN NFT]', err);
+    console.error('[ERROR ON FETCHING ALL VALID NFTs ON MARKET]', err);
     return {
       nfts: JSON.stringify([]),
       hasMore: false,
@@ -126,11 +127,11 @@ export async function buyNFT(accountAddr: string, marketId: string, contractAddr
           buyer: accountAddr,
           action: "DIRECT-LIST",
           orginPrice: oldOneMarket.currencyValuePerToken.value,
-          nativePrice: oldOneMarket.currencyValuePerToken.displayValue,
+          nativePrice: toNumber(oldOneMarket.currencyValuePerToken.displayValue),
           qty: 1,
           currency: oldOneMarket.currencyValuePerToken.symbol,
           netName: oldOneMarket.currencyValuePerToken.name,
-          purchasedAt: new Date().toISOString(),
+          purchasedAt: (new Date()).getTime(),
         }
       },
     });
@@ -182,7 +183,7 @@ export async function updateAllValidNFTs(accountAddress: string | undefined, lis
           const contractOwner = await owner({ contract: contract3rd });
           const contractMetadata = await getContractMetadata({ contract: contract3rd });
           newContractId = await storeContract({
-            type: "ERC-721",
+            category: "ERC-721",
             address: listedItem.assetContractAddress,
             name: contractMetadata?.name || "",
             symbol: contractMetadata?.symbol,
@@ -221,7 +222,7 @@ export async function updateAllValidNFTs(accountAddress: string | undefined, lis
             contract: newContractId,
             contractAddr: listedItem.assetContractAddress,
             tokenId: listedItem.tokenId,
-            type: listedItem.asset.type === "ERC721" ? "ERC-721" : "ERC-1155",
+            category: listedItem.asset.type === "ERC721" ? "ERC-721" : "ERC-1155",
             name: listedItem.asset.metadata.name || "",
             description: listedItem.asset.metadata.description,
             image: finalImageUrl,
@@ -233,6 +234,12 @@ export async function updateAllValidNFTs(accountAddress: string | undefined, lis
       );
 
       // part of market
+
+      const oldOne = await getNFTfromMarket(listedItem.assetContractAddress, listedItem.tokenId.toString());
+      if (oldOne) {
+        continue;
+      }
+      const nft = await getNFT(listedItem.assetContractAddress, listedItem.tokenId.toString());
       await storeNFTtoMarket({
         mid: listedItem.id.toString(),
         creatorAddress: listedItem.creatorAddress,
@@ -242,7 +249,7 @@ export async function updateAllValidNFTs(accountAddress: string | undefined, lis
         currencyContractAddress: listedItem.currencyContractAddress,
         startTimeInSeconds: listedItem.startTimeInSeconds.toString(),
         endTimeInSeconds: listedItem.endTimeInSeconds.toString(),
-        asset: newAsset._id,
+        asset: nft._id,
         status: listedItem.status,
         type: listedItem.type,
         //direct-listing

@@ -68,9 +68,7 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
     type: String,
   },
   minimumBidCurrencyValue: {
-    value: {
-      type: String,
-    },
+    value: { type: String },
     decimals: { type: Number },
     displayValue: { type: String },
     symbol: { type: String },
@@ -80,9 +78,7 @@ const MarketSchema = new mongoose.Schema<PosseDBMarket>({
     type: String,
   },
   buyoutCurrencyValue: {
-    value: {
-      type: String,
-    },
+    value: { type: String },
     decimals: { type: Number },
     displayValue: { type: String },
     symbol: { type: String },

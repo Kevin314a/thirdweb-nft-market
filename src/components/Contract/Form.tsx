@@ -10,6 +10,7 @@ import { MdCheckCircleOutline } from "react-icons/md";
 import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "../base";
 import { XUpload } from "../XUpload";
 import { ContractTraitCard, ContractTraitDialog } from ".";
+import { isNotOverMax, isNotOverMin, isValidNumber } from "@/lib/utils";
 
 export const ContractForm = (props: { deployContract: typeof deployContract }) => {
 
@@ -18,11 +19,11 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
     handleCreateTraitType, handleEditTraitType, handleRemoveTraitType, setIsOpenTraitDialog } = useDeployContract(props);
   const { register, handleSubmit: useSubmit, setValue, formState: { errors }, reset, unregister } = useForm<PosseFormContract>();
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
-  const [contractType, setContractType] = useState<"ERC-721" | "ERC-1155">("ERC-721");
+  const [category, setCategory] = useState<"ERC-721" | "ERC-1155">("ERC-721");
 
-  const onContractTypeChange = (type: "ERC-721" | "ERC-1155") => {
-    setContractType(type);
-    setValue('type', type);
+  const onCategoryChange = (category: "ERC-721" | "ERC-1155") => {
+    setCategory(category);
+    setValue('category', category);
   };
 
   return (
@@ -52,7 +53,7 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
             <Label as="p" className="block text-sm font-medium">Select the type of your Contract:</Label>
-            <RadioGroup value={contractType} onChange={onContractTypeChange}>
+            <RadioGroup value={category} onChange={onCategoryChange}>
               <div className="mt-4 flex flex-row items-center gap-2">
                 <Radio
                   value={"ERC-721"}
@@ -97,12 +98,12 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
               </div>
             </RadioGroup>
             <input
-              {...register('type', { required: 'Please select a type of the smart contract.' })}
-              id="type"
+              {...register('category', { required: 'Please select a type of the smart contract.' })}
+              id="category"
               type="hidden"
-              value={contractType}
+              value={category}
             />
-            {errors.type && <span className="text-red-500">{errors.type.message}</span>}
+            {errors.category && <span className="text-red-500">{errors.category.message}</span>}
           </Field>
           <Field>
             <Label htmlFor="name" className="block mb-2">Name *</Label>
@@ -150,20 +151,17 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             />
           </Field>
           <Field>
-            <Label htmlFor="royaltyBps" className="block mb-2">Roylaties</Label>
+            <Label htmlFor="royaltyBps" className="block mb-2">Royalties</Label>
             <Input
               {...register('royaltyBps', {
-                min: {
-                  value: 0,
-                  message: "royalties is between 0.0% ~ 10.0%",
-                },
-                max: {
-                  value: 10.0,
-                  message: "royalties is between 0.0% ~ 10.0%",
+                validate: {
+                  isValid: (v) => isValidNumber(v, false) || "Supply is invalid",
+                  overFlowMin: (v) => isNotOverMin(v, 0) || "royalties is between 0.0% ~ 10.0%",
+                  overFlowMax: (v) => isNotOverMax(v, 10) || "royalties is between 0.0% ~ 10.0%",
                 }
               })}
               id="royaltyBps"
-              type="number"
+              type="text"
               className="px-3 py-1 min-w-[25vw]"
             />
             {errors.royaltyBps && (

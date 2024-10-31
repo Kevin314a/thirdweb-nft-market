@@ -1,39 +1,19 @@
 import NFTModel from "@/lib/model/NFT";
 import MarketModel from "@/lib/model/Market";
-import { PosseFormNFT, PosseViewNFT } from "@/lib/types";
+import { PosseBridgeNFT } from "@/lib/types";
 import { dbConnect } from "./connect";
 import { getContract, storeContract } from "./contract";
 
 export const storeNFT = async (
-  newNFT: PosseFormNFT
+  newNFT: PosseBridgeNFT
 ) => {
   try {
     await dbConnect();
-
-    const oldOne = await getNFT(newNFT.collection, newNFT.tokenId);
+    const oldOne = await getNFT(newNFT.contractAddr, newNFT.tokenId);
     if (oldOne) {
       return oldOne._id;
     }
-
-    const myContract = await getContract(newNFT.collection);
-    if (!myContract) {
-      throw new Error("contract is not exist");
-    }
-
-    const nft = new NFTModel({
-      contract: myContract._id,
-      contractAddr: newNFT.collection,
-      tokenId: newNFT.tokenId,
-      type: newNFT.type,
-      name: newNFT.name,
-      description: newNFT.description,
-      image: newNFT.image,
-      supply: newNFT.supply,
-      traits: newNFT.traits,
-      listedId: newNFT.listedId,
-      owner: newNFT.owner,
-    });
-
+    const nft = new NFTModel(newNFT);
     return await nft.save();
   } catch (err) {
     console.error("[ERROR ON STORING NFT to DB]", err);
@@ -119,7 +99,7 @@ export const deleteNFT = async (
 
 export const bulkUpdateNFTs = async (
   accountAddr: string,
-  nfts: PosseViewNFT[]
+  nfts: PosseBridgeNFT[]
 ) => {
   try {
     await dbConnect();
@@ -127,12 +107,16 @@ export const bulkUpdateNFTs = async (
     for (let i = 0; i < nfts.length; ++i) {
       const nft = nfts[i];
 
+      if (!nft.contract) {
+        continue;
+      }
+
       let newContractId = null;
       if (!!nft.name) {
         // this nft is not minted via thirdweb!!!!
         // storeContract
         newContractId = await storeContract({
-          type: nft.contract.type,
+          category: nft.contract.category,
           address: nft.contract.address,
           name: nft.contract.name,
           description: nft.contract.description,
@@ -147,7 +131,7 @@ export const bulkUpdateNFTs = async (
         const oldContract = await getContract(nft.contract.address);
         if (oldContract && oldContract.owner === accountAddr) {
           // update oldContract
-          oldContract.type = nft.contract.type;
+          oldContract.category = nft.contract.category;
           oldContract.address = nft.contract.address;
           oldContract.name = nft.contract.name;
           oldContract.description = nft.contract.description;
@@ -166,7 +150,7 @@ export const bulkUpdateNFTs = async (
         } else {
           // store contract from blockchain to db
           newContractId = await storeContract({
-            type: nft.contract.type,
+            category: nft.contract.category,
             address: nft.contract.address,
             name: nft.contract.name,
             description: nft.contract.description,
@@ -198,7 +182,7 @@ export const bulkUpdateNFTs = async (
             owner: accountAddr,
           },
           $setOnInsert: {
-            type: "ERC-721",
+            category: "ERC-721",
             history: [],
           },
         },
@@ -220,7 +204,7 @@ export const bulkUpdateNFTs = async (
       }
     }
   } catch (err) {
-    console.error("[ERROR ON STORING NFT to DB]", err);
+    console.error("[ERROR ON BULK STORING NFT to DB]", err);
     throw new Error("Failed to store your NFT");
   }
 
@@ -283,8 +267,8 @@ export const hasBoughtNFT = async (
           history: {
             $elemMatch: {
               purchasedAt: {
-                $gte: startOfToday,
-                $lte: endOfToday
+                $gte: startOfToday.getTime(),
+                $lte: endOfToday.getTime(),
               },
               buyer: { $regex: regex },
               currency: "ASTR",
@@ -305,8 +289,8 @@ export const hasBoughtNFT = async (
               as: 'historyItem',
               cond: {
                 $and: [
-                  { $gte: ['$$historyItem.purchasedAt', startOfToday] },
-                  { $lte: ['$$historyItem.purchasedAt', endOfToday] },
+                  { $gte: ['$$historyItem.purchasedAt', startOfToday.getTime()] },
+                  { $lte: ['$$historyItem.purchasedAt', endOfToday.getTime()] },
                   { $eq: ['$$historyItem.currency', "ASTR"] },
                   { $regexMatch: { input: '$$historyItem.buyer', regex: regex } },
                 ]

@@ -1,27 +1,17 @@
 import ContractModel from "@/lib/model/Contract";
-import { PosseFormContract } from "@/lib/types";
+import { PosseBridgeContract } from "@/lib/types";
 import { dbConnect } from "./connect";
 
-export const storeContract = async (newContract: PosseFormContract) => {
+export const storeContract = async (
+  newContract: PosseBridgeContract,
+) => {
   try {
     await dbConnect();
-
     const oldOne = await getContract(newContract.address);
     if (oldOne) {
       return oldOne._id;
     }
-
-    const contract = new ContractModel({
-      type: newContract.type,
-      address: newContract.address,
-      name: newContract.name,
-      description: newContract.description,
-      symbol: newContract.symbol,
-      image: newContract.image,
-      royaltyBps: newContract.royaltyBps,
-      owner: newContract.owner,
-      traitTypes: newContract.traitTypes,
-    });
+    const contract = new ContractModel(newContract);
     return await contract.save();
   } catch (err) {
     console.error("[ERROR ON STORING CONTRACT to DB]", err);
@@ -29,7 +19,9 @@ export const storeContract = async (newContract: PosseFormContract) => {
   }
 };
 
-export const getContracts = async (owner: string) => {
+export const getContracts = async (
+  owner: string,
+) => {
   try {
     await dbConnect();
     return await ContractModel.find(!!owner ? { owner } : {}).sort({ '_id': -1 });
@@ -39,7 +31,9 @@ export const getContracts = async (owner: string) => {
   }
 };
 
-export const getContract = async (address: string) => {
+export const getContract = async (
+  address: string,
+) => {
   try {
     await dbConnect();
     const contract = await ContractModel.findOne({ address });
@@ -50,7 +44,10 @@ export const getContract = async (address: string) => {
   }
 };
 
-export const updateContract = async (filter: { [key: string]: any }, data: { [key: string]: any }) => {
+export const updateContract = async (
+  filter: { [key: string]: any }, 
+  data: { [key: string]: any },
+) => {
   try {
     await dbConnect();
     await ContractModel.updateMany(filter, data);
@@ -60,7 +57,9 @@ export const updateContract = async (filter: { [key: string]: any }, data: { [ke
   }
 };
 
-export const deleteContract = async (ids: string | string[]) => {
+export const deleteContract = async (
+  ids: string | string[],
+) => {
   try {
     await dbConnect();
     typeof ids === 'string' ?

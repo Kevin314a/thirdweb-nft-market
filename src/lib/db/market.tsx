@@ -1,44 +1,19 @@
 import MarketModel from "@/lib/model/Market";
 import { ITEMS_PER_PAGE } from "@/lib/constants";
-import { PosseFormMarket } from "@/lib/types";
+import { PosseBridgeMarket } from "@/lib/types";
 import { DirectListing } from "thirdweb/extensions/marketplace";
 import { dbConnect } from "./connect";
-import { getNFT } from "./nft";
 
 export const storeNFTtoMarket = async (
-  listedNFT: PosseFormMarket
+  listedNFT: PosseBridgeMarket
 ) => {
   try {
     await dbConnect();
-
-    const oldOne = await MarketModel.findOne({
-      assetContractAddress: listedNFT.assetContractAddress,
-      tokenId: listedNFT.tokenId
-    });
-
+    const oldOne = await MarketModel.findOne({ assetContractAddress: listedNFT.assetContractAddress, tokenId: listedNFT.tokenId });
     if (oldOne) {
       return oldOne._id;
     }
-
-    const nft = await getNFT(listedNFT.assetContractAddress, listedNFT.tokenId);
-
-    const listedOnMarket = new MarketModel({
-      mid: listedNFT.mid,
-      creatorAddress: listedNFT.creatorAddress,
-      assetContractAddress: listedNFT.assetContractAddress,
-      tokenId: listedNFT.tokenId,
-      quantity: listedNFT.quantity,
-      currencyContractAddress: listedNFT.currencyContractAddress,
-      startTimeInSeconds: listedNFT.startTimeInSeconds,
-      endTimeInSeconds: listedNFT.endTimeInSeconds,
-      asset: nft._id,
-      status: listedNFT.status,
-      type: listedNFT.type,
-      currencyValuePerToken: listedNFT.currencyValuePerToken,
-      pricePerToken: listedNFT.pricePerToken,
-      isReservedListing: listedNFT.isReservedListing,
-    });
-
+    const listedOnMarket = new MarketModel(listedNFT);
     return await listedOnMarket.save();
   } catch (err) {
     console.error("[ERROR ON STORING NFTonMarket to DB]", err);
@@ -65,7 +40,7 @@ export const getNFTfromMarket = async (
 ) => {
   try {
     await dbConnect();
-    return await MarketModel.findOne({ assetContractAddress, tokenId,  status: "ACTIVE" });
+    return await MarketModel.findOne({ assetContractAddress, tokenId, status: "ACTIVE" });
   } catch (err) {
     console.error("[ERROR ON FETCHING NFTonMarket from DB]", err);
     throw new Error("Failed to fetching info about your NFT to POSSE Market");
@@ -172,7 +147,7 @@ export const getValidNFTs = async (
       {
         $addFields: {
           priceToSort: { $toDouble: "$currencyValuePerToken.displayValue" },
-          midToSort: {$toDouble: "$mid"},
+          midToSort: { $toDouble: "$mid" },
           quantity: { $toString: "$quantity" },
           startTimeInSeconds: { $toDouble: "$startTimeInSeconds" },
           endTimeInSeconds: { $toDouble: "$endTimeInSeconds" },

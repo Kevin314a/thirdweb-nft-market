@@ -9,11 +9,12 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
   // },
   group: {
     type: String,
-    enum: ["limited", "unlimited"],
+    enum: ["LIMITED", "UNLIMITED"],
     required: true,
   },
   address: {
     type: String,
+    required: true,
   },
   name: {
     type: String,
@@ -29,19 +30,18 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
   payToken: {
     type: [{ type: String, required: true }],
   },
-  numberOfItems: { type: Number, default: 0, required: true },
+  numberOfItems: {
+    type: String
+  },
   mintStartAt: {
-    type: Date,
-    required: true,
+    type: Number
   },
   mintStages: {
     type: [{
       name: { type: String },
       price: { type: String },
       currency: { type: String },
-      durationd: { type: String },
-      durationh: { type: String },
-      durationm: { type: String },
+      duration: { type: Number },
       perlimit: { type: String },
       allows: { type: [{ type: String }] },
     }],
@@ -56,6 +56,5 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
   toObject: { getters: true },
   timestamps: true,
 });
-
 
 export default mongoose.models.Drop || mongoose.model<PosseDBDrop>("Drop", DropSchema, "drops");

@@ -19,4 +19,5 @@ export const SONEIUM_MINATO_DETAIL_URL = "https://explorer-testnet.soneium.org/a
 
 export const ITEMS_PER_PAGE = 20;
 
-export const DEFAULT_PLATFORMFEE = 10000n;
+export const DEFAULT_PLATFORMFEE_COLLECTION = 2000n;				// 2%  in collection for collect NFTs
+export const DEFAULT_PLATFORMFEE_DROP = 10000n;							// 10% in drop

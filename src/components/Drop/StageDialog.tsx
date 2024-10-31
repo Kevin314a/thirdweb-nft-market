@@ -1,6 +1,6 @@
 'use client'
 
-import { PosseDropMintStage } from "@/lib/types";
+import { PosseFormDropMintStage } from "@/lib/types";
 import { useState, useRef, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { Button, Field, Fieldset, Input, Label, Switch, TransitionDialog } from "../base";
 import { XUpload } from "../XUpload";
 import { isAddress } from 'thirdweb/utils';
+import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
 
 export const StageDialog = ({
   open,
@@ -19,12 +20,12 @@ export const StageDialog = ({
   open: boolean,
   onClose: () => void,
   title: string,
-  stage: PosseDropMintStage | null,
-  onCreate: (v: PosseDropMintStage) => void,
+  stage: PosseFormDropMintStage | null,
+  onCreate: (v: PosseFormDropMintStage) => void,
 }) => {
 
   const formRef = useRef<HTMLFormElement | null>(null);
-  const { control, register, handleSubmit: useSubmit, setValue, formState: { errors }, reset } = useForm<PosseDropMintStage>({
+  const { control, register, handleSubmit: useSubmit, setValue, formState: { errors }, reset } = useForm<PosseFormDropMintStage>({
     defaultValues: {
       allows: [],
     }
@@ -58,7 +59,7 @@ export const StageDialog = ({
     }
   }, [stage]);
 
-  const handleSubmit = async (newStage: PosseDropMintStage) => {
+  const handleSubmit = async (newStage: PosseFormDropMintStage) => {
     newStage.currency = "ETH";
     console.log(newStage);
     onCreate(newStage);
@@ -96,9 +97,13 @@ export const StageDialog = ({
             <Input
               {...register('price', {
                 required: "Sale Price is required",
+                validate: {
+                  isValid: (v) => isValidNumber(v, true) || "Price is invalid",
+                  overFlowMin: (v) => isNotOverMin(v, 0) || "Price must over 0",
+                }
               })}
               id="staprice"
-              type="number"
+              type="text"
               className="px-3 py-1 min-w-[8vw]"
             />
             {errors.price && (
@@ -153,6 +158,7 @@ export const StageDialog = ({
                 <Label htmlFor="staperlimit" className="block mb-2">Limits</Label>
                 <Input
                   {...register('perlimit', {
+                    validate: (v) => isValidBigInt(v, false) || "Limits is invalid",
                   })}
                   id="staperlimit"
                   type="number"
@@ -181,13 +187,7 @@ export const StageDialog = ({
                 <div key={field.id} className="w-full flex items-center">
                   <Input
                     {...register(`allows.${i}.address` as const, {
-                      validate: (value) => {
-                        try {
-                          return isAddress(value) ? true : "address is invalid";
-                        } catch (err) {
-                          return "address is invalid";
-                        }
-                      },
+                      validate: (value) => isAddress(value) || "address is invalid"
                     })}
                     type="text"
                     className="px-3 py-1 min-w-[8vw] mr-1"
@@ -204,6 +204,7 @@ export const StageDialog = ({
           </div>
           <XUpload
             onFileChange={(file) => {
+              // TODO uploading csv, and decoding addresses
               // if (!file) {
               //   setErrorFile("none");
               // }

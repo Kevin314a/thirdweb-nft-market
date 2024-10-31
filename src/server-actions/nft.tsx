@@ -1,15 +1,39 @@
 'use server'
 
 import { MARKETPLACE_CONTRACT } from "@/lib/constants";
+import { getContract } from "@/lib/db/contract";
 import { getNFTfromMarket, getNFTfromMarketbyId, getNFTsfromMarket, removeNFTfromMarketbyId, storeNFTtoMarket } from "@/lib/db/market";
 import { storeNFT, getNFTs, getNFT, updateNFT, findOneAndUpdateNFT } from "@/lib/db/nft";
-import { PosseFormMarket, PosseFormNFT, PosseTrait, PosseViewNFT } from "@/lib/types";
+import { PosseBridgeMarket, PosseFormNFT, PosseTrait, PosseBridgeNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";
 
 export async function mintNFT(newNFT: PosseFormNFT) {
   try {
-    await storeNFT(newNFT);
+
+    const oldOne = await getNFT(newNFT.collection, newNFT.tokenId);
+    if (oldOne) {
+      throw new Error("An NFT with the same infos is exist")
+    }
+
+    const parentContract = await getContract(newNFT.collection);
+    if (!parentContract) {
+      throw new Error("The Contract with the address is not exist");
+    }
+
+    await storeNFT({
+      contract: parentContract._id,
+      contractAddr: newNFT.collection,
+      tokenId: newNFT.tokenId,
+      category: newNFT.category,
+      name: newNFT.name,
+      description: newNFT.description,
+      image: newNFT.image,
+      supply: newNFT.supply,
+      traits: newNFT.traits,
+      listedId: newNFT.listedId,
+      owner: newNFT.owner,
+    });
 
     const res = {
       error: false,
@@ -42,7 +66,7 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       count: 35n,
     });
 
-    const lastListing = lastListings.filter((ll: DirectListing) => String(ll.assetContractAddress) === String(contractAddr) && String(ll.tokenId) === String(tokenId) && ll.status === "ACTIVE");
+    const lastListing = lastListings.filter((ll: DirectListing) => ll.assetContractAddress === contractAddr && ll.tokenId.toString() === tokenId && ll.status === "ACTIVE");
 
     const lastestNFT = lastListing.pop();
     if (!lastestNFT) {
@@ -56,7 +80,12 @@ export async function listNFT(contractAddr: string, tokenId: string) {
 
     await findOneAndUpdateNFT({ contractAddr, tokenId }, { $set: { listedId: lastestNFT.id } }, { new: true });
 
-    const listedNFT: PosseFormMarket = {
+    const oldOne = await getNFTfromMarket(lastestNFT.assetContractAddress, lastestNFT.tokenId.toString());
+    if (oldOne) {
+      throw new Error("Your NFT is already on the Market");
+    }
+    const nft = await getNFT(lastestNFT.assetContractAddress, lastestNFT.tokenId.toString());
+    const listedNFT: PosseBridgeMarket = {
       mid: lastestNFT.id.toString(),
       creatorAddress: lastestNFT.creatorAddress,
       assetContractAddress: lastestNFT.assetContractAddress,
@@ -65,6 +94,7 @@ export async function listNFT(contractAddr: string, tokenId: string) {
       currencyContractAddress: lastestNFT.currencyContractAddress,
       startTimeInSeconds: lastestNFT.startTimeInSeconds.toString(),
       endTimeInSeconds: lastestNFT.endTimeInSeconds.toString(),
+      asset: nft._id,
       status: lastestNFT.status,
       type: lastestNFT.type,
       //direct-listing
@@ -167,9 +197,9 @@ export async function verifyNFTtoList(contractAddr: string, tokenId: string) {
 export async function getToken(contractAddr: string, tokenId: string) {
   try {
     const item = await getNFT(contractAddr, tokenId);
-    const token: PosseViewNFT = {
+    const token: PosseBridgeNFT = {
       contract: {
-        type: item.contract.type,
+        category: item.contract.category,
         address: item.contract.address,
         name: item.contract.name,
         description: item.contract.description,
@@ -181,7 +211,7 @@ export async function getToken(contractAddr: string, tokenId: string) {
       },
       contractAddr: item.contract.address,
       tokenId: item.tokenId,
-      type: item.type,
+      category: item.category,
       name: item.name,
       description: item.description,
       image: item.image,
@@ -222,16 +252,18 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
     }
 
     const sort = _sort === "NAME" ? { name: 1 }
-      : (_sort === "CREATEDASC" ? { createdAt: 1 }
-        : { createdAt: 1 });
+      : (_sort === "CREATEDASC" ? { createdAt: -1 }
+        : { createdAt: -1 });
 
     const page = _page;
 
     const data = await getNFTs(conds, sort, page);
 
-    const nfts: PosseViewNFT[] = data?.map(item => ({
+    console.log('zzzzzzzzzzzzzzzzzz', data);
+
+    const nfts: PosseBridgeNFT[] = data?.map(item => ({
       contract: {
-        type: item.contract.type,
+        category: item.contract.category,
         address: item.contract.address,
         name: item.contract.name,
         description: item.contract.description,
@@ -243,7 +275,7 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
       },
       contractAddr: item.contract.address,
       tokenId: item.tokenId,
-      type: item.type,
+      category: item.category,
       name: item.name,
       description: item.description,
       image: item.image,

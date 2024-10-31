@@ -1,11 +1,35 @@
 'use server'
 
-import { PosseFormDrop, PosseViewDrop } from "@/lib/types";
-import { getUpcomingDrops, storeDrop } from "@/lib/db/drop";
+import { PosseFormDrop, PosseBridgeDrop } from "@/lib/types";
+import { getDrop, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
+import { toNumber } from "@/lib/utils";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
   try {
-    await storeDrop(newDrop);
+
+    const oldOne = await getDrop(newDrop.address);
+    if (oldOne) {
+      throw new Error("A Drop with the same infos is already exist");
+    }
+    await storeDrop({
+      group: newDrop.group,
+      address: newDrop.address,
+      name: newDrop.name,
+      description: newDrop.description,
+      image: newDrop.image,
+      payToken: newDrop.payToken,
+      owner: newDrop.owner,
+      numberOfItems: newDrop.numberOfItems,
+      mintStartAt: new Date(newDrop.mintStartAt).getTime(),
+      mintStages: newDrop.mintStages?.map((stage) => ({
+        name: stage.name,
+        price: stage.price,
+        currency: stage.currency,
+        duration: toNumber(stage.durationd) * 24 * 60 * 60 * 1000 + toNumber(stage.durationh) * 60 * 60 * 1000 + toNumber(stage.durationm) * 60 * 1000,
+        perlimit: stage.perlimit,
+        allows: stage.allows?.map((allow) => allow.address),
+      })),
+    });
 
     const res = {
       error: false,
@@ -30,7 +54,7 @@ export async function upcomingDrops() {
     //TODO upcoming drops db -> bridge
     const dbDrops = await getUpcomingDrops();
 
-    const resDrops: PosseViewDrop[] = dbDrops.map((drop) => ({
+    const resDrops: PosseBridgeDrop[] = dbDrops.map((drop) => ({
       group: drop.group,
       address: drop.address,
       name: drop.name,
@@ -38,15 +62,13 @@ export async function upcomingDrops() {
       image: drop.image,
       payToken: drop.payToken,
       numberOfItems: drop.numberOfItems,
-      mintStartAt: drop.mintStartAt.toISOString(),
+      mintStartAt: drop.mintStartAt,
       owner: drop.owner,
       mintStages: drop.mintStages.map((stage) => ({
         name: stage.name,
         price: stage.price,
         currency: stage.currency,
-        durationd: stage.durationd,
-        durationh: stage.durationh,
-        durationm: stage.durationm,
+        duration: stage.duration,
         perlimit: stage.perlimit,
         allows: stage.allows,
       })),

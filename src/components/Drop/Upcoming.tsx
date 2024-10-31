@@ -1,13 +1,13 @@
 'use client'
 
-import { PosseViewDrop } from "@/lib/types";
+import { PosseBridgeDrop } from "@/lib/types";
 import { XSwiper } from "@/components/base";
 import { DropUpcomingItem } from ".";
 
 export const DropUpcoming = ({
   items,
 }: {
-  items: PosseViewDrop[],
+  items: PosseBridgeDrop[],
 }) => {
   
   return (

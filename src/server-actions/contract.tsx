@@ -1,11 +1,26 @@
 'use server'
 
-import { PosseFormContract, PosseViewContract } from "@/lib/types";
-import { getContracts, storeContract } from "@/lib/db/contract";
+import { PosseFormContract, PosseBridgeContract } from "@/lib/types";
+import { getContract, getContracts, storeContract } from "@/lib/db/contract";
 
 export async function deployContract(newContract: PosseFormContract) {
   try {
-    await storeContract(newContract);
+    const oldOne = await getContract(newContract.address);
+    if (oldOne) {
+      throw new Error("A Collection with the same infos is already exist")
+    }
+
+    await storeContract({
+      category: newContract.category,
+      address: newContract.address,
+      name: newContract.name,
+      description: newContract.description,
+      symbol: newContract.symbol,
+      image: newContract.image,
+      royaltyBps: newContract.royaltyBps,
+      owner: newContract.owner,
+      traitTypes: newContract.traitTypes,
+    });
 
     const res = {
       error: false,
@@ -25,12 +40,11 @@ export async function deployContract(newContract: PosseFormContract) {
   }
 }
 
-export async function getOwnContracts(owner: string) { //: Promise<PosseViewContract[]> {
+export async function getOwnContracts(owner: string) {
   try {
     const data = await getContracts(owner);
-
-    const contracts: PosseViewContract[] = data.map(item => ({
-      type: item.type,
+    const contracts: PosseBridgeContract[] = data.map(item => ({
+      category: item.category,
       address: item.address,
       name: item.name,
       description: item.description,

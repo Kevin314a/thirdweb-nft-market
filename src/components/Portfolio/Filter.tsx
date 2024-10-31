@@ -23,7 +23,7 @@ export default function PortfolioFilter({
 }) {
 
   const [search, setSearch] = useState<string>("");
-  const [sort, setSort] = useState<"NAME" | "CREATEDAT">("NAME");
+  const [sort, setSort] = useState<"NAME" | "CREATEDAT">("CREATEDAT");
   const searchRef = useRef<HTMLInputElement>(null);
   const [seeShortcut, setSeeShortcut] = useState(true);
   useHotkeys("ctrl+k", () => searchRef.current?.focus(), { preventDefault: true });
