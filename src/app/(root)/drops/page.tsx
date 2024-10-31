@@ -2,12 +2,14 @@
 
 import { Button, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@/components/base";
 import { DropUpcoming, DropProgressing } from "@/components/Drop";
-import { upcomingDrops } from "@/server-actions/drop";
+import { activeDrops, pastDrops, upcomingDrops } from "@/server-actions/drop";
 import { IoAddCircleOutline } from "react-icons/io5";
 import Link from "next/link";
 
 export default async function DropsPage() {
   const upcomings = await upcomingDrops();
+  const progressings = await activeDrops();
+  const pasts = await pastDrops();
 
   return (
     <section className="lg:pt-24 pt-20 relative z-10">
@@ -38,10 +40,10 @@ export default async function DropsPage() {
           </TabList>
           <TabPanels>
             <TabPanel>
-              <DropProgressing />
+              <DropProgressing cardType="ACTIVE" items={progressings} />
             </TabPanel>
             <TabPanel>
-              <DropProgressing />
+              <DropProgressing cardType="PAST" items={pasts} />
             </TabPanel>
           </TabPanels>
         </TabGroup>

@@ -123,7 +123,7 @@ export const isNotOverMin = (value: string | undefined, minValue: number): boole
   return isNaN(v) || v >= minValue;
 };
 
-export const isNotOverMax = (value: string | undefined, maxValue: number) : boolean => {
+export const isNotOverMax = (value: string | undefined, maxValue: number): boolean => {
   if (!value) {
     return true;
   }
@@ -134,4 +134,20 @@ export const isNotOverMax = (value: string | undefined, maxValue: number) : bool
 export const toNumber = (value: string): number => {
   const num = Number(value); // Convert string to a number
   return isNaN(num) ? 0 : num; // Check if conversion was successful
+};
+
+export const parseRemainTime = (duration: number): { remainDays: number, remainHours: number, remainMins: number, remainSecs: number  } => {
+  const currentTime = Date.now();
+  const difference = duration - currentTime;
+  if (difference <= 0) {
+    return { remainDays: 0, remainHours: 0, remainMins: 0, remainSecs: 0  };
+  }
+
+  const totalSeconds = Math.floor(difference / 1000); // Total seconds
+  const days = Math.floor(totalSeconds / (60 * 60 * 24)); // Days
+  const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60)); // Hours
+  const minutes = Math.floor((totalSeconds % (60 * 60)) / 60); // Minutes
+  const seconds = totalSeconds % 60; // Remaining seconds
+
+  return { remainDays: days, remainHours: hours, remainMins: minutes, remainSecs: seconds };
 };

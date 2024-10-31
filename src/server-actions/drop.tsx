@@ -1,7 +1,7 @@
 'use server'
 
 import { PosseFormDrop, PosseBridgeDrop } from "@/lib/types";
-import { getDrop, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
+import { getActiveDrops, getDrop, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
@@ -49,10 +49,10 @@ export async function deployDrop(newDrop: PosseFormDrop) {
   }
 }
 
-export async function upcomingDrops() {
+export async function upcomingDrops(accountAddr?: string) {
   try {
     //TODO upcoming drops db -> bridge
-    const dbDrops = await getUpcomingDrops();
+    const dbDrops = await getUpcomingDrops(accountAddr);
 
     const resDrops: PosseBridgeDrop[] = dbDrops.map((drop) => ({
       group: drop.group,
@@ -64,14 +64,14 @@ export async function upcomingDrops() {
       numberOfItems: drop.numberOfItems,
       mintStartAt: drop.mintStartAt,
       owner: drop.owner,
-      mintStages: drop.mintStages.map((stage) => ({
-        name: stage.name,
-        price: stage.price,
-        currency: stage.currency,
-        duration: stage.duration,
-        perlimit: stage.perlimit,
-        allows: stage.allows,
-      })),
+      mintStages: [{
+        name: drop.mintStages.name,
+        price: drop.mintStages.price,
+        currency: drop.mintStages.currency,
+        duration: drop.mintStages.duration,
+        perlimit: drop.mintStages.perlimit,
+        allows: drop.mintStages.allows,
+      }]
     }));
 
     return resDrops;
@@ -81,18 +81,61 @@ export async function upcomingDrops() {
   }
 }
 
-export async function activeDrops() {
+export async function activeDrops(accountAddr?: string) {
   try {
-    return await getUpcomingDrops();
+    const dbDrops = await getActiveDrops(accountAddr);
+    const resDrops: PosseBridgeDrop[] = dbDrops.map((drop) => ({
+      group: drop.group,
+      address: drop.address,
+      name: drop.name,
+      description: drop.description,
+      image: drop.image,
+      payToken: drop.payToken,
+      numberOfItems: drop.numberOfItems,
+      mintStartAt: drop.mintStartAt,
+      owner: drop.owner,
+      mintStages: [{
+        name: drop.mintStages.name,
+        price: drop.mintStages.price,
+        currency: drop.mintStages.currency,
+        duration: drop.mintStages.duration,
+        perlimit: drop.mintStages.perlimit,
+        allows: drop.mintStages.allows,
+      }]
+    }));
+
+    return resDrops;
   } catch (err) {
     console.error('[ERROR ON GETTING Active Drops]', err);
     return [];
   }
 }
 
-export async function pastDrops() {
+export async function pastDrops(accountAddr?: string) {
   try {
-    return await getUpcomingDrops();
+    const dbDrops = await getPastDrops(accountAddr);
+    const resDrops: PosseBridgeDrop[] = dbDrops.map((drop) => ({
+      group: drop.group,
+      address: drop.address,
+      name: drop.name,
+      description: drop.description,
+      image: drop.image,
+      payToken: drop.payToken,
+      numberOfItems: drop.numberOfItems,
+      mintStartAt: drop.mintStartAt,
+      owner: drop.owner,
+      mintStages: [{
+        name: drop.mintStages.name,
+        price: drop.mintStages.price,
+        currency: drop.mintStages.currency,
+        duration: drop.mintStages.duration,
+        perlimit: drop.mintStages.perlimit,
+        allows: drop.mintStages.allows,
+      }]
+    }));
+
+    return resDrops;
+    return [];
   } catch (err) {
     console.error('[ERROR ON GETTING Past Drops]', err);
     return [];
