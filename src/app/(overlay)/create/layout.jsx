@@ -37,7 +37,7 @@ export default function CreateLayout({ children }) {
             <FaArrowLeft color="white" />
           </button>
           <div className="flex w-full justify-end md:order-2 items-center space-x-3 md:space-x-0 rtl:space-x-reverse relative z-20">
-            <div className="flex lg:w-full items-center xxl:gap-10 gap-5 justify-end">
+            <div className="flex w-full items-center justify-end">
               {account && wallet ? (
                 <ProfileMenu address={account.address} wallet={wallet} />
               ) : (
@@ -59,7 +59,7 @@ export default function CreateLayout({ children }) {
       <div className="relative w-full h-full min-h-[calc(100vh)] flex items-center justify-center p-2 lg:p-20">
         {children}
       </div>
-      <div className="absolute bottom-12 left-0" style={{ zIndex: 1992 }}>
+      <div className="absolute bottom-12 left-0 z-[1]">
         <Image
           width={145}
           height={312}
@@ -69,7 +69,7 @@ export default function CreateLayout({ children }) {
           priority
         />
       </div>
-      <div className="absolute top-24 right-0" style={{ zIndex: 1992 }}>
+      <div className="absolute top-24 right-0 z-[1]">
         <Image
           width={220}
           height={328}

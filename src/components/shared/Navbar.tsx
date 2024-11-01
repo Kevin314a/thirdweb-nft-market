@@ -6,9 +6,8 @@ import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActiveAccount, useActiveWallet } from "thirdweb/react";
-
 import { ConnectButton } from "./ConnectButton";
 import { ProfileMenu } from "./ProfileMenu";
 import toast from "react-hot-toast";
@@ -19,16 +18,16 @@ export const Navbar = () => {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
 
-  // useEffect(() => {
-  //   fetch('/api/save-user', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ wallet: account?.address || "" }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //     });
-  // }, [account]);
+  useEffect(() => {
+    fetch('/api/save-user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ wallet: account?.address || "" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+      });
+  }, [account]);
 
   const toggleMenu = () => {
     setActive(pre => !pre);
@@ -165,12 +164,12 @@ const NAV_ITEMS = [
     href: '/drops',
     children: [
       {
-        label: 'Create Drops',
-        href: '/create/drop',
+        label: 'Overview',
+        href: '/drops',
       },
       {
-        label: 'Studio',
-        href: '/studio',
+        label: 'Create Drops',
+        href: '/create/drop',
       },
     ]
   },
