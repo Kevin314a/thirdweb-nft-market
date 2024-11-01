@@ -2,16 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* to cannot selct body area */
+/* body {
     -webkit-user-select: none;
-    /* Safari */
     -moz-user-select: none;
-    /* Firefox */
     -ms-user-select: none;
-    /* IE10+/Edge */
     user-select: none;
-    /* Standard */
-}
+} */
 
 #default-tab button[aria-selected="true"] {
     background: linear-gradient(97deg, #C3976A 1.98%, #C3976A 43.12%, #C3976A 99.93%);

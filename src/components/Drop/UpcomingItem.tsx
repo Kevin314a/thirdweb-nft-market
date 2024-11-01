@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { MdNotifications } from "react-icons/md";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { shortenAddress } from "thirdweb/utils";
 
 export const DropUpcomingItem = ({
   drop,
@@ -58,7 +59,7 @@ export const DropUpcomingItem = ({
         </div>
         <div className="flex flex-col w-full mb-4 lg:mb-8">
           <div className="text-md text-white">{shortenString(drop.name, 25)}</div>
-          <span className="text-xs text-white">{drop.owner}</span>
+          <span className="text-xs text-white">{shortenAddress(drop.owner)}</span>
           <span className="text-xs text-white">{`${drop.group === 'LIMITED' ? "Limited Edition" : "Open Edition"}: ${drop.mintStages[0].price} ${drop.mintStages[0].currency}`}</span>
         </div>
         <div className="text-white">

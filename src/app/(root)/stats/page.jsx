@@ -1,26 +1,22 @@
 'use client'
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+
+import { ImageCreator, ImageVerifiedBadge } from "@/assets";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Pagination } from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
-
-import { ImageCreator, ImageVerifiedBadge } from "@/assets";
-
 
 export default function StatsPage() {
   const router = useRouter();
   return (
     <section className="lg:pt-24 pt-20 relative z-10">
-      <div className="max-w-[1920px] lg:px-[42px] px-5 mx-auto z-10 relative">
-        <h4 className="lg:text-[36px] lg:leading-[75px] text-2xl text-white font-bold">
+      <div className="max-w-[1920px] px-2 lg:px-6 mx-auto z-10 relative">
+        <h4 className="py-2 text-2xl text-white font-bold">
           <span className="bg-heading-bg  bg-clip-text text-transparent">
             Collection Stats
           </span>
         </h4>
       </div>
-      <div className="max-w-[1920px] lg:px-[42px] px-5 mx-auto z-10 relative">
+      <div className="max-w-[1920px] px-2 lg:px-6 mx-auto z-10 relative">
         <div className="w-full flex items-center justify-between">
           <TabGroup className="w-full">
             <div className="w-full flex items-center md:flex-row flex-col gap-4 justify-between mt-4 lg:mt-0">

@@ -4,7 +4,7 @@ import { IconFooterLogo, IconDiscord, IconTelegram, IconTwiter, IconSocialIcon }
 export const Footer = () => {
   return (
     <footer className="md:pt-32 relative z-10">
-      <div className="max-w-[1920px] lg:px-6 px-3 mx-auto">
+      <div className="max-w-[1920px] px-2 lg:px-6 mx-auto">
         <div className="flex lg:flex-row flex-col align-items-center">
           <div className="lg:w-1/3 w-full lg:mr-6 lg:pr-4">
             <img src={IconFooterLogo.src} alt="" className='-ml-5' />
