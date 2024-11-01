@@ -153,8 +153,8 @@ export function useMintNFT(props: MintNFTProps) {
       } else {
         toast.error(typeof err === 'string' ? err : "Minting your NFT is failed.");
       }
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   const handleCreateTrait = (newTrait: PosseTrait, isEdit: boolean, editIndex: number) => {

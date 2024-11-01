@@ -1,6 +1,5 @@
 'use server'
 
-import { PosseBridgeDrop } from "@/lib/types";
 import { StudioBox } from "@/components/Studio";
 import { ownedDrops } from "@/server-actions/drop";
 import { lazyMintNFT } from "@/server-actions/lazynft";

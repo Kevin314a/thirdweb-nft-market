@@ -1,3 +1,5 @@
+'use client'
+
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
 import { useGetENSName } from "@/hooks/useGetENSName";
 import { blo } from "blo";

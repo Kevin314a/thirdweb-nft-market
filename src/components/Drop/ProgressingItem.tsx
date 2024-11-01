@@ -8,9 +8,11 @@ import Image from "next/image";
 export const DropProgressingItem = ({
   drop,
   cardType,
+  onClick,
 }: {
   drop: PosseBridgeDrop,
   cardType: "ACTIVE" | "PAST",
+  onClick: () => void,
 }) => {
 
   const currentTime = Date.now();
@@ -19,7 +21,7 @@ export const DropProgressingItem = ({
   const pastDays = Math.floor(totalSeconds / (60 * 60 * 24)) + 1; // Days
 
   return (
-    <div className="bg-golden-1000 drop-shadow-3xl rounded-[10px]">
+    <div className="bg-golden-1000 drop-shadow-3xl rounded-[10px] cursor-pointer" onClick={onClick}>
       <div className="relative">
         <Image
           width={240}

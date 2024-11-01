@@ -37,7 +37,7 @@ export const DropUpcomingItem = ({
   }, [drop]);
 
   return (
-    <div className="relative">
+    <div className="relative cursor-pointer">
       <Image
         src={!drop.image ? DropNoneBack : drop.image}
         priority

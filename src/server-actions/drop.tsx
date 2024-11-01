@@ -1,8 +1,9 @@
 'use server'
 
-import { PosseFormDrop, PosseBridgeDrop } from "@/lib/types";
+import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
+import { getLazyNFTs } from "@/lib/db/lazynft";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
   try {
@@ -52,11 +53,89 @@ export async function deployDrop(newDrop: PosseFormDrop) {
 export async function ownedDrops(accountAddr?: string) {
   try {
     const dbDrops = await getDrops(accountAddr);
-    const ownDrops = dbDrops;
+    const ownDrops: PosseBridgeDrop[] = dbDrops.map(dbDrop => ({
+      group: dbDrop.group,
+      address: dbDrop.address,
+      name: dbDrop.name,
+      description: dbDrop.description,
+      image: dbDrop.image,
+      payToken: dbDrop.payToken,
+      numberOfItems: dbDrop.numberOfItems,
+      mintStartAt: dbDrop.mintStartAt,
+      owner: dbDrop.owner,
+      visible: dbDrop.visible,
+      mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
+        name: stage.name,
+        price: stage.price,
+        currency: stage.currency,
+        duration: stage.duration,
+        perlimit: stage.perlimit,
+        allows: stage.allows,
+      })),
+    }));
+
     return ownDrops;
   } catch (err) {
     console.error('[ERROR ON GETTING Upcoming Drops]', err);
     return [];
+  }
+}
+
+export async function fetchDrop(dropAddr: string) {
+  try {
+    const dbDrop: PosseDBDrop = await getDrop(dropAddr);
+
+    const dbLazyNFTs = dbDrop.group === "LIMITED" ? await getLazyNFTs(
+      {
+        contractAddr: dropAddr,
+      },
+      {
+        tokenId: -1
+      },
+      20
+    ) : [];
+
+    // TODO getting shared data from here,
+    // const sharedData = [];
+    // if (dbDrop.group === "UNLIMITED") {
+    // }
+
+    const drop: PosseBridgeDrop = {
+      group: dbDrop.group,
+      address: dbDrop.address,
+      name: dbDrop.name,
+      description: dbDrop.description,
+      image: dbDrop.image,
+      payToken: dbDrop.payToken,
+      numberOfItems: dbDrop.numberOfItems,
+      mintStartAt: dbDrop.mintStartAt,
+      owner: dbDrop.owner,
+      visible: dbDrop.visible,
+      mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
+        name: stage.name,
+        price: stage.price,
+        currency: stage.currency,
+        duration: stage.duration,
+        perlimit: stage.perlimit,
+        allows: stage.allows,
+      })),
+      createdAt: (new Date(!dbDrop.createdAt ? new Date().getTime() : dbDrop.createdAt)).getTime(),
+    };
+
+    const lazyNFTs: PosseBridgeLazyNFT[] = dbLazyNFTs.map((nft) => ({
+      contractAddr: nft.contractAddr,
+      tokenId: nft.tokenId,
+      category: nft.category,
+      name: nft.name,
+      description: nft.description,
+      image: nft.image,
+      traits: nft.traits,
+    }));
+
+    return { drop, lazyNFTs };
+  } catch (err) {
+    console.error('[ERROR ON FETCHING DROP]', err);
+    return null;
   }
 }
 

@@ -93,6 +93,16 @@ export function formatDate(date: Date, short: boolean = true): string {
   return `${formattedDate}${short ? '' : gmtOffset}`;
 }
 
+export function formatDateIntl(timestamp: number) {
+  // Output: "Oct, 2024" (for the current date)
+  const date = new Date(timestamp <= 0 ? (new Date().getTime()) : timestamp);
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    year: "numeric"
+  }).format(date);
+  return formattedDate;
+}
+
 export function royaltyBpsToBigInt(royaltyPercentage: number) {
   const scaleFactor = 1000; // Scale factor for 3 decimal places
   return BigInt(Math.round(royaltyPercentage * scaleFactor));

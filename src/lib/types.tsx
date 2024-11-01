@@ -125,6 +125,7 @@ export type PosseFormDrop = {
 };
 
 export interface PosseBridgeDrop extends Omit<PosseFormDrop, 'mintStages'> {
+  createdAt?: number,
   mintStages: PosseBridgeDropMintStage[];
 };
 

@@ -1,5 +1,9 @@
+'use client'
+
 import { TempImageNFT } from "@/assets";
+import { client } from "@/lib/constants";
 import { PosseBridgeNFT } from "@/lib/types";
+import { MediaRenderer } from "thirdweb/react";
 
 export const NFTBox = ({ nft, onDetail }: {
   nft: PosseBridgeNFT,
@@ -11,14 +15,11 @@ export const NFTBox = ({ nft, onDetail }: {
       onClick={onDetail}
     >
       <div className="relative w-full bg-white/[.04]">
-        {/* {nft.metadata.image && (
-          <MediaRenderer
-            src={nft.metadata.image}
-            client={client}
-            className="object-cover object-center"
-          />
-        )} */}
-        <img src={TempImageNFT.src} />
+        <MediaRenderer
+          src={!nft.image ? TempImageNFT.src : nft.image}
+          client={client}
+          className="object-cover object-center"
+        />
       </div>
       <div className="flex justify-between flex-1 w-full px-3">
         <div className="flex flex-col w-full justify-center py-3">
