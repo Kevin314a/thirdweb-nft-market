@@ -1,9 +1,13 @@
 'use server'
 
+import { client } from "@/lib/constants";
 import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
 import { getLazyNFTs } from "@/lib/db/lazynft";
+import { getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
+import { getContract } from "thirdweb";
+import { soneiumMinato } from "thirdweb/chains";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
   try {
@@ -73,6 +77,24 @@ export async function ownedDrops(accountAddr?: string) {
         allows: stage.allows,
       })),
     }));
+
+    for (let drop of ownDrops) {
+      const contract = getContract({
+        chain: soneiumMinato,
+        client,
+        address: drop.address,
+      });
+
+      const _totalSupply = await totalSupply({ contract });
+      const totalClaimedSupply = await getTotalClaimedSupply({ contract });
+      const totalUnclaimedSupply = await getTotalUnclaimedSupply({ contract });
+
+      drop.supplies = {
+        totalSupply: _totalSupply.toString(),
+        claimedSupply: totalClaimedSupply.toString(),
+        unclaimedSupply: totalUnclaimedSupply.toString(),
+      };
+    }
 
     return ownDrops;
   } catch (err) {

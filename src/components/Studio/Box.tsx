@@ -111,9 +111,9 @@ export function StudioBox(props: StudioBoxProps) {
               <div className="text-gray-1300 text-xs md:text-sm">Owner: {shortenAddress(drop.owner)}</div>
             </div>
             <div className="w-full flex flex-col md:flex-row justify-between items-center my-2">
-              <div className="text-white text-xs md:text-base">Total Supply: 13</div>
-              <div className="text-white text-xs md:text-base">Claimed Supply: 5</div>
-              <div className="text-white text-xs md:text-base">Unclaimed Supply: 8</div>
+              <div className="text-white text-xs md:text-base">Total Supply: {drop.supplies?.totalSupply || 0}</div>
+              <div className="text-white text-xs md:text-base">Claimed Supply: {drop.supplies?.claimedSupply || 0}</div>
+              <div className="text-white text-xs md:text-base">Unclaimed Supply: {drop.supplies?.unclaimedSupply || 0}</div>
               <div className="flex w-full md:w-auto justify-end md:justify-center items-center">
                 <div className="flex w-auto justify-center items-center rounded-full lg:rounded-lg px-2 py-1 md:py-2 lg:py-1 text-white text-sm bg-golden-1000 hover:bg-golden-1100 gap-1">
                   <FaPlusCircle />

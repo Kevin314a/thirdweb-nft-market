@@ -124,9 +124,16 @@ export type PosseFormDrop = {
   mintStages: PosseFormDropMintStage[];
 };
 
+type PosseDropSupply = {
+  totalSupply: string;
+  claimedSupply: string;
+  unclaimedSupply: string;
+};
+
 export interface PosseBridgeDrop extends Omit<PosseFormDrop, 'mintStages'> {
-  createdAt?: number,
+  createdAt?: number;
   mintStages: PosseBridgeDropMintStage[];
+  supplies?: PosseDropSupply;
 };
 
 export interface PosseDBDrop extends PosseBridgeDrop, Document {
