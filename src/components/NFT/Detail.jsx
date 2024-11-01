@@ -145,7 +145,7 @@ export const NFTDetail = ({ nft }) => {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1920px] lg:px-[42px] px-5 mx-auto relative z-10">
+        <div className="max-w-[1920px] px-2 lg:px-6 mx-auto relative z-10">
           <div className="mb-14">
             <XCard
               header={

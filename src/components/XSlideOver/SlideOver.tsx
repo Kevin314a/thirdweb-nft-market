@@ -67,7 +67,7 @@ export function SlideOver({
                     </button>
                   </div>
                 </TransitionChild>
-                <div className="h-full flex flex-col py-6 bg-gray-800 text-white shadow-inner shadow-white/70 focus:outline-none shadow-xl overflow-y-scroll">
+                <div className="h-full flex flex-col py-6 bg-black-1300 text-white shadow-inner shadow-white/70 focus:outline-none shadow-xl overflow-y-scroll">
                   <div className="px-4 sm:px-6">
                     <DialogTitle className="text-lg font-medium text-gray-900 text-white">
                       {title}

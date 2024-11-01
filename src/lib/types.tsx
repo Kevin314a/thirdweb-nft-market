@@ -146,3 +146,29 @@ export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, '
   duration: number;
   allows: string[];
 };
+
+export type PosseFormLazyNFT = {
+  collection: string;
+  tokenId: string;
+  category: "ERC-721" | "ERC-1155";
+  name: string;
+  description?: string;
+  image: string;
+  traits: PosseTrait[];
+};
+
+export interface PosseBridgeLazyNFT extends Omit<PosseFormLazyNFT, 'collection'> {
+  contract?: PosseBridgeDrop,         // up to down
+  contractAddr: string;
+};
+
+export interface PosseDBLazyNFT extends Omit<PosseBridgeLazyNFT, 'contract'>, Document {
+  contract: mongoose.Schema.Types.ObjectId;
+};
+
+export type PosseFormShareMetadata = {
+  category: "ERC-721" | "ERC-1155";
+  name: string;
+  description?: string;
+  image: string;
+};

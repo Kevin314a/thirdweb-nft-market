@@ -3,6 +3,7 @@ import { useGetENSName } from "@/hooks/useGetENSName";
 import { blo } from "blo";
 import { HiOutlineSquare2Stack } from "react-icons/hi2";
 import { FiUser } from "react-icons/fi";
+import { SiGoogledatastudio } from "react-icons/si";
 import { MdLogout } from "react-icons/md";
 import type { Wallet } from "thirdweb/wallets";
 import { useDisconnect } from 'thirdweb/react';
@@ -43,10 +44,18 @@ export const ProfileMenu = ({
           </div>
 
           <div className="block p-4 font-semibold hover:bg-golden-1300 rounded-lg hover:text-gray-200" onClick={() => router.push('/portfolio')}>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <HiOutlineSquare2Stack color="white" className="size-4" />
               Portfolio
               {/* <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘P</kbd> */}
+            </div>
+          </div>
+
+          <div className="block p-4 font-semibold hover:bg-golden-1300 rounded-lg hover:text-gray-200" onClick={() => router.push('/studio')}>
+            <div className="flex items-center gap-4">
+              <SiGoogledatastudio color="white" className="size-4" />
+              Studio
+              {/* <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘T</kbd> */}
             </div>
           </div>
 
@@ -56,7 +65,7 @@ export const ProfileMenu = ({
             }
             router.push('/');
           }}>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <MdLogout color="white" className="size-4" />
               Logout
               {/* <kbd className="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘X</kbd> */}

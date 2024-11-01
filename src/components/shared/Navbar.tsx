@@ -37,7 +37,7 @@ export const Navbar = () => {
   return (
     <header className="fixed py-2.5 w-[100vw] pr-3 z-50 top-0 start-0 bg-black">
       <nav>
-        <div className="max-w-[1920px] lg:px-6 px-3 flex items-center justify-between">
+        <div className="max-w-[1920px] px-2 lg:px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center relative z-20">
             <img src={IconLogo.src}
               width={120}
@@ -169,8 +169,8 @@ const NAV_ITEMS = [
         href: '/create/drop',
       },
       {
-        label: 'My Own Drops',
-        href: '/drops/own',
+        label: 'Studio',
+        href: '/studio',
       },
     ]
   },

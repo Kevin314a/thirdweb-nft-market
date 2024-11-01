@@ -4,7 +4,7 @@ import { MARKETPLACE_CONTRACT } from "@/lib/constants";
 import { getContract } from "@/lib/db/contract";
 import { getNFTfromMarket, getNFTfromMarketbyId, getNFTsfromMarket, removeNFTfromMarketbyId, storeNFTtoMarket } from "@/lib/db/market";
 import { storeNFT, getNFTs, getNFT, updateNFT, findOneAndUpdateNFT } from "@/lib/db/nft";
-import { PosseBridgeMarket, PosseFormNFT, PosseTrait, PosseBridgeNFT } from "@/lib/types";
+import { PosseBridgeMarket, PosseFormNFT, PosseTrait, PosseBridgeNFT, PosseFormLazyNFT } from "@/lib/types";
 import { cookies } from "next/headers";
 import { DirectListing, getAllListings, totalListings } from "thirdweb/extensions/marketplace";
 

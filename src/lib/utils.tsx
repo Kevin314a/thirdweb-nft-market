@@ -67,7 +67,7 @@ export function getDateTimeAfter(date: Date | null, days: string, hours: string,
   return newDate;
 }
 
-export function formatDate(date: Date): string {
+export function formatDate(date: Date, short: boolean = true): string {
   // Define options for date formatting
   const options: Intl.DateTimeFormatOptions = {
     year: 'numeric',
@@ -87,10 +87,10 @@ export function formatDate(date: Date): string {
   const offsetMinutes = Math.abs(timezoneOffset) % 60;
 
   // Construct the GMT offset string
-  const gmtOffset = `GMT${timezoneOffset >= 0 ? '+' : '-'}${String(offsetHours).padStart(2, '0')}${String(offsetMinutes).padStart(2, '0')}`;
+  const gmtOffset = ` GMT${timezoneOffset >= 0 ? '+' : '-'}${String(offsetHours).padStart(2, '0')}${String(offsetMinutes).padStart(2, '0')}`;
 
   // Combine formatted date and GMT offset
-  return `${formattedDate} ${gmtOffset}`;
+  return `${formattedDate}${short ? '' : gmtOffset}`;
 }
 
 export function royaltyBpsToBigInt(royaltyPercentage: number) {
@@ -136,11 +136,11 @@ export const toNumber = (value: string): number => {
   return isNaN(num) ? 0 : num; // Check if conversion was successful
 };
 
-export const parseRemainTime = (duration: number): { remainDays: number, remainHours: number, remainMins: number, remainSecs: number  } => {
+export const parseRemainTime = (duration: number): { remainDays: number, remainHours: number, remainMins: number, remainSecs: number } => {
   const currentTime = Date.now();
   const difference = duration - currentTime;
   if (difference <= 0) {
-    return { remainDays: 0, remainHours: 0, remainMins: 0, remainSecs: 0  };
+    return { remainDays: 0, remainHours: 0, remainMins: 0, remainSecs: 0 };
   }
 
   const totalSeconds = Math.floor(difference / 1000); // Total seconds

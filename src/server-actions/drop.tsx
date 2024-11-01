@@ -1,7 +1,7 @@
 'use server'
 
 import { PosseFormDrop, PosseBridgeDrop } from "@/lib/types";
-import { getActiveDrops, getDrop, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
+import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
@@ -46,6 +46,17 @@ export async function deployDrop(newDrop: PosseFormDrop) {
       actions: "Please try again",
     };
     return res;
+  }
+}
+
+export async function ownedDrops(accountAddr?: string) {
+  try {
+    const dbDrops = await getDrops(accountAddr);
+    const ownDrops = dbDrops;
+    return ownDrops;
+  } catch (err) {
+    console.error('[ERROR ON GETTING Upcoming Drops]', err);
+    return [];
   }
 }
 
