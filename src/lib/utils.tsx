@@ -161,3 +161,10 @@ export const parseRemainTime = (duration: number): { remainDays: number, remainH
 
   return { remainDays: days, remainHours: hours, remainMins: minutes, remainSecs: seconds };
 };
+
+export const makeBotAddress = () => {
+  const currentTime = Date.now();
+
+  const twinedv = '0x1' + currentTime.toString() + currentTime.toString() + currentTime.toString();
+  return twinedv;
+};

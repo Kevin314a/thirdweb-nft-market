@@ -8,8 +8,12 @@ import Link from "next/link";
 
 export default async function DropsPage() {
   const upcomings = await upcomingDrops();
+
+  console.log('-------------------------upcomingsupcomings-------------------------',upcomings);
   const progressings = await activeDrops();
+  console.log('-------------------------progressings-------------------------', progressings);
   const pasts = await pastDrops();
+  console.log('-------------------------pastspasts-------------------------', pasts);
 
   return (
     <section className="lg:pt-24 pt-20 relative z-10">

@@ -83,37 +83,35 @@ export function MultiSelectListbox({
             transition
             className="max-h-60 rounded-md py-1 text-base leading-6 shadow-xs overflow-auto focus:outline-none sm:text-sm sm:leading-5"
           >
-            {items.map((item, i) => {
-              return (
-                <ListboxOption key={i} value={item}>
-                  {({ selected }) => (
-                    <div
-                      className={`${selected ? "text-white bg-golden-1400" : "text-white"} cursor-default select-none relative py-2 pl-8 pr-4`}
-                    >
-                      <span className={`${selected ? "font-semibold" : "font-normal"} block truncate`}>
-                        {item}
+            {items.map((item, i) => (
+              <ListboxOption key={i} value={item}>
+                {({ selected }) => (
+                  <div
+                    className={`${selected ? "text-white bg-golden-1400" : "text-white"} cursor-default select-none relative py-2 pl-8 pr-4`}
+                  >
+                    <span className={`${selected ? "font-semibold" : "font-normal"} block truncate`}>
+                      {item}
+                    </span>
+                    {selected && (
+                      <span className={`${selected ? "text-white" : "text-golden-1400"} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
+                        <svg
+                          className="h-5 w-5"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
                       </span>
-                      {selected && (
-                        <span className={`${selected ? "text-white" : "text-golden-1400"} absolute inset-y-0 left-0 flex items-center pl-1.5`}>
-                          <svg
-                            className="h-5 w-5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </span>
-                      )}
-                    </div>
-                  )}
-                </ListboxOption>
-              );
-            })}
+                    )}
+                  </div>
+                )}
+              </ListboxOption>
+            ))}
           </ListboxOptions>
         </div>
       </Listbox>

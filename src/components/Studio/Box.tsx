@@ -64,7 +64,7 @@ export function StudioBox(props: StudioBoxProps) {
   return (
     <>
       {props.drops.map((drop, i) => (
-        <div key={i} className="min-w-[70vw] flex flex-col md:flex-row justify-center items-center border-2 border-golden-1000 shadow-xl rounded-lg p-2 md:p-4 gap-4 mb-2">
+        <div key={i} className="relative min-w-[70vw] flex flex-col md:flex-row justify-center items-center border-2 border-golden-1000 shadow-xl rounded-lg p-2 md:p-4 gap-4 mb-2">
           <div className="flex flex-col justify-center items-center">
             <MediaRenderer
               src={!!drop.image ? drop.image : ImageMarketplace.src}
@@ -104,7 +104,7 @@ export function StudioBox(props: StudioBoxProps) {
                   <div className="text-white text-sm">Network: {'Soneium Minato'}</div>
                 </div>
               </div>
-              <div className="hidden lg:flex items-center justify-center bg-golden-1000 rounded-bl-[99px] w-12 h-12 -mt-6 -mr-4 sticky right-0 top-0"><IoMdCloseCircle className="-mt-2 -mr-2 " color="text-golden-1100" size="24" /></div>
+              <div className="hidden lg:flex items-center justify-center bg-golden-1000 rounded-bl-[99px] w-12 h-12 absolute right-0 top-0"><IoMdCloseCircle className="-mt-2 -mr-2 " color="text-golden-1100" size="24" /></div>
             </div>
             <div className="w-full flex flex-col lg:flex-row lg:justify-between items-center">
               <div className="text-gray-1300 text-xs md:text-sm">Contract Address: {shortenAddress(drop.address)}</div>

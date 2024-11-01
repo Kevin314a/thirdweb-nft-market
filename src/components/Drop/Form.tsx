@@ -65,10 +65,13 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
             <Label as="p" className="block text-sm font-medium">Select the Group of your Drop *</Label>
-            <RadioGroup value={dropGroup} onChange={(v) => setDropGroup(v)}>
+            <RadioGroup value={dropGroup} onChange={(v) => {
+              setDropGroup(v);
+              setValue('group', v);
+            }}>
               <div className="mt-4 flex flex-row items-center gap-2">
                 <Radio
-                  value={"limited"}
+                  value={"LIMITED"}
                   className={({ checked }) =>
                     `${checked ? 'bg-golden-1300 text-white' : 'bg-golden-1400 text-gray'
                     } w-full relative rounded-lg shadow-md px-5 py-2 cursor-pointer flex focus:outline-none`
@@ -79,7 +82,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
                       <div className="flex items-center">
                         <div className="text-sm">
                           <p className={classNames('whitespace-nowrap font-medium', checked ? 'text-white' : 'text-gray-900')}>Limited Edition</p>
-                          <p className={classNames('hidden lg:flex text-xs whitespace-nowrap', checked ? 'text-white' : 'text-gray-900')}>A limited number<br />of items</p>
+                          <p className={classNames('hidden lg:flex text-xs whitespace-nowrap', checked ? 'text-white' : 'text-gray-900')}>A limited number of items</p>
                         </div>
                       </div>
                       <div className="flex-shrink-0 text-white ml-1">
@@ -89,7 +92,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
                   )}
                 </Radio>
                 <Radio
-                  value={"unlimited"}
+                  value={"UNLIMITED"}
                   className={({ checked }) =>
                     `${checked ? 'bg-golden-1300 text-white' : 'bg-golden-1400 text-gray'
                     } w-full relative rounded-lg shadow-md px-5 py-2 cursor-pointer flex focus:outline-none`
@@ -100,7 +103,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
                       <div className="flex items-center">
                         <div className="text-sm">
                           <p className={classNames('whitespace-nowrap font-medium', checked ? 'text-white' : 'text-gray-900')}>Open Edition</p>
-                          <p className={classNames('hidden lg:flex text-xs whitespace-nowrap', checked ? 'text-white' : 'text-gray-900')}>An unlimited<br />number of items</p>
+                          <p className={classNames('hidden lg:flex text-xs whitespace-nowrap', checked ? 'text-white' : 'text-gray-900')}>An unlimited number of items</p>
                         </div>
                       </div>
                       <div className="flex-shrink-0 text-white ml-1">
@@ -226,7 +229,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               </Button>
             </div>
             {mintStages.map((stage, i) => (
-              <div className="w-full flex flex-row border-golden-1000 border-2 bg-black-1100 py-2 px-4 mt-2">
+              <div key={i} className="w-full flex flex-row border-golden-1000 border-2 bg-black-1100 py-2 px-4 mt-2">
                 <div className="w-full flex items-start flex-col">
                   <span className="text-white text-sm font-medium whitespace-nowrap">{`${stage.name}`}</span>
                   <span className="text-white text-xs whitespace-nowrap">{`${formatDate(getDateTimeAfter(selectedDate, stage.durationd, stage.durationh, stage.durationm))}`}</span>

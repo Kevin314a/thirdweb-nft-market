@@ -141,9 +141,7 @@ export async function fetchDrop(dropAddr: string) {
 
 export async function upcomingDrops(accountAddr?: string) {
   try {
-    //TODO upcoming drops db -> bridge
     const dbDrops = await getUpcomingDrops(accountAddr);
-
     const resDrops: PosseBridgeDrop[] = dbDrops.map((drop) => ({
       group: drop.group,
       address: drop.address,

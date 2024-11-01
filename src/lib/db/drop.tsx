@@ -36,7 +36,7 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
       { 'mintStages.allows': { $elemMatch: { $eq: accountAddr } } },
       { 'mintStages.allows': { $size: 0 } },
     ];
-    const currentDate = (new Date()).getTime();
+    const currentDate = Date.now();
 
     return await DropModel.aggregate([
       {
@@ -47,7 +47,7 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          visible: true,
+          // visible: true,               // TODO visible is only charlie
           $or: condsMintStageAllow,
           $expr: {
             $gt: [
@@ -112,7 +112,7 @@ export const getActiveDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          visible: true,
+          // visible: true,
           $or: condsMintStageAllow,
           $expr: {
             $and: [
@@ -183,7 +183,7 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          visible: true,
+          // visible: true,
           $or: condsMintStageAllow,
           $expr: { $lt: [{ $add: ["$mintStartAt", "$mintStages.duration"] }, yesterdayTimestamp] },
         },

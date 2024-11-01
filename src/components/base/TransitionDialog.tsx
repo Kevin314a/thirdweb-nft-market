@@ -65,12 +65,9 @@ export const TransitionDialog = ({
                 {title}
                 <CloseButton as="button"><MdClose color="white" /></CloseButton>
               </DialogTitle>
-              <div className="mt-8">
-                <p className="text-sm text-gray-500">
-                  {children}
-                </p>
+              <div className="mt-8 text-sm text-gray-500">
+                {children}
               </div>
-              
             </div>
           </TransitionChild>
         </div>
