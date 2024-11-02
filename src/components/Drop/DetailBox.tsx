@@ -1,33 +1,30 @@
 'use client'
 
-// import { client } from "@/lib/constants";
-// import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { Button } from "@/components/base";
-import { NFTBox } from "@/components/NFT";
+import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
+import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
+import { formatDateIntl } from "@/lib/utils";
+import { claimNFT } from "@/server-actions/drop";
+import { ImagePossef } from "@/assets";
 import { useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
+import { MdLanguage, MdMoreHoriz } from "react-icons/md";
+import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
 import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { claimTo, isERC721 } from "thirdweb/extensions/erc721";
-import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
+import { MediaRenderer, useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import toast from "react-hot-toast";
-
-import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
-import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
-import { ImagePossef } from "@/assets";
-import { MdLanguage, MdMoreHoriz } from "react-icons/md";
-import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
-import { MediaRenderer } from "thirdweb/react";
-import { formatDateIntl } from "@/lib/utils";
 import { LimitedDropDetail, UnLimitedDropDetail } from ".";
 
-export function DropDetailBox({
-  drop,
-  lazyNFTs,
-}: {
+interface DropDetailProps {
   drop: PosseBridgeDrop;
   lazyNFTs: PosseBridgeLazyNFT[];
-}) {
+  claimNFT: typeof claimNFT;
+}
+
+export function DropDetailBox(props: DropDetailProps) {
+
   const account = useActiveAccount();
   const switchChain = useSwitchActiveWalletChain();
   const activeWalletChain = useActiveWalletChain();
@@ -51,7 +48,7 @@ export function DropDetailBox({
       const masterContract = getContract({
         chain: soneiumMinato,
         client,
-        address: drop.address,
+        address: props.drop.address,
       });
       const is721 = await isERC721({ contract: masterContract });
       if (!is721) {
@@ -74,18 +71,13 @@ export function DropDetailBox({
       const tx = await sendTransaction({ transaction, account });
       const receipt = await waitForReceipt(tx);
 
+      const res = await props.claimNFT(props.drop.address, account.address);
 
-      // props.mintNFT(newNFT).then((res) => {
-      //   setIsLoading(false);
-      //   if (!res.error) {
-      //     // router.refresh();
-      //     setErrorFile(null);
-      //     setFile(null);
-      //     toast.success(res.message);
-      //   } else {
-      //     toast.error(res.message);
-      //   }
-      // });
+      if (res.error) {
+        toast.error(res.message);
+      } else {
+        toast.success(res.message);
+      }
 
     } catch (err) {
       console.log("[ERROR ON CLAIM-AN-NFT]", err);
@@ -98,6 +90,9 @@ export function DropDetailBox({
     }
     setIsLoading(false);
   };
+
+  const drop = props.drop;
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full shadow-xl -mt-16">
@@ -158,7 +153,7 @@ export function DropDetailBox({
         {drop.group === 'LIMITED' && (
           <LimitedDropDetail
             drop={drop}
-            lazyNFTs={lazyNFTs}
+            lazyNFTs={props.lazyNFTs}
           />
         )}
       </div>

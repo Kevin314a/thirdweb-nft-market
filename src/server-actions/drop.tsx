@@ -5,9 +5,13 @@ import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, 
 import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
 import { getLazyNFTs } from "@/lib/db/lazynft";
-import { getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
-import { getContract } from "thirdweb";
+import { getOwnedNFTs, getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
+import { NFT, getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
+import { getNFT, getNFTs, storeNFT } from "@/lib/db/nft";
+import { storeContract, getContract as getContractDB } from "@/lib/db/contract";
+import { getContractMetadata, owner } from "thirdweb/extensions/common";
+import { resolveScheme } from "thirdweb/storage";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
   try {
@@ -249,5 +253,79 @@ export async function pastDrops(accountAddr?: string) {
   } catch (err) {
     console.error('[ERROR ON GETTING Past Drops]', err);
     return [];
+  }
+}
+
+export async function claimNFT(dropAddr: string, accountAddr: string) {
+  try {
+
+    const dropContract = getContract({
+      chain: soneiumMinato,
+      client,
+      address: dropAddr,
+    });
+
+    const ownedNFTsofDrop: NFT[] = await getOwnedNFTs({
+      contract: dropContract,
+      owner: accountAddr,
+    });
+
+    if (!ownedNFTsofDrop.length) {
+      throw new Error("There is no NFT in this collection");
+    }
+
+    const oldNFTsOfDrop = await getNFTs({ contractAddr: dropAddr }, {}, 0);
+
+    const dropOwner = await owner({ contract: dropContract });
+    const dropMetadata = await getContractMetadata({ contract: dropContract });
+    const parentContractId = await storeContract({
+      category: "ERC-721",
+      address: dropAddr,
+      name: dropMetadata?.name || "",
+      symbol: dropMetadata?.symbol,
+      owner: dropOwner,
+    });
+
+    const differences = !!oldNFTsOfDrop.length ? ownedNFTsofDrop.filter(a => !oldNFTsOfDrop.some(b => b.tokenId === a.id.toString())) : ownedNFTsofDrop;
+
+    for (let diffNFT of differences) {
+
+      let imgPath = "";
+      if (diffNFT.metadata.image) {
+        const url = resolveScheme({
+          client,
+          uri: diffNFT.metadata.image,
+        });
+        imgPath = url;
+      }
+
+      await storeNFT({
+        contract: parentContractId,
+        contractAddr: dropAddr,
+        tokenId: diffNFT.id.toString(),
+        category: "ERC-721",
+        name: diffNFT.metadata.name || "",
+        description: diffNFT.metadata.description,
+        image: imgPath,
+        listedId: "0",
+        owner: accountAddr,
+      });
+    }
+
+    const res = {
+      error: false,
+      message: "Your new NFT is claimed",
+      actions: "Success, your own NFT has been claimed",
+    };
+    return res;
+
+  } catch (err) {
+    console.error('[ERROR ON CLAIMING NFT]', err);
+    const res = {
+      error: true,
+      message: "Sorry, an error occured claiming last NFT.",
+      actions: "Please try again",
+    };
+    return res;
   }
 }
