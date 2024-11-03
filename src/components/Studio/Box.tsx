@@ -15,7 +15,7 @@ import { LuLoader2 } from "react-icons/lu";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { MediaRenderer } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
-import { getContract, sendTransaction } from "thirdweb";
+import { NATIVE_TOKEN_ADDRESS, getContract, sendTransaction } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { setClaimConditions } from "thirdweb/extensions/erc721";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
@@ -151,7 +151,8 @@ export function StudioBox(props: StudioBoxProps) {
         contract: smartContract,
         phases: selectedDrop.mintStages.map((stage) => {
           const conStage : PosseStageInput = {
-            currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+            // currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+            currencyAddress: NATIVE_TOKEN_ADDRESS,
             price: stage.price,
             startTime: new Date(stage.startAt),
           };

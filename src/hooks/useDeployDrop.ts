@@ -6,7 +6,7 @@ import { type deployDrop } from "@/server-actions/drop";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { getContract, sendTransaction } from "thirdweb";
+import { NATIVE_TOKEN_ADDRESS, getContract, sendTransaction } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
@@ -124,12 +124,13 @@ export function useDeployDrop(props: DeployDropProps) {
             chain: soneiumMinato,
           }),
           phases: newDrop.mintStages.map((stage) => {
-            const conStage : PosseStageInput = {
-              currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+            const conStage: PosseStageInput = {
+              // currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+              currencyAddress: NATIVE_TOKEN_ADDRESS,
               price: stage.price,
               startTime: new Date(stage.startAt),
             };
-            
+
             if (isValidBigInt(stage.numberOfItems, true)) {
               conStage.maxClaimableSupply = BigInt(stage.numberOfItems);
             }

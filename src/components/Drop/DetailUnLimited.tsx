@@ -96,7 +96,7 @@ export const DetailUnLimited = ({
                 alt="drop claim image"
               />
             </div>
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 flex flex-col gap-4">
               {stageStatus === 'past' ? (
                 <span className="text-2xl text-red-700 font-medium">Current Status: Minting over</span>
               ) : (stageStatus === 'today' ? (
