@@ -2,11 +2,11 @@
 
 import { TempImageNFT } from "@/assets";
 import { client } from "@/lib/constants";
-import { PosseBridgeNFT } from "@/lib/types";
+import { PossePricedNFT } from "@/lib/types";
 import { MediaRenderer } from "thirdweb/react";
 
-export const NFTBox = ({ nft, onDetail }: {
-  nft: PosseBridgeNFT,
+export const NFTPricedBox = ({ nft, onDetail }: {
+  nft: PossePricedNFT,
   onDetail: () => void;
 }) => {
   return (
@@ -19,24 +19,28 @@ export const NFTBox = ({ nft, onDetail }: {
           src={!nft.image ? TempImageNFT.src : nft.image}
           client={client}
           className="object-cover object-center h-[180px]"
-          style={{objectFit: 'cover'}}
+          style={{ objectFit: 'cover' }}
         />
       </div>
       <div className="flex justify-between flex-1 w-full px-3">
         <div className="flex flex-col w-full justify-center py-3">
           <div className="flex justify-between">
             <p className="text-xs text-white whitespace-nowrap">
-              {"Posse #16754"}
+              {nft.contract ?? "Posse #16754"}
             </p>
             <p className="text-sm text-white whitespace-nowrap border-white">
-              {"#3,768"}
+              {nft.tokenId ?? "3768"}
             </p>
           </div>
           <p className="text-xs font-bold text-white py-2">
-            {"0.239 WILD"}
+            {`${!nft.price ? "?" : nft.price} ${!nft.currency ? "ETH" : nft.currency}`}
           </p>
           <p className="text-xs text-white pb-2">
-            {"Last sale: 0.26 CRO"}
+            {`Last sale:`} {!nft.lastSalePrice ? (
+              `N/A`
+            ) : (
+              `${nft.lastSalePrice} ${nft.lastSaleCurrency}`
+            )}
           </p>
         </div>
       </div>

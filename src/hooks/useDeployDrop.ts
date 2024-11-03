@@ -87,7 +87,7 @@ export function useDeployDrop(props: DeployDropProps) {
           params: {
             name: newDrop.name,
             description: newDrop.description,
-            contractURI: newDrop.image,
+            image: newDrop.image,
             platformFeeBps: DEFAULT_PLATFORMFEE_DROP,
           },
         })
@@ -100,7 +100,7 @@ export function useDeployDrop(props: DeployDropProps) {
           params: {
             name: newDrop.name,
             description: newDrop.description,
-            contractURI: newDrop.image,
+            image: newDrop.image,
           },
         });
 

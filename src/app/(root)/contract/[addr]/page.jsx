@@ -1,6 +1,6 @@
 'use client'
 
-import { NFTBox } from "@/components/NFT";
+import { NFTPricedBox } from "@/components/NFT";
 import { ImageProfileBack, ImageHat, ImagePossef } from "@/assets";
 import { MdLanguage, MdMoreHoriz } from "react-icons/md";
 import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
@@ -109,7 +109,7 @@ export default function ContractPage({
           <div className="mt-8 lg:mt-16">
             <div className="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
-                <NFTBox
+                <NFTPricedBox
                   key={i}
                   onDetail={() => router.push('/contract/0x1/token/0x1')}
                 />

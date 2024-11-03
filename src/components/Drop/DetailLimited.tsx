@@ -1,9 +1,9 @@
 'use client'
 
 import { client } from "@/lib/constants";
-import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
+import { PosseBridgeDrop, PosseBridgeDropMintStage, PosseBridgeLazyNFT } from "@/lib/types";
 import { Button } from "@/components/base";
-import { NFTBox } from "@/components/NFT";
+import { NFTPricedBox } from "@/components/NFT";
 import { useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
@@ -15,12 +15,15 @@ import toast from "react-hot-toast";
 export const DetailLimited = ({
   drop,
   lazyNFTs,
+  stage,
   stageStatus,
 }: {
   drop: PosseBridgeDrop,
   lazyNFTs: PosseBridgeLazyNFT[],
+  stage: PosseBridgeDropMintStage,
   stageStatus: 'past' | 'today' | 'future',
 }) => {
+
 
   return (
     <div className="w-full mt-8 lg:mt-16">
@@ -61,16 +64,17 @@ export const DetailLimited = ({
       <div className="mt-8 lg:mt-16">
         <div className="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-6">
           {lazyNFTs.map((lazyNFT, i) => (
-            <NFTBox
+            <NFTPricedBox
               key={i}
               nft={{
-                tokenId: lazyNFT.tokenId,
-                category: lazyNFT.category,
-                image: lazyNFT.image,
+                // category: lazyNFT.category,
                 name: lazyNFT.name,
-                listedId: '0',
-                owner: '0x000',
+                image: lazyNFT.image,
                 contractAddr: lazyNFT.contractAddr,
+                contract: lazyNFT.contract?.name,
+                tokenId: lazyNFT.tokenId,
+                price: stage.price,
+                currency: stage.currency,
               }}
               onDetail={() => { }}
             />

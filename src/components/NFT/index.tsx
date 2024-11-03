@@ -1,11 +1,11 @@
-import { NFTBox } from "./Box";
+import { NFTPricedBox } from "./PricedBox";
 import { NFTForm } from "./Form";
 import { NFTTraitDialog, NFTTraitCard } from "./Trait";
 
 import { NFTDetail } from "./Detail";
 
 export {
-  NFTBox,
+  NFTPricedBox,
   NFTForm,
   NFTTraitDialog,
   NFTTraitCard,

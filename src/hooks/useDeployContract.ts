@@ -69,7 +69,7 @@ export function useDeployContract(props: DeployContractProps) {
           params: {
             name: newCollection.name,
             symbol: newCollection.symbol,
-            contractURI: newCollection.image,
+            image: newCollection.image,
             description: newCollection.description,
             platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
             royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),
@@ -84,7 +84,7 @@ export function useDeployContract(props: DeployContractProps) {
           params: {
             name: newCollection.name,
             symbol: newCollection.symbol,
-            contractURI: newCollection.image,
+            image: newCollection.image,
             description: newCollection.description,
             platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
             royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),

@@ -164,12 +164,14 @@ export function DropDetailBox(props: DropDetailProps) {
         {drop.group === 'UNLIMITED' && (
           <UnLimitedDropDetail
             drop={drop}
+            stage={stage}
             stageStatus={stageStatus}
           />
         )}
         {drop.group === 'LIMITED' && (
           <LimitedDropDetail
             drop={drop}
+            stage={stage}
             lazyNFTs={props.lazyNFTs}
             stageStatus={stageStatus}
           />

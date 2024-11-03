@@ -186,3 +186,15 @@ export type PosseStageInput = {
   maxClaimableSupply?: bigint,
   maxClaimablePerWallet?: bigint,
 };
+
+export type PossePricedNFT = {
+  name: string,
+  image: string,
+  contractAddr: string,
+  contract?: string,
+  tokenId: string,
+  price: string,
+  currency: string,
+  lastSalePrice?: string,
+  lastSaleCurrency?: string,
+}

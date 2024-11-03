@@ -8,7 +8,7 @@ import { getNFTs, storeNFT } from "@/lib/db/nft";
 import { getLazyNFTs } from "@/lib/db/lazynft";
 import { NFT, getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
-import { getContractMetadata, owner } from "thirdweb/extensions/common";
+import { contractURI, getContractMetadata, owner } from "thirdweb/extensions/common";
 import { getOwnedNFTs, getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
 import { resolveScheme } from "thirdweb/storage";
 import { generateUuid } from "@/lib/utils";
@@ -91,7 +91,7 @@ export async function updateDropStage(dropAddr: string, newStages: PosseBridgeDr
       newMintStages[i].endAt = (i === newMintStages.length - 1) ? END_EARTH_DATE : newMintStages[i + 1].startAt;
     }
 
-    await updateDrop({address: dropAddr}, {mintStages: newMintStages});
+    await updateDrop({ address: dropAddr }, { mintStages: newMintStages });
 
     const res = {
       error: false,
@@ -323,6 +323,23 @@ export async function claimNFT(dropAddr: string, accountAddr: string) {
     const oldNFTsOfDrop = await getNFTs({ contractAddr: dropAddr }, {}, 0);
 
     const dropOwner = await owner({ contract: dropContract });
+
+    let image = "";
+    try {
+      const dropContractURI = await contractURI({ contract: dropContract });
+      const response = await fetch(dropContractURI);
+      const metadata = await response.json();
+
+      image = resolveScheme({
+        client,
+        uri: metadata.image,
+      });
+
+    } catch (err) {
+      console.log("[FETCHING CONTRACT METADATA FROM CONTRACTURI IN CLAIM]", err);
+      image = "";
+    }
+
     const dropMetadata = await getContractMetadata({ contract: dropContract });
     const parentContractId = await storeContract({
       category: "ERC-721",
@@ -330,6 +347,7 @@ export async function claimNFT(dropAddr: string, accountAddr: string) {
       name: dropMetadata?.name || "",
       symbol: dropMetadata?.symbol,
       owner: dropOwner,
+      image: image,
     });
 
     const differences = !!oldNFTsOfDrop.length ? ownedNFTsofDrop.filter(a => !oldNFTsOfDrop.some(b => b.tokenId === a.id.toString())) : ownedNFTsofDrop;

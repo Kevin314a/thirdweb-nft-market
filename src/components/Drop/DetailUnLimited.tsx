@@ -1,8 +1,8 @@
 'use client'
 
 import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
-import { NFTBox } from "@/components/NFT";
-import { PosseBridgeDrop } from "@/lib/types";
+import { NFTPricedBox } from "@/components/NFT";
+import { PosseBridgeDrop, PosseBridgeDropMintStage } from "@/lib/types";
 import { formatDateIntl } from "@/lib/utils";
 import { ImagePossef } from "@/assets";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
@@ -17,9 +17,11 @@ import { soneiumMinato } from "thirdweb/chains";
 
 export const DetailUnLimited = ({
   drop,
+  stage,
   stageStatus,
 }: {
   drop: PosseBridgeDrop,
+  stage: PosseBridgeDropMintStage,
   stageStatus: 'past' | 'today' | 'future',
 }) => {
   const router = useRouter();
@@ -112,15 +114,16 @@ export const DetailUnLimited = ({
         <TabPanel>
           <div className="grid grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))] gap-6">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map(i => (
-              <NFTBox
+              <NFTPricedBox
                 key={i}
                 nft={{
-                  tokenId: '0',
-                  category: 'ERC-721',
-                  name: 'Posse Tester',
-                  listedId: '0',
-                  owner: '0x123',
-                  contractAddr: '0x1',
+                  name: sharedData[0],
+                  image: sharedData[2],
+                  contractAddr: '',
+                  contract: '',
+                  tokenId: '',
+                  price: stage.price,
+                  currency: stage.currency,
                 }}
                 // onDetail={() => router.push('/contract/0x1/token/0x1')}
                 onDetail={() => { }}
