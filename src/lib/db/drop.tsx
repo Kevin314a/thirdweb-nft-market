@@ -40,6 +40,11 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
 
     return await DropModel.aggregate([
       {
+        $match: {
+          mintStages: { $ne: [] }, // Ensure mintStages is not empty
+        },
+      },
+      {
         $unwind: {
           path: '$mintStages',
           preserveNullAndEmptyArrays: true, // Keep documents without mintStages
@@ -95,6 +100,11 @@ export const getActiveDrops = async (accountAddr: string | undefined) => {
     const now = Date.now();
 
     return await DropModel.aggregate([
+      {
+        $match: {
+          mintStages: { $ne: [] }, // Ensure mintStages is not empty
+        },
+      },
       {
         $unwind: {
           path: '$mintStages',
@@ -157,6 +167,11 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
     const now = Date.now();
 
     return await DropModel.aggregate([
+      {
+        $match: {
+          mintStages: { $ne: [] }, // Ensure mintStages is not empty
+        },
+      },
       {
         $unwind: {
           path: '$mintStages',

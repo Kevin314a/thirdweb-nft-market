@@ -150,6 +150,7 @@ export type PosseFormDropMintStage = {
 export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, 'allows'> {
   endAt: number;
   allows: string[];
+  did?: string;
 };
 
 export type PosseFormLazyNFT = {
@@ -176,4 +177,12 @@ export type PosseFormShareMetadata = {
   name: string;
   description?: string;
   image: string;
+};
+
+export type PosseStageInput = {
+  currencyAddress: string,
+  price: string,
+  startTime: Date,
+  maxClaimableSupply?: bigint,
+  maxClaimablePerWallet?: bigint,
 };

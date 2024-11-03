@@ -1,19 +1,17 @@
 'use server'
 
-import { Button, Tab, TabGroup, TabList, TabPanel, TabPanels } from "@/components/base";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@/components/base";
 import { DropUpcoming, DropProgressing } from "@/components/Drop";
 import { activeDrops, pastDrops, upcomingDrops } from "@/server-actions/drop";
-import { IoAddCircleOutline } from "react-icons/io5";
-import Link from "next/link";
+import { cookies } from "next/headers";
 
 export default async function DropsPage() {
-  const upcomings = await upcomingDrops();
+  const cookieStore = cookies();
+  const accountAddr = cookieStore.get('userAddr')?.value;
 
-  console.log('-------------------------upcomingsupcomings-------------------------',upcomings);
-  const progressings = await activeDrops();
-  console.log('-------------------------progressings-------------------------', progressings);
-  const pasts = await pastDrops();
-  console.log('-------------------------pastspasts-------------------------', pasts);
+  const upcomings = !accountAddr ? [] : await upcomingDrops(accountAddr);
+  const progressings = !accountAddr ? [] : await activeDrops(accountAddr);
+  const pasts = !accountAddr ? [] : await pastDrops(accountAddr);
 
   return (
     <section className="lg:pt-24 pt-20 relative z-10">

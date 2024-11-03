@@ -10,8 +10,6 @@ export default async function StudioPage() {
   const accountAddr = cookieStore.get('userAddr')?.value;
   const drops = !accountAddr ? [] : await ownedDrops(accountAddr);
 
-  console.log('qqqqqqqqqqqqqqqqqqqqqq', drops);
-
   return (
     <section className="lg:pt-24 pt-20 relative z-10">
       <div className="max-w-[1920px] px-2 lg:px-6 mx-auto z-10 relative">

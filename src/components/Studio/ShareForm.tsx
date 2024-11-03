@@ -86,7 +86,7 @@ export function ShareMetadataForm({
         nft: {
           name: newNFT.name,
           description: newNFT.description,
-          image: newNFT.image,
+          image: file,
         }
       });
 

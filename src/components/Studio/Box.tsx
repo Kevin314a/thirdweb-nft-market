@@ -4,8 +4,8 @@ import { ImageMarketplace } from "@/assets";
 import { Button } from "@/components/base";
 import { client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
-import { PosseBridgeDrop, PosseBridgeDropMintStage } from "@/lib/types";
-import { formatDate } from "@/lib/utils";
+import { PosseBridgeDrop, PosseBridgeDropMintStage, PosseStageInput } from "@/lib/types";
+import { formatDate, generateUuid, isValidBigInt } from "@/lib/utils";
 import { lazyMintNFT } from "@/server-actions/lazynft";
 import axios, { HttpStatusCode } from "axios";
 import { useState } from "react";
@@ -15,12 +15,12 @@ import { LuLoader2 } from "react-icons/lu";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { MediaRenderer } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
-import { SlideOver } from "../XSlideOver/SlideOver";
 import { getContract, sendTransaction } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { setClaimConditions } from "thirdweb/extensions/erc721";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import toast from "react-hot-toast";
+import { SlideOver } from "../XSlideOver/SlideOver";
 import { StudioLazyMintForm, StudioPhaseForm, StudioShareMetadataForm } from ".";
 
 interface StudioBoxProps {
@@ -33,12 +33,12 @@ export function StudioBox(props: StudioBoxProps) {
   const switchChain = useSwitchActiveWalletChain();
   const activeWalletChain = useActiveWalletChain();
   const { connect } = useConnectModal();
-
   const [isOperating, setIsOperating] = useState<boolean>(false);
   const [isMintSlideOpen, setIsMintSlideOpen] = useState<boolean>(false);
   const [isShareSlideOpen, setIsShareSlideOpen] = useState<boolean>(false);
   const [selectedDrop, setSelectedDrop] = useState<PosseBridgeDrop | null>(null);
-  const [selectedStageId, setSelectedStageId] = useState<number>(-2);   // -2: none, -1: add, 0~ drop.mintStages.index
+  const [selectedStageId, setSelectedStageId] = useState<string>("none");   // "none": none, "create": add, !"": drop.mintStages.did
+  const [oldDrops, setOldDrops] = useState<PosseBridgeDrop[]>(props.drops);
 
   const handleOpenSingleLazyMintSlide = (drop: PosseBridgeDrop) => {
     if (isOperating) {
@@ -52,9 +52,9 @@ export function StudioBox(props: StudioBoxProps) {
     if (isOperating) {
       return;
     }
-    setSelectedDrop(drop);
-    toast.error('Coming soon...');
+    // setSelectedDrop(drop);
     // setIsMintSlideOpen(true);
+    toast.error('Coming soon...');
   };
 
   const handleOpenSingleUploadMetadataSlide = (drop: PosseBridgeDrop) => {
@@ -69,9 +69,9 @@ export function StudioBox(props: StudioBoxProps) {
     if (isOperating) {
       return;
     }
-    setSelectedDrop(drop);
-    toast.error('Coming soon...');
+    // setSelectedDrop(drop);
     // setIsShareSlideOpen(true);
+    toast.error('Coming soon...');
   };
 
   const handleAddPhase = (drop: PosseBridgeDrop) => {
@@ -79,10 +79,10 @@ export function StudioBox(props: StudioBoxProps) {
       return;
     }
     setSelectedDrop(drop);
-    setSelectedStageId(-1);
+    setSelectedStageId("create");
   };
 
-  const handleEditPhase = (drop: PosseBridgeDrop, index: number) => {
+  const handleEditPhase = (drop: PosseBridgeDrop, index: string) => {
     if (isOperating) {
       return;
     }
@@ -90,27 +90,35 @@ export function StudioBox(props: StudioBoxProps) {
     setSelectedStageId(index);
   };
 
-  const handleDeletePhase = (drop: PosseBridgeDrop, index: number) => {
+  const handleDeletePhase = (drop: PosseBridgeDrop, index: string) => {
     if (isOperating) {
       return;
     }
     // update drop's mintSTage with removing selected phase
     setSelectedDrop(drop);
-    if (drop.mintStages[index]) {
-      drop.mintStages = [...drop.mintStages.slice(0, index), ...drop.mintStages.slice(index + 1)];
-    }
+    drop.mintStages = drop.mintStages.filter(stage => stage.did !== index);
   };
 
   const handleEditPhaseDone = (stage: PosseBridgeDropMintStage) => {
-    if (selectedDrop) {
-      if (selectedStageId === -1) {
-        selectedDrop.mintStages.push(stage);
+    if (selectedDrop && !!selectedStageId) {
+      if (selectedStageId === "none") {
+
       }
-      else if (selectedStageId >= 0) {
-        selectedDrop.mintStages[selectedStageId] = stage;
+      else if (selectedStageId === "create") {
+        selectedDrop.mintStages.push({...stage, did: generateUuid()});
+      }
+      else if (selectedStageId.length > 7) {
+        // selectedDrop.mintStages[selectedStageId] = stage;
+        selectedDrop.mintStages = selectedDrop.mintStages.map(s => {
+          if (s.did === selectedStageId) {
+            return stage;
+          } else {
+            return s;
+          }
+        });
       }
     }
-    setSelectedStageId(-2);
+    setSelectedStageId("none");
   };
 
   const handleSaveAllStages = async () => {
@@ -141,13 +149,21 @@ export function StudioBox(props: StudioBoxProps) {
 
       const transaction = setClaimConditions({
         contract: smartContract,
-        phases: selectedDrop.mintStages.map((stage) => ({
-          maxClaimableSupply: BigInt(stage.numberOfItems || 0n),
-          maxClaimablePerWallet: BigInt(stage.perlimit || 0n),
-          currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
-          price: stage.price,
-          startTime: new Date(stage.startAt),
-        })),
+        phases: selectedDrop.mintStages.map((stage) => {
+          const conStage : PosseStageInput = {
+            currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+            price: stage.price,
+            startTime: new Date(stage.startAt),
+          };
+          
+          if (isValidBigInt(stage.numberOfItems, true)) {
+            conStage.maxClaimableSupply = BigInt(stage.numberOfItems);
+          }
+          if (isValidBigInt(stage.perlimit, true)) {
+            conStage.maxClaimablePerWallet = BigInt(stage.perlimit);
+          }
+          return conStage;
+        }),
       });
 
       await sendTransaction({ transaction, account });
@@ -170,16 +186,23 @@ export function StudioBox(props: StudioBoxProps) {
       toast.error("Failed to update Phases");
     }
 
-    fnRefreshStage();
+    fnRefreshStage(false);
   };
 
-  const fnRefreshStage = () => {
+  const fnRefreshStage = (loadOld: boolean) => {
+    if (loadOld) {
+      props.drops = oldDrops;
+    }
     setSelectedDrop(null);
     setIsOperating(false);
-    setSelectedStageId(-2);
+    setSelectedStageId("none");
     setIsMintSlideOpen(false);
     setIsShareSlideOpen(false);
   };
+
+  const handleRestoreStages = () => {
+    fnRefreshStage(true);
+  }
 
   return (
     <>
@@ -272,17 +295,30 @@ export function StudioBox(props: StudioBoxProps) {
                   <span className="text-sm md:text-base text-white">{(!stage.perlimit || stage.perlimit === "0") ? 'Unlimited' : stage.perlimit}</span>
                 </div>
                 <div className="flex flex-row w-auto justify-end gap-6">
-                  <div className="rounded-full p-2 bg-blue-600 hover:bg-blue-700 cursor-pointer" onClick={() => handleEditPhase(drop, j)}>
+                  <div className="rounded-full p-2 bg-blue-600 hover:bg-blue-700 cursor-pointer" onClick={() => handleEditPhase(drop, stage.did || j.toString())}>
                     <FaRegEdit color="white" size="14" />
                   </div>
-                  <div className="rounded-full p-2 bg-red-600 hover:bg-red-700 cursor-pointer" onClick={() => handleDeletePhase(drop, j)}>
+                  <div className="rounded-full p-2 bg-red-600 hover:bg-red-700 cursor-pointer" onClick={() => handleDeletePhase(drop, stage.did || j.toString())}>
                     <RiDeleteBin2Line color="white" size="14" />
                   </div>
                 </div>
               </div>
             ))}
             {!!selectedDrop && selectedDrop.address === drop.address && (
-              <div className="w-full flex justify-end mt-2">
+              <div className="w-full flex justify-end mt-2 gap-2">
+                <Button
+                  type="button"
+                  variant="common"
+                  onClick={handleRestoreStages}
+                  disabled={isOperating}
+                >
+                  {!!isOperating ? (
+                    <LuLoader2 size={18} className="animate-spin" />
+                  ) : (
+                    <IoMdDoneAll color="white" size="18" />
+                  )}
+                  Cancel
+                </Button>
                 <Button
                   type="button"
                   variant="secondary"
@@ -306,37 +342,49 @@ export function StudioBox(props: StudioBoxProps) {
         <>
           <SlideOver
             open={isMintSlideOpen}
-            setOpen={(b) => !isOperating && setIsMintSlideOpen(!!b)}
+            setOpen={(b) => {
+              !isOperating && setIsMintSlideOpen(!!b);
+              !isOperating && !b && setSelectedDrop(null);
+            }}
             title="Mint NFT"
           >
             <StudioLazyMintForm
               drop={selectedDrop}
               lazyMintNFT={props.lazyMintNFT}
               onOperating={(b) => setIsOperating(b)}
-              onClose={() => !isOperating && setIsMintSlideOpen(false)}
+              onClose={() => {
+                !isOperating && setIsMintSlideOpen(false);
+                !isOperating && setSelectedDrop(null);
+              }}
             />
           </SlideOver>
           <SlideOver
             open={isShareSlideOpen}
-            setOpen={(b) => !isOperating && setIsShareSlideOpen(!!b)}
+            setOpen={(b) => {
+              !isOperating && setIsShareSlideOpen(!!b);
+              !isOperating && !b && setSelectedDrop(null);
+            }}
             title="Set NFT Metadata"
           >
             <StudioShareMetadataForm
               drop={selectedDrop}
               onOperating={(b) => setIsOperating(b)}
-              onClose={() => !isOperating && setIsShareSlideOpen(false)}
+              onClose={() => {
+                !isOperating && setIsShareSlideOpen(false);
+                !isOperating && setSelectedDrop(null);
+              }}
             />
           </SlideOver>
           <SlideOver
-            open={selectedStageId > -2}
-            setOpen={() => !isOperating && setSelectedStageId(-2)}
-            title="Set NFT Metadata"
+            open={!!selectedStageId && selectedStageId !== "none"}
+            setOpen={() => !isOperating && setSelectedStageId("none")}
+            title="Update a Mint Stage"
           >
             <StudioPhaseForm
               drop={selectedDrop}
               stageId={selectedStageId}
               onEditDone={(stage) => handleEditPhaseDone(stage)}
-              onClose={() => !isOperating && setSelectedStageId(-2)}
+              onClose={() => !isOperating && setSelectedStageId("none")}
             />
           </SlideOver>
         </>

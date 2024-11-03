@@ -137,7 +137,6 @@ export function useMintNFT(props: MintNFTProps) {
       props.mintNFT(newNFT).then((res) => {
         setIsLoading(false);
         if (!res.error) {
-          // router.refresh();
           setErrorFile(null);
           setFile(null);
           toast.success(res.message);

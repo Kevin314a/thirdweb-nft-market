@@ -147,7 +147,6 @@ export function LazyMintForm(props: LazyMintNFTProps) {
       props.lazyMintNFT(newNFT).then((res) => {
         setIsLoading(false);
         if (!res.error) {
-          // router.refresh();
           setErrorFile(null);
           setFile(null);
           reset();

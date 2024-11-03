@@ -35,6 +35,7 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
       name: { type: String },
       price: { type: String },
       currency: { type: String },
+      numberOfItems: { type: String },
       startAt: { type: Number },
       endAt: { type: Number },
       perlimit: { type: String },

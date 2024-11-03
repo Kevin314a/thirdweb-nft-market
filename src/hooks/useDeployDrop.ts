@@ -1,7 +1,7 @@
 import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
-import { PosseFormDropMintStage, PosseFormDrop } from "@/lib/types";
-import { getDateTimeAfter } from "@/lib/utils";
+import { PosseFormDropMintStage, PosseFormDrop, PosseStageInput } from "@/lib/types";
+import { getDateTimeAfter, isValidBigInt } from "@/lib/utils";
 import { type deployDrop } from "@/server-actions/drop";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -66,10 +66,7 @@ export function useDeployDrop(props: DeployDropProps) {
       await switchChain(soneiumMinato);
     }
 
-    console.log('zzzzzzzzzzzzzzzzzzzzz', newDrop);
-
     try {
-
       let uri = "";
       try {
         // upload image via thirdweb-ipfs, then change it to 
@@ -126,13 +123,21 @@ export function useDeployDrop(props: DeployDropProps) {
             client,
             chain: soneiumMinato,
           }),
-          phases: newDrop.mintStages.map((stage) => ({
-            maxClaimableSupply: BigInt(stage.numberOfItems || 0n),
-            maxClaimablePerWallet: BigInt(stage.perlimit || 0n),
-            currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
-            price: stage.price,
-            startTime: new Date(stage.startAt),
-          })),
+          phases: newDrop.mintStages.map((stage) => {
+            const conStage : PosseStageInput = {
+              currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
+              price: stage.price,
+              startTime: new Date(stage.startAt),
+            };
+            
+            if (isValidBigInt(stage.numberOfItems, true)) {
+              conStage.maxClaimableSupply = BigInt(stage.numberOfItems);
+            }
+            if (isValidBigInt(stage.perlimit, true)) {
+              conStage.maxClaimablePerWallet = BigInt(stage.perlimit);
+            }
+            return conStage;
+          }),
         });
 
         await sendTransaction({ transaction, account });

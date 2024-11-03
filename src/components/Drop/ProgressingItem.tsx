@@ -34,7 +34,8 @@ export const DropProgressingItem = ({
         <MediaRenderer
           src={!drop.image ? ImageNFT.src : drop.image}
           client={client}
-          className="object-cover rounded-lg min-w-[240px] min-h-[162px]"
+          className="object-cover rounded-lg w-full min-w-[240px] min-h-[162px] h-[162px]"
+          style={{objectFit: 'cover'}}
         />
       </div>
       <div className="p-4">

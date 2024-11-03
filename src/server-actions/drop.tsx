@@ -2,16 +2,16 @@
 
 import { END_EARTH_DATE, client } from "@/lib/constants";
 import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
+import { storeContract } from "@/lib/db/contract";
 import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop, updateDrop } from "@/lib/db/drop";
-import { toNumber } from "@/lib/utils";
+import { getNFTs, storeNFT } from "@/lib/db/nft";
 import { getLazyNFTs } from "@/lib/db/lazynft";
-import { getOwnedNFTs, getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
 import { NFT, getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
-import { getNFT, getNFTs, storeNFT } from "@/lib/db/nft";
-import { storeContract, getContract as getContractDB } from "@/lib/db/contract";
 import { getContractMetadata, owner } from "thirdweb/extensions/common";
+import { getOwnedNFTs, getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
 import { resolveScheme } from "thirdweb/storage";
+import { generateUuid } from "@/lib/utils";
 
 export async function deployDrop(newDrop: PosseFormDrop) {
   try {
@@ -81,7 +81,7 @@ export async function updateDropStage(dropAddr: string, newStages: PosseBridgeDr
       throw new Error("A Drop to update its stages is not exist");
     }
 
-    if (!newStages || !Array.isArray(newStages) || !newStages.length) {
+    if (!newStages || !Array.isArray(newStages)) {
       throw new Error("Mint stages for this drop via api is invalid");
     }
 
@@ -124,6 +124,7 @@ export async function ownedDrops(accountAddr?: string) {
       owner: dbDrop.owner,
       visible: dbDrop.visible,
       mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
+        did: generateUuid(),
         name: stage.name,
         price: stage.price,
         currency: stage.currency,

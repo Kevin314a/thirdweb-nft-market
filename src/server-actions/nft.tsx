@@ -259,8 +259,6 @@ export async function getOwnedNFTs(_search: string, _sort: string, _page: number
 
     const data = await getNFTs(conds, sort, page);
 
-    console.log('zzzzzzzzzzzzzzzzzz', data);
-
     const nfts: PosseBridgeNFT[] = data?.map(item => ({
       contract: {
         category: item.contract.category,

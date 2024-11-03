@@ -9,7 +9,6 @@ export const DropUpcoming = ({
 }: {
   items: PosseBridgeDrop[],
 }) => {
-  
   return (
     <XSwiper>
       {items.map((item, i) => (

@@ -110,9 +110,6 @@ export function useDeployContract(props: DeployContractProps) {
             // TODO: show succesfully deploy toast
             toast.success(res.message);
             router.back();
-            setTimeout(() => {
-              router.refresh(); // This forces the current page to re-render
-            }, 100);
           } else {
             toast.error(res.message);
           }

@@ -3,13 +3,13 @@
 import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
 import { NFTBox } from "@/components/NFT";
 import { PosseBridgeDrop } from "@/lib/types";
+import { formatDateIntl } from "@/lib/utils";
 import { ImagePossef } from "@/assets";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { MdLanguage, MdMoreHoriz } from "react-icons/md";
 import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
 import { notFound, useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
-import { formatDateIntl } from "@/lib/utils";
 import { sharedMetadata } from "thirdweb/extensions/erc721";
 import { useEffect, useState } from "react";
 import { getContract } from "thirdweb";
@@ -24,7 +24,7 @@ export const DetailUnLimited = ({
 }) => {
   const router = useRouter();
 
-  const [sharedData, setSharedData] = useState<[string, string, string, string]>();
+  const [sharedData, setSharedData] = useState<[string, string, string, string]>(["", "", "", ""]);
 
   useEffect(() => {
     const fnLoadSharedData = async () => {
@@ -40,6 +40,7 @@ export const DetailUnLimited = ({
     fnLoadSharedData();
   }, [drop]);
 
+  console.log('sharedData', sharedData);
   return (
     <TabGroup className="w-full mt-8 lg:mt-16">
       <div className="lg:w-full flex lg:items-center lg:flex-row flex-col justify-end lg:justify-between mt-4 lg:mt-0">
@@ -88,10 +89,10 @@ export const DetailUnLimited = ({
           <div className="w-full h-full flex md:flex-row flex-col gap-4">
             <div className="md:w-1/2">
               <MediaRenderer
-                src={!drop.image ? ImagePossef.src : drop.image}
+                src={!sharedData[2] ? ImagePossef.src : sharedData[2]}
                 client={client}
                 className="object-cover object-center w-[calc(100vw-20px)] h-[calc(100vw-20px)] md:w-[45vw] md:h-[45vw]"
-                style={{objectFit: "cover"}}
+                style={{ objectFit: "cover" }}
                 alt="drop claim image"
               />
             </div>
@@ -103,6 +104,8 @@ export const DetailUnLimited = ({
               ) : (
                 <span className="text-2xl text-green-700 font-medium">Current Status: Minting upcoming</span>
               ))}
+              <span className="text-white text-lg">Name: {sharedData[0]}</span>
+              <span className="text-white text-lg">Description: {sharedData[1]}</span>
             </div>
           </div>
         </TabPanel>
@@ -119,7 +122,8 @@ export const DetailUnLimited = ({
                   owner: '0x123',
                   contractAddr: '0x1',
                 }}
-                onDetail={() => router.push('/contract/0x1/token/0x1')}
+                // onDetail={() => router.push('/contract/0x1/token/0x1')}
+                onDetail={() => { }}
               />
             ))}
           </div>

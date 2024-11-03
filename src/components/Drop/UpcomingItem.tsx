@@ -40,20 +40,18 @@ export const DropUpcomingItem = ({
 
   return (
     <div className="relative cursor-pointer">
-      <MediaRenderer
+      {/* <MediaRenderer
         src={!drop.image ? DropNoneBack.src : drop.image}
         client={client}
         className="object-cover object-center min-w-[709px] min-h-[409px] rounded-lg"
         alt="upcomingItem"
-        />
-      {/* <Image
-        src={!drop.image ? DropNoneBack : drop.image}
-        priority
-        width={709}
-        height={409}
-        className="w-[calc(100vw)] h-[calc(100vw)] md:w-auto md:h-auto object-cover rounded-[15px]"
-        alt="upcomingItem"
+        style={{ objectFit: 'cover' }}
       /> */}
+      <img
+        src={!drop.image ? DropNoneBack.src : drop.image}
+        className="w-[calc(100vw)] h-[calc(100vw)] md:w-full md:h-[409px] object-cover rounded-lg"
+        alt="upcomingItem"
+      />
       <div className="absolute bottom-0 p-4 lg:py-8 w-full">
         <div className="mb-2 lg:mb-4">
           <Image
