@@ -117,8 +117,6 @@ export type PosseFormDrop = {
   description?: string;
   image?: string;
   payToken: string[];
-  numberOfItems?: string;
-  mintStartAt: number;
   owner: string;
   visible?: boolean;
   mintStages: PosseFormDropMintStage[];
@@ -143,15 +141,14 @@ export type PosseFormDropMintStage = {
   name: string;
   price: string;
   currency: string;
-  durationd: string;
-  durationh: string;
-  durationm: string;
-  perlimit?: string;
+  numberOfItems: string;
+  startAt: number;
+  perlimit: string;
   allows: { address: string }[];
 };
 
-export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, 'durationd' | 'durationh' | 'durationm' | 'allows'> {
-  duration: number;
+export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, 'allows'> {
+  endAt: number;
   allows: string[];
 };
 

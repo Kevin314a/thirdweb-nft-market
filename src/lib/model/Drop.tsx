@@ -30,18 +30,13 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
   payToken: {
     type: [{ type: String, required: true }],
   },
-  numberOfItems: {
-    type: String
-  },
-  mintStartAt: {
-    type: Number
-  },
   mintStages: {
     type: [{
       name: { type: String },
       price: { type: String },
       currency: { type: String },
-      duration: { type: Number },
+      startAt: { type: Number },
+      endAt: { type: Number },
       perlimit: { type: String },
       allows: { type: [{ type: String }] },
     }],

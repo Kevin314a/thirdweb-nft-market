@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { Button, Field, Fieldset, Input, Label, Switch, TransitionDialog } from "../base";
+import { Button, Field, Fieldset, Input, Label, Switch, TransitionDialog, XDatePicker } from "../base";
 import { XUpload } from "../XUpload";
 import { isAddress } from 'thirdweb/utils';
 import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
@@ -31,7 +31,7 @@ export const StageDialog = ({
     }
   });
   const [errorFile, setErrorFile] = useState<"none" | "exceed" | "invalid-ext" | "drop-fail" | null>(null);
-
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [mintlimit, setMintlimit] = useState<boolean>(false);
 
   const { fields, append, remove } = useFieldArray({
@@ -44,18 +44,18 @@ export const StageDialog = ({
       setValue("name", stage.name);
       setValue("price", stage.price);
       setValue("currency", stage.currency);
-      setValue("durationd", stage.durationd);
-      setValue("durationh", stage.durationh);
-      setValue("durationm", stage.durationm);
+      setValue("numberOfItems", stage.numberOfItems);
+      setValue("startAt", stage.startAt);
       setValue("perlimit", stage.perlimit);
+      setSelectedDate(new Date(stage.startAt));
     } else {
       setValue("name", "");
       setValue("price", "");
       setValue("currency", "");
-      setValue("durationd", "");
-      setValue("durationh", "");
-      setValue("durationm", "");
-      setValue("perlimit", undefined);
+      setValue("numberOfItems", "");
+      setValue("startAt", (new Date()).getTime());
+      setValue("perlimit", "");
+      setSelectedDate(new Date());
     }
   }, [stage]);
 
@@ -74,6 +74,7 @@ export const StageDialog = ({
         className="flex flex-col gap-6 sm:gap-12 md:flex-row"
       >
         <Fieldset className="space-y-5 md:w-1/2">
+
           <Field>
             <Label htmlFor="staname" className="block mb-2">Name *</Label>
             <Input
@@ -111,32 +112,29 @@ export const StageDialog = ({
             )}
           </Field>
           <Field>
-            <Label htmlFor="staduration" as="p" className="block mb-2">Duration</Label>
-            <div className="w-full flex items-center gap-2 text-white">
-              <Input
-                {...register('durationd', {})}
-                id="staduration"
-                type="number"
-                className="px-3 py-1 w-[80px]"
-              />
-              Days
-              <Input
-                {...register('durationh', {})}
-                id="staduration"
-                type="number"
-                className="px-3 py-1 w-[80px]"
-              />
-              Hours
-              <Input
-                {...register('durationm', {})}
-                id="staduration"
-                type="number"
-                className="px-3 py-1 w-[80px]"
-              />
-              Mins
-            </div>
-            {(errors.durationd || errors.durationh || errors.durationm) && (
-              <p className="mt-1 text-xs text-red-600">{errors.durationd?.message || errors.durationh?.message || errors.durationm?.message}</p>
+            <Label htmlFor="mintStartAt" as="p" className="block mb-2">Mint start date & time</Label>
+            <XDatePicker
+              className="px-3 py-1 min-w-[25vw]"
+              variant="inline"
+              xDate={selectedDate}
+              onChangeDate={(d) => {
+                setValue("startAt", (!d) ? (new Date()).getTime() : d.getTime());
+                setSelectedDate(d);
+              }}
+            />
+          </Field>
+          <Field>
+            <Label htmlFor="numberOfItems" className="block mb-2">Number of items</Label>
+            <Input
+              {...register('numberOfItems', {
+                validate: (v) => isValidBigInt(v, false) || "Number of items is invalid",
+              })}
+              id="numberOfItems"
+              type="text"
+              className="px-3 py-1 min-w-[25vw]"
+            />
+            {errors.numberOfItems && (
+              <p className="mt-1 text-xs text-red-600">{errors.numberOfItems.message}</p>
             )}
           </Field>
           <Field>

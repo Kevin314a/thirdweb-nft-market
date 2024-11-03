@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import { PosseFormDropMintStage } from "@/lib/types";
-import { formatDate, getDateTimeAfter, isValidBigInt } from "@/lib/utils";
+import { formatDate, formatDateStageDuration, getDateTimeAfter, isValidBigInt } from "@/lib/utils";
 import { useDeployDrop } from "@/hooks/useDeployDrop";
 import { type deployDrop } from "@/server-actions/drop";
 import { useRef } from "react";
@@ -18,7 +18,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const { account, setFile, isLoading, handleSubmit,
-    dropGroup, setDropGroup, selectedDate, setSelectedDate, selectedPayToken, setSelectedPayToken,
+    dropGroup, setDropGroup, selectedPayToken, setSelectedPayToken,
     register, useSubmit, errors, setValue, reset, errorFile, setErrorFile, mintStages, setMintStages, selectedStage, setSelectedStage, isOpen, setIsOpen,
   } = useDeployDrop(props);
 
@@ -165,33 +165,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               <p className="mt-1 text-xs text-red-600">{errors.payToken.message}</p>
             )}
           </Field>
-          {dropGroup === "LIMITED" && <Field>
-            <Label htmlFor="numberOfItems" className="block mb-2">Number of items</Label>
-            <Input
-              {...register('numberOfItems', {
-                required: "Number of items is required",
-                validate: (v) => isValidBigInt(v, true) || "Number of items is invalid",
-              })}
-              id="numberOfItems"
-              type="text"
-              className="px-3 py-1 min-w-[25vw]"
-            />
-            {errors.numberOfItems && (
-              <p className="mt-1 text-xs text-red-600">{errors.numberOfItems.message}</p>
-            )}
-          </Field>}
-          <Field>
-            <Label htmlFor="mintStartAt" as="p" className="block mb-2">Mint start date & time</Label>
-            <XDatePicker
-              className="px-3 py-1 min-w-[25vw]"
-              variant="inline"
-              xDate={selectedDate}
-              onChangeDate={(d) => {
-                setValue("mintStartAt", (!d) ? (new Date()).getTime() : d.getTime());
-                setSelectedDate(d);
-              }}
-            />
-          </Field>
+
         </Fieldset>
         <div className="space-y-5 md:w-1/2">
           <div>
@@ -209,12 +183,11 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               setErrorFile(err);
             }}
             isError={!errorFile}
-            className="min-h-[18vw]"
+            className="min-h-[80px]"
           />
           {errorFile === "none" && <span className="text-md mt-1 w-full text-right">Your artwork is missing.</span>}
           {errorFile === "exceed" && <span className="text-md mt-1 w-full text-right">Your artwork exceeds 500KB.</span>}
           {errorFile === "invalid-ext" && <span className="text-md mt-1 w-full text-right">Your artwork's extension type is invalid.</span>}
-
           <div className="w-full">
             <div className="w-full flex justify-between items-center">
               <p className="block text-white text-sm font-medium">Mint stages</p>
@@ -232,9 +205,10 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               <div key={i} className="w-full flex flex-row border-golden-1000 border-2 bg-black-1100 py-2 px-4 mt-2">
                 <div className="w-full flex items-start flex-col">
                   <span className="text-white text-sm font-medium whitespace-nowrap">{`${stage.name}`}</span>
-                  <span className="text-white text-xs whitespace-nowrap">{`${formatDate(getDateTimeAfter(selectedDate, stage.durationd, stage.durationh, stage.durationm))}`}</span>
-                  <span className="text-white text-xs whitespace-nowrap">{`${stage.price} ${stage.currency}`}</span>
-                  <span className="text-white text-xs whitespace-nowrap">{`Limit per Wallet: ${stage.perlimit ?? "Unlimited"}`}</span>
+                  <span className="text-white text-xs whitespace-nowrap">{`Starts at: ${formatDate(new Date(stage.startAt))}`}</span>
+                  <span className="text-white text-xs whitespace-nowrap">{`Price: ${stage.price} ${stage.currency}`}</span>
+                  <span className="text-white text-xs whitespace-nowrap">{`Maximum Supply: ${(!stage.numberOfItems || stage.numberOfItems === "0") ? "Unlimited" : stage.numberOfItems}`}</span>
+                  <span className="text-white text-xs whitespace-nowrap">{`Limit per Wallet: ${(!stage.perlimit || stage.perlimit === "0") ? "Unlimited" : stage.perlimit}`}</span>
                 </div>
                 <div className="flex flex-row items-center gap-4">
                   <Button

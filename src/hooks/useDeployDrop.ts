@@ -39,8 +39,6 @@ export function useDeployDrop(props: DeployDropProps) {
       description: "",
       image: "",
       payToken: ['ETH'],
-      numberOfItems: "",
-      mintStartAt: (new Date()).getTime(),
       owner: "",
       mintStages: [],
     }
@@ -120,24 +118,6 @@ export function useDeployDrop(props: DeployDropProps) {
         newDrop.image = url;
       }
 
-      props.deployDrop(newDrop)
-        .then((res) => {
-
-          if (!res.error) {
-            // toast.success(res.message);
-            // router.back();
-            // setTimeout(() => {
-            //   router.refresh(); // This forces the current page to re-render
-            // }, 100);
-          } else {
-            toast.error(res.message);
-          }
-        })
-        .catch((err) => {
-          console.log("[ERROR ON DEPLOY-DROP-FORM]", err);
-          toast.error("store information of your drop is failed.");
-        });
-
       // If he has some mit stages, then set claim
       if (!!newDrop.mintStages.length) {
         const transaction = setClaimConditions({
@@ -147,22 +127,34 @@ export function useDeployDrop(props: DeployDropProps) {
             chain: soneiumMinato,
           }),
           phases: newDrop.mintStages.map((stage) => ({
-            maxClaimableSupply: BigInt(newDrop.numberOfItems || 100n),
-            maxClaimablePerWallet: BigInt(stage.perlimit || 1n),
+            maxClaimableSupply: BigInt(stage.numberOfItems || 0n),
+            maxClaimablePerWallet: BigInt(stage.perlimit || 0n),
             currencyAddress: SUPPORTED_CURRENCIES.filter((currency) => currency.symbol === stage.currency).shift()?.address || "ETH",
             price: stage.price,
-            startTime: getDateTimeAfter(new Date(newDrop.mintStartAt), stage.durationd, stage.durationh, stage.durationm),
+            startTime: new Date(stage.startAt),
           })),
-
         });
 
         await sendTransaction({ transaction, account });
       }
 
-      toast.success("Your drop is successfully deployed");
+      props.deployDrop(newDrop)
+        .then((res) => {
+          setIsLoading(false);
+          if (!res.error) {
+            toast.success("Your drop is successfully deployed");
+            router.push('/studio');
+          } else {
+            toast.error(res.message);
+          }
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          console.log("[ERROR ON DEPLOY-DROP-FORM]", err);
+          toast.error("store information of your drop is failed.");
+        });
 
       fnRefresh();
-      setIsLoading(false);
     } catch (err) {
       console.log("[ERROR ON DEPLOY-DROP]", err);
       const error = err as { code: number, message: string };
@@ -190,7 +182,6 @@ export function useDeployDrop(props: DeployDropProps) {
     account,
     setFile,
     dropGroup, setDropGroup,
-    selectedDate, setSelectedDate,
     selectedPayToken, setSelectedPayToken,
     isLoading,
     handleSubmit,

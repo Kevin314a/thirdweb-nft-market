@@ -93,9 +93,15 @@ export function formatDate(date: Date, short: boolean = true): string {
   return `${formattedDate}${short ? '' : gmtOffset}`;
 }
 
+export function formatDateStageDuration(days: string, hours: string, mins: string): string {
+  return ((!days ? "" : days.concat(" Days "))
+    .concat(!hours ? "" : hours.concat(" Hours ")))
+    .concat(!mins ? "" : mins.concat(" Mins "));
+}
+
 export function formatDateIntl(timestamp: number) {
   // Output: "Oct, 2024" (for the current date)
-  const date = new Date(timestamp <= 0 ? (new Date().getTime()) : timestamp);
+  const date = new Date(timestamp <= 0 ? (Date.now()) : timestamp);
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     month: "short",
     year: "numeric"
@@ -146,12 +152,11 @@ export const toNumber = (value: string): number => {
   return isNaN(num) ? 0 : num; // Check if conversion was successful
 };
 
-export const parseRemainTime = (duration: number): { remainDays: number, remainHours: number, remainMins: number, remainSecs: number } => {
+export const parseRemainTime = (duration: number): { remainDays: number, remainHours: number, remainMins: number, remainSecs: number, isPast: boolean } => {
   const currentTime = Date.now();
-  const difference = duration - currentTime;
-  if (difference <= 0) {
-    return { remainDays: 0, remainHours: 0, remainMins: 0, remainSecs: 0 };
-  }
+
+  const difference = (duration - currentTime < 0) ? currentTime - duration : duration - currentTime;
+  const isPast = (duration - currentTime < 0) ? true : false;
 
   const totalSeconds = Math.floor(difference / 1000); // Total seconds
   const days = Math.floor(totalSeconds / (60 * 60 * 24)); // Days
@@ -159,7 +164,7 @@ export const parseRemainTime = (duration: number): { remainDays: number, remainH
   const minutes = Math.floor((totalSeconds % (60 * 60)) / 60); // Minutes
   const seconds = totalSeconds % 60; // Remaining seconds
 
-  return { remainDays: days, remainHours: hours, remainMins: minutes, remainSecs: seconds };
+  return { remainDays: days, remainHours: hours, remainMins: minutes, remainSecs: seconds, isPast };
 };
 
 export const makeBotAddress = () => {

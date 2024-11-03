@@ -39,6 +39,7 @@ const XDatePicker = React.forwardRef<
     selected={xDate}
     onChange={(d) => onChangeDate(d)}
     showTimeSelect
+    // disabled
     timeFormat="hh:mm aa"  // This sets the time format to 12-hour with AM/PM
     timeIntervals={15}
     dateFormat="MMMM d, yyyy h:mm aa"

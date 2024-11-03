@@ -1,8 +1,8 @@
 'use server'
 
-import { client } from "@/lib/constants";
+import { END_EARTH_DATE, client } from "@/lib/constants";
 import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
-import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop } from "@/lib/db/drop";
+import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop, updateDrop } from "@/lib/db/drop";
 import { toNumber } from "@/lib/utils";
 import { getLazyNFTs } from "@/lib/db/lazynft";
 import { getOwnedNFTs, getTotalClaimedSupply, getTotalUnclaimedSupply, totalSupply } from "thirdweb/extensions/erc721";
@@ -20,7 +20,8 @@ export async function deployDrop(newDrop: PosseFormDrop) {
     if (oldOne) {
       throw new Error("A Drop with the same infos is already exist");
     }
-    await storeDrop({
+
+    const bridgeDrop: PosseBridgeDrop = {
       group: newDrop.group,
       address: newDrop.address,
       name: newDrop.name,
@@ -28,17 +29,69 @@ export async function deployDrop(newDrop: PosseFormDrop) {
       image: newDrop.image,
       payToken: newDrop.payToken,
       owner: newDrop.owner,
-      numberOfItems: newDrop.numberOfItems,
-      mintStartAt: new Date(newDrop.mintStartAt).getTime(),
-      mintStages: newDrop.mintStages?.map((stage) => ({
-        name: stage.name,
-        price: stage.price,
-        currency: stage.currency,
-        duration: toNumber(stage.durationd) * 24 * 60 * 60 * 1000 + toNumber(stage.durationh) * 60 * 60 * 1000 + toNumber(stage.durationm) * 60 * 1000,
-        perlimit: stage.perlimit,
-        allows: stage.allows?.map((allow) => allow.address),
-      })),
-    });
+      mintStages: [],
+    };
+
+    if (newDrop.mintStages && Array.isArray(newDrop.mintStages) && newDrop.mintStages.length > 0) {
+      const newMintStages: PosseBridgeDropMintStage[] = newDrop.mintStages
+        .sort((a, b) => a.startAt - b.startAt)
+        .map((stage) => ({
+          name: stage.name,
+          price: stage.price,
+          currency: stage.currency,
+          numberOfItems: stage.numberOfItems,
+          startAt: stage.startAt,
+          endAt: stage.startAt,
+          perlimit: stage.perlimit,
+          allows: stage.allows?.map((allow) => allow.address),
+        }));
+
+      for (let i = 0; i < newMintStages.length; ++i) {
+        newMintStages[i].endAt = (i === newMintStages.length - 1) ? END_EARTH_DATE : newMintStages[i + 1].startAt;
+      }
+
+      bridgeDrop.mintStages = newMintStages;
+    }
+
+    await storeDrop(bridgeDrop);
+
+    const res = {
+      error: false,
+      message: "Drop is created.",
+      actions: "Success, your own Drop has been deployed",
+    };
+    return res;
+
+  } catch (err) {
+    console.error('[ERROR ON DEPLOYING DROP]', err);
+    const res = {
+      error: true,
+      message: "Sorry, an error occured deploying your Drop.",
+      actions: "Please try again",
+    };
+    return res;
+  }
+}
+
+export async function updateDropStage(dropAddr: string, newStages: PosseBridgeDropMintStage[]) {
+  try {
+
+    const oldOne = await getDrop(dropAddr);
+    if (!oldOne) {
+      throw new Error("A Drop to update its stages is not exist");
+    }
+
+    if (!newStages || !Array.isArray(newStages) || !newStages.length) {
+      throw new Error("Mint stages for this drop via api is invalid");
+    }
+
+    const newMintStages: PosseBridgeDropMintStage[] = newStages.sort((a, b) => a.startAt - b.startAt);
+
+    for (let i = 0; i < newMintStages.length; ++i) {
+      newMintStages[i].endAt = (i === newMintStages.length - 1) ? END_EARTH_DATE : newMintStages[i + 1].startAt;
+    }
+
+    await updateDrop({address: dropAddr}, {mintStages: newMintStages});
 
     const res = {
       error: false,
@@ -68,15 +121,15 @@ export async function ownedDrops(accountAddr?: string) {
       description: dbDrop.description,
       image: dbDrop.image,
       payToken: dbDrop.payToken,
-      numberOfItems: dbDrop.numberOfItems,
-      mintStartAt: dbDrop.mintStartAt,
       owner: dbDrop.owner,
       visible: dbDrop.visible,
       mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
         name: stage.name,
         price: stage.price,
         currency: stage.currency,
-        duration: stage.duration,
+        numberOfItems: stage.numberOfItems,
+        startAt: stage.startAt,
+        endAt: stage.endAt,
         perlimit: stage.perlimit,
         allows: stage.allows,
       })),
@@ -111,20 +164,12 @@ export async function fetchDrop(dropAddr: string) {
   try {
     const dbDrop: PosseDBDrop = await getDrop(dropAddr);
 
-    const dbLazyNFTs = dbDrop.group === "LIMITED" ? await getLazyNFTs(
-      {
-        contractAddr: dropAddr,
-      },
-      {
-        tokenId: -1
-      },
-      20
-    ) : [];
-
-    // TODO getting shared data from here,
-    // const sharedData = [];
-    // if (dbDrop.group === "UNLIMITED") {
-    // }
+    const dbLazyNFTs = dbDrop.group === "LIMITED" ?
+      await getLazyNFTs(
+        { contractAddr: dropAddr },
+        { tokenId: -1 },
+        20
+      ) : [];
 
     const drop: PosseBridgeDrop = {
       group: dbDrop.group,
@@ -133,19 +178,19 @@ export async function fetchDrop(dropAddr: string) {
       description: dbDrop.description,
       image: dbDrop.image,
       payToken: dbDrop.payToken,
-      numberOfItems: dbDrop.numberOfItems,
-      mintStartAt: dbDrop.mintStartAt,
       owner: dbDrop.owner,
       visible: dbDrop.visible,
       mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
         name: stage.name,
         price: stage.price,
         currency: stage.currency,
-        duration: stage.duration,
+        numberOfItems: stage.numberOfItems,
+        startAt: stage.startAt,
+        endAt: stage.endAt,
         perlimit: stage.perlimit,
         allows: stage.allows,
       })),
-      createdAt: (new Date(!dbDrop.createdAt ? new Date().getTime() : dbDrop.createdAt)).getTime(),
+      createdAt: (new Date(!dbDrop.createdAt ? Date.now() : dbDrop.createdAt)).getTime(),
     };
 
     const lazyNFTs: PosseBridgeLazyNFT[] = dbLazyNFTs.map((nft) => ({
@@ -175,14 +220,14 @@ export async function upcomingDrops(accountAddr?: string) {
       description: drop.description,
       image: drop.image,
       payToken: drop.payToken,
-      numberOfItems: drop.numberOfItems,
-      mintStartAt: drop.mintStartAt,
       owner: drop.owner,
       mintStages: [{
         name: drop.mintStages.name,
         price: drop.mintStages.price,
         currency: drop.mintStages.currency,
-        duration: drop.mintStages.duration,
+        numberOfItems: drop.mintStages.numberOfItems,
+        startAt: drop.mintStages.startAt,
+        endAt: drop.mintStages.endAt,
         perlimit: drop.mintStages.perlimit,
         allows: drop.mintStages.allows,
       }]
@@ -205,14 +250,14 @@ export async function activeDrops(accountAddr?: string) {
       description: drop.description,
       image: drop.image,
       payToken: drop.payToken,
-      numberOfItems: drop.numberOfItems,
-      mintStartAt: drop.mintStartAt,
       owner: drop.owner,
       mintStages: [{
         name: drop.mintStages.name,
         price: drop.mintStages.price,
         currency: drop.mintStages.currency,
-        duration: drop.mintStages.duration,
+        numberOfItems: drop.mintStages.numberOfItems,
+        startAt: drop.mintStages.startAt,
+        endAt: drop.mintStages.endAt,
         perlimit: drop.mintStages.perlimit,
         allows: drop.mintStages.allows,
       }]
@@ -235,14 +280,14 @@ export async function pastDrops(accountAddr?: string) {
       description: drop.description,
       image: drop.image,
       payToken: drop.payToken,
-      numberOfItems: drop.numberOfItems,
-      mintStartAt: drop.mintStartAt,
       owner: drop.owner,
       mintStages: [{
         name: drop.mintStages.name,
         price: drop.mintStages.price,
         currency: drop.mintStages.currency,
-        duration: drop.mintStages.duration,
+        numberOfItems: drop.mintStages.numberOfItems,
+        startAt: drop.mintStages.startAt,
+        endAt: drop.mintStages.endAt,
         perlimit: drop.mintStages.perlimit,
         allows: drop.mintStages.allows,
       }]

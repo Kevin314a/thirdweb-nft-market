@@ -15,12 +15,12 @@ import toast from "react-hot-toast";
 export const DetailLimited = ({
   drop,
   lazyNFTs,
+  stageStatus,
 }: {
   drop: PosseBridgeDrop,
   lazyNFTs: PosseBridgeLazyNFT[],
+  stageStatus: 'past' | 'today' | 'future',
 }) => {
-
-  
 
   return (
     <div className="w-full mt-8 lg:mt-16">
@@ -77,19 +77,6 @@ export const DetailLimited = ({
           ))}
         </div>
       </div>
-      {/* <div className="fixed py-2.5 w-[100vw] z-50 bottom-0 start-0 bg-black/[30%]">
-        <div className="max-w-[1920px] flex items-center justify-between mx-auto xl:px-10 px-5 h-[64px]">
-          <div className="flex lg:w-full items-center justify-end">
-            <Button
-              type="button"
-              onClick={() => handleClaimTo()}
-              disabled={isLoading}
-            >
-              {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim an NFT
-            </Button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

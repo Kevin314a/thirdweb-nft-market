@@ -36,7 +36,7 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
       { 'mintStages.allows': { $elemMatch: { $eq: accountAddr } } },
       { 'mintStages.allows': { $size: 0 } },
     ];
-    const currentDate = Date.now();
+    const now = Date.now();
 
     return await DropModel.aggregate([
       {
@@ -50,21 +50,13 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
           // visible: true,               // TODO visible is only charlie
           $or: condsMintStageAllow,
           $expr: {
-            $gt: [
-              { $add: ['$mintStartAt', '$mintStages.duration'] },
-              currentDate,
-            ],
+            $gt: ['$mintStages.startAt', now],
           },
         },
       },
       {
-        $addFields: {
-          totalMintTime: { $add: ['$mintStartAt', '$mintStages.duration'] }, // Create a temporary field
-        },
-      },
-      {
         $sort: {
-          totalMintTime: 1, // Sort by the new field in ascending order
+          'mintStages.startAt': 1, // Sort by the new field in ascending order
         },
       },
       {
@@ -76,7 +68,6 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
           description: 1,
           image: 1,
           payToken: 1,
-          numberOfItems: 1,
           mintStartAt: 1,
           'mintStages': 1, // Include the unwinded mintStages
           owner: 1,
@@ -116,20 +107,15 @@ export const getActiveDrops = async (accountAddr: string | undefined) => {
           $or: condsMintStageAllow,
           $expr: {
             $and: [
-              { $gte: [{ $add: ["$mintStartAt", "$mintStages.duration"] }, now] }, // Check if mintStartAt + duration is greater than now
-              { $lte: ["$mintStartAt", now] } // Check if mintStartAt is less than or equal to now
+              { $lte: ["$mintStages.startAt", now] }, // Check if startAt is less than now
+              { $gt: ["$mintStages.endAt", now] } // Check if stageEndtAt is greater than or equal to now
             ],
           },
         },
       },
       {
-        $addFields: {
-          totalMintTime: { $add: ['$mintStartAt', '$mintStages.duration'] }, // Create a temporary field
-        },
-      },
-      {
         $sort: {
-          totalMintTime: 1, // Sort by the new field in ascending order
+          "mintStages.endAt": 1, // Sort by the new field in ascending order
         },
       },
       {
@@ -149,7 +135,7 @@ export const getActiveDrops = async (accountAddr: string | undefined) => {
           updatedAt: 1,
         },
       },
-      { $limit: 5 }
+      // { $limit: 5 }  // TODO pagination for fetching
     ]).exec();
 
   } catch (err) {
@@ -170,10 +156,6 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
     ];
     const now = Date.now();
 
-    const yesterdayStart = new Date();
-    yesterdayStart.setHours(0, 0, 0, 0);
-    const yesterdayTimestamp = yesterdayStart.getTime();
-
     return await DropModel.aggregate([
       {
         $unwind: {
@@ -185,17 +167,12 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
         $match: {
           // visible: true,
           $or: condsMintStageAllow,
-          $expr: { $lt: [{ $add: ["$mintStartAt", "$mintStages.duration"] }, yesterdayTimestamp] },
-        },
-      },
-      {
-        $addFields: {
-          totalMintTime: { $add: ['$mintStartAt', '$mintStages.duration'] }, // Create a temporary field
+          $expr: { $lt: ["$mintStages.endAt", now] },
         },
       },
       {
         $sort: {
-          totalMintTime: -1, // Sort by the new field in ascending order
+          "mintStages.endAt": -1, // Sort by the new field in descending order
         },
       },
       {
@@ -215,7 +192,7 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
           updatedAt: 1,
         },
       },
-      { $limit: 5 }
+      { $limit: 15 }
     ]).exec();
 
   } catch (err) {

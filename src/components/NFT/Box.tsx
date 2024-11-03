@@ -18,7 +18,8 @@ export const NFTBox = ({ nft, onDetail }: {
         <MediaRenderer
           src={!nft.image ? TempImageNFT.src : nft.image}
           client={client}
-          className="object-cover object-center"
+          className="object-cover object-center h-[180px]"
+          style={{objectFit: 'cover'}}
         />
       </div>
       <div className="flex justify-between flex-1 w-full px-3">

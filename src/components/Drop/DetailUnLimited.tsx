@@ -7,7 +7,7 @@ import { ImagePossef } from "@/assets";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { MdLanguage, MdMoreHoriz } from "react-icons/md";
 import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { notFound, useRouter } from "next/navigation";
 import { MediaRenderer } from "thirdweb/react";
 import { formatDateIntl } from "@/lib/utils";
 import { sharedMetadata } from "thirdweb/extensions/erc721";
@@ -17,8 +17,10 @@ import { soneiumMinato } from "thirdweb/chains";
 
 export const DetailUnLimited = ({
   drop,
+  stageStatus,
 }: {
   drop: PosseBridgeDrop,
+  stageStatus: 'past' | 'today' | 'future',
 }) => {
   const router = useRouter();
 
@@ -38,8 +40,6 @@ export const DetailUnLimited = ({
     fnLoadSharedData();
   }, [drop]);
 
-  console.log('zzzzzzzzzzzzzzzzzzz', sharedData);
-  
   return (
     <TabGroup className="w-full mt-8 lg:mt-16">
       <div className="lg:w-full flex lg:items-center lg:flex-row flex-col justify-end lg:justify-between mt-4 lg:mt-0">
@@ -91,11 +91,18 @@ export const DetailUnLimited = ({
                 src={!drop.image ? ImagePossef.src : drop.image}
                 client={client}
                 className="object-cover object-center w-[calc(100vw-20px)] h-[calc(100vw-20px)] md:w-[45vw] md:h-[45vw]"
+                style={{objectFit: "cover"}}
                 alt="drop claim image"
               />
             </div>
             <div className="md:w-1/2">
-
+              {stageStatus === 'past' ? (
+                <span className="text-2xl text-red-700 font-medium">Current Status: Minting over</span>
+              ) : (stageStatus === 'today' ? (
+                <span className="text-2xl text-blue-700 font-medium">Current Status: Minting underway</span>
+              ) : (
+                <span className="text-2xl text-green-700 font-medium">Current Status: Minting upcoming</span>
+              ))}
             </div>
           </div>
         </TabPanel>

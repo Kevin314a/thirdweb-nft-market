@@ -21,3 +21,5 @@ export const ITEMS_PER_PAGE = 20;
 
 export const DEFAULT_PLATFORMFEE_COLLECTION = 2000n;				// 2%  in collection for collect NFTs
 export const DEFAULT_PLATFORMFEE_DROP = 10000n;							// 10% in drop
+
+export const END_EARTH_DATE = 10413792000000;

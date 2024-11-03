@@ -1,12 +1,14 @@
 'use client'
 
 import { DropNoneBack, ImageCreator } from "@/assets";
+import { client } from "@/lib/constants";
 import { PosseBridgeDrop } from "@/lib/types";
 import { parseRemainTime, shortenString } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { MdNotifications } from "react-icons/md";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { MediaRenderer } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
 
 export const DropUpcomingItem = ({
@@ -21,7 +23,7 @@ export const DropUpcomingItem = ({
   useEffect(() => {
 
     const calculate = () => {
-      const { remainDays, remainHours, remainMins, remainSecs } = parseRemainTime(drop.mintStartAt + drop.mintStages[0].duration);
+      const { remainDays, remainHours, remainMins, remainSecs } = parseRemainTime(drop.mintStages[0].startAt);
       setRemains({
         days: remainDays,
         hours: remainHours,
@@ -38,14 +40,20 @@ export const DropUpcomingItem = ({
 
   return (
     <div className="relative cursor-pointer">
-      <Image
+      <MediaRenderer
+        src={!drop.image ? DropNoneBack.src : drop.image}
+        client={client}
+        className="object-cover object-center min-w-[709px] min-h-[409px] rounded-lg"
+        alt="upcomingItem"
+        />
+      {/* <Image
         src={!drop.image ? DropNoneBack : drop.image}
         priority
         width={709}
         height={409}
         className="w-[calc(100vw)] h-[calc(100vw)] md:w-auto md:h-auto object-cover rounded-[15px]"
         alt="upcomingItem"
-      />
+      /> */}
       <div className="absolute bottom-0 p-4 lg:py-8 w-full">
         <div className="mb-2 lg:mb-4">
           <Image
@@ -74,7 +82,7 @@ export const DropUpcomingItem = ({
               <div className="bg-gray-1200 hover:bg-gray-1000 rounded-md p-2 flex justify-center items-center cursor-pointer"><MdNotifications /></div>
               <div
                 className="bg-gray-1300 hover:bg-gray-1000 rounded-md p-2 whitespace-nowrap text-sm cursor-pointer"
-                onClick={() => router.push(`/drops/${drop.address}`)}
+                onClick={() => router.push(`/drops/${drop.address}/${drop.mintStages[0].startAt}`)}
               >
                 Drop Info
               </div>

@@ -4,8 +4,9 @@ import { Button } from "@/components/base";
 import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
 import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { formatDateIntl } from "@/lib/utils";
-import { claimNFT } from "@/server-actions/drop";
 import { ImagePossef } from "@/assets";
+import axios, { HttpStatusCode } from "axios";
+import { notFound } from "next/navigation";
 import { useState } from "react";
 import { LuLoader2 } from "react-icons/lu";
 import { MdLanguage, MdMoreHoriz } from "react-icons/md";
@@ -13,14 +14,14 @@ import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
 import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { claimTo, isERC721 } from "thirdweb/extensions/erc721";
-import { MediaRenderer, useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
+import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import toast from "react-hot-toast";
 import { LimitedDropDetail, UnLimitedDropDetail } from ".";
 
 interface DropDetailProps {
   drop: PosseBridgeDrop;
   lazyNFTs: PosseBridgeLazyNFT[];
-  claimNFT: typeof claimNFT;
+  stageId: string;
 }
 
 export function DropDetailBox(props: DropDetailProps) {
@@ -71,12 +72,21 @@ export function DropDetailBox(props: DropDetailProps) {
       const tx = await sendTransaction({ transaction, account });
       const receipt = await waitForReceipt(tx);
 
-      const res = await props.claimNFT(props.drop.address, account.address);
+      const response = await axios.post(`/api/drop/claim`, {
+        dropAddr: props.drop.address,
+        accountAddr: account.address,
+      });
 
-      if (res.error) {
-        toast.error(res.message);
+
+      if (response.status === HttpStatusCode.Ok) {
+        const res = response.data;
+        if (res.error) {
+          toast.error(res.message);
+        } else {
+          toast.success(res.message);
+        }
       } else {
-        toast.success(res.message);
+        toast.error("Failed to Claim an NFT with Server-Error");
       }
 
     } catch (err) {
@@ -93,16 +103,22 @@ export function DropDetailBox(props: DropDetailProps) {
 
   const drop = props.drop;
 
+  const stage = drop.mintStages.filter(stage => stage.startAt.toString() === props.stageId).shift();
+  if (!stage) {
+    return notFound();
+  }
+  const now = Date.now();
+  const stageStatus = stage.endAt < now ? 'past' : (stage.startAt > now ? 'future' : 'today');
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full shadow-xl -mt-16">
         <div className="flex flex-wrap justify-center">
           <div className="w-full">
             <div className="relative">
-              <MediaRenderer
+              <img
                 src={!drop.image ? ImagePossef.src : drop.image}
-                client={client}
-                className="object-cover object-center shadow-xl h-auto rounded-lg border-4 border-[#C3976A] absolute -m-16 -mt-16 lg:-mt-28 ml-0 max-w-[100px] lg:max-w-[150px]"
+                className="object-cover object-center shadow-xl rounded-lg border-4 border-[#C3976A] absolute -m-16 -mt-16 lg:-mt-28 ml-0 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px]"
                 alt="drop image"
               />
             </div>
@@ -123,7 +139,7 @@ export function DropDetailBox(props: DropDetailProps) {
             <div className="flex flex-col md:flex-row mt-8 md:mt-4 gap-1 md:gap-6 flex-start">
               <div className="text-white text-lg flex justify-between md:justify-start items-center md:relative w-full md:w-auto">
                 <span className="text-sm mr-1">Items</span>
-                <span className="font-medium">{drop.numberOfItems}</span>
+                <span className="font-medium">{drop.group === "UNLIMITED" ? 1 : props.lazyNFTs.length}</span>
               </div>
               <div className="text-white text-lg flex justify-between md:justify-start items-center md:relative w-full md:w-auto">
                 <span className="text-sm mr-1">Created</span>
@@ -148,22 +164,32 @@ export function DropDetailBox(props: DropDetailProps) {
         {drop.group === 'UNLIMITED' && (
           <UnLimitedDropDetail
             drop={drop}
+            stageStatus={stageStatus}
           />
         )}
         {drop.group === 'LIMITED' && (
           <LimitedDropDetail
             drop={drop}
             lazyNFTs={props.lazyNFTs}
+            stageStatus={stageStatus}
           />
         )}
       </div>
       <div className="fixed py-2.5 w-[100vw] z-50 bottom-0 start-0 bg-black-1300/[70%]">
         <div className="max-w-[1920px] flex items-center justify-between mx-auto xl:px-10 px-5 h-[64px]">
-          <div className="flex lg:w-full items-center justify-end">
+          <div className="flex lg:w-full items-center justify-end gap-2">
+            {stageStatus === 'past' ? (
+              <span className="text-md text-red-700 font-medium">Minting Status: Over</span>
+            ) : (stageStatus === 'today' ? (
+              <span className="text-md text-blue-700 font-medium">Minting Status: Ongoing</span>
+            ) : (
+              <span className="text-md text-green-700 font-medium">Minting Status: Upcoming</span>
+            ))}
             <Button
               type="button"
               onClick={() => handleClaimTo()}
               disabled={isLoading}
+              className="ml-4"
             >
               {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim an NFT
             </Button>

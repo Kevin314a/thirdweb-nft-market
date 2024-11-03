@@ -106,14 +106,14 @@ export const Navbar = () => {
                 <li key={i} className="group relative py-4">
                   <Link
                     href={item.href}
-                    onClick={() => item.href === "#" && toast.error("coming soon")}
+                    onClick={() => item.href === "#" && toast.error("Coming soon...")}
                     className={`block px-2.5 transition-all font-medium xxl:text-lg text-base leading-[27px] ${item.href.split('/').at(1) === pathname.split('/').at(1)
                       ? 'text-golden-1100 xxl:text-xl'
                       : 'text-white'
                       } group-hover:text-golden-1000 hover:text-golden-1000`}
                     aria-current="page"
                   >
-                    <div className="flex justify-center items-center whhitespace-nowrap gap-1">
+                    <div className="flex justify-center items-center whitespace-nowrap gap-1">
                       {item.label}
                       {item.children && (
                         <FaChevronDown size={12} className={`${item.href.split('/').at(1) === pathname.split('/').at(1)

@@ -3,13 +3,13 @@
 import { ImageHat, ImageProfileBack } from "@/assets";
 import { DropDetailBox } from "@/components/Drop";
 import { PosseBridgeDrop, PosseBridgeLazyNFT } from "@/lib/types";
-import { fetchDrop, claimNFT } from "@/server-actions/drop";
+import { fetchDrop } from "@/server-actions/drop";
 import { notFound } from "next/navigation";
 
-export default async function ContractPage({
+export default async function DropDetailPage({
   params,
 }: {
-  params: { addr: string };
+  params: { addr: string, stageId: string };
 }) {
 
   if (!params.addr) return notFound();
@@ -17,7 +17,7 @@ export default async function ContractPage({
   const result: { drop: PosseBridgeDrop, lazyNFTs: PosseBridgeLazyNFT[] } | null = await fetchDrop(params.addr);
   const { drop, lazyNFTs } = result || {};
 
-  if (!drop) return notFound();
+  if (!drop || !drop.mintStages.filter(stage => stage.startAt.toString() === params.stageId).length) return notFound();
 
   return (
     <>
@@ -37,7 +37,7 @@ export default async function ContractPage({
       </section>
       <section className="relative py-16">
         <div className="max-w-[1920px] px-2 lg:px-6 mx-auto">
-          <DropDetailBox drop={drop} lazyNFTs={!lazyNFTs ? [] : lazyNFTs} claimNFT={claimNFT} />
+          <DropDetailBox drop={drop} lazyNFTs={!lazyNFTs ? [] : lazyNFTs} stageId={params.stageId} />
         </div>
       </section>
     </>
