@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PosseFormContract } from "@/lib/types";
-import { DEFAULT_PLATFORMFEE_COLLECTION, client } from "@/lib/constants";
+import { DEFAULT_PLATFORMFEE_COLLECTION, DEFAULT_PLATFORMFEE_RECEIVER, client } from "@/lib/constants";
 import { type deployContract } from "@/server-actions/contract";
 import { useRouter } from "next/navigation";
 import { soneiumMinato } from "thirdweb/chains";
@@ -74,7 +74,9 @@ export function useDeployContract(props: DeployContractProps) {
             symbol: newCollection.symbol,
             image: newCollection.image,
             description: newCollection.description,
+            platformFeeRecipient: DEFAULT_PLATFORMFEE_RECEIVER,
             platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
+            royaltyRecipient: account.address,
             royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),
           },
         })
@@ -89,7 +91,9 @@ export function useDeployContract(props: DeployContractProps) {
             symbol: newCollection.symbol,
             image: newCollection.image,
             description: newCollection.description,
+            platformFeeRecipient: DEFAULT_PLATFORMFEE_RECEIVER,
             platformFeeBps: DEFAULT_PLATFORMFEE_COLLECTION,
+            royaltyRecipient: account.address,
             royaltyBps: royaltyBpsToBigInt(isNaN(Number(newCollection.royaltyBps)) ? 0 : Number(newCollection.royaltyBps)),
           },
         });

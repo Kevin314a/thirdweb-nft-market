@@ -155,9 +155,9 @@ export const ContractForm = (props: { deployContract: typeof deployContract }) =
             <Input
               {...register('royaltyBps', {
                 validate: {
-                  isValid: (v) => isValidNumber(v, false) || "Supply is invalid",
-                  overFlowMin: (v) => isNotOverMin(v, 0) || "royalties is between 0.0% ~ 10.0%",
-                  overFlowMax: (v) => isNotOverMax(v, 10) || "royalties is between 0.0% ~ 10.0%",
+                  isValid: (v) => isValidNumber(v, false) || "Royalties is invalid",
+                  overFlowMin: (v) => isNotOverMin(v, 0) || "Royalties is between 0.0% ~ 10.0%",
+                  overFlowMax: (v) => isNotOverMax(v, 10) || "Royalties is between 0.0% ~ 10.0%",
                 }
               })}
               id="royaltyBps"

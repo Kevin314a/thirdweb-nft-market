@@ -13,12 +13,14 @@ import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiv
 import toast from "react-hot-toast";
 
 export const DetailLimited = ({
+  isLoading,
   drop,
   lazyNFTs,
   stage,
   stageStatus,
   onClaim,
 }: {
+  isLoading: boolean,
   drop: PosseBridgeDrop,
   lazyNFTs: PosseBridgeLazyNFT[],
   stage: PosseBridgeDropMintStage,
@@ -61,11 +63,11 @@ export const DetailLimited = ({
         <div className="flex flex-row items-center mt-4 lg:mt-0">
           <Button
             className="text-sm font-medium lg:text-xl"
-            disabled={stageStatus !== 'today'}
+            disabled={isLoading || stageStatus !== 'today'}
             variant={stageStatus !== 'today' ? 'common' : 'default'}
             onClick={onClaim}
           >
-            Claim NFT
+            {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim NFT
           </Button>
         </div>
       </div>

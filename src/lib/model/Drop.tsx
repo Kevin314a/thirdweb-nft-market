@@ -43,6 +43,10 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
     }],
     default: [],
   },
+  royaltyBps: {
+    type: String,
+    default: "0",
+  },
   owner: {
     type: String,
     required: true,

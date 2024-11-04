@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import { PosseFormDropMintStage } from "@/lib/types";
-import { formatDate, formatDateStageDuration, getDateTimeAfter, isValidBigInt } from "@/lib/utils";
+import { formatDate, formatDateStageDuration, getDateTimeAfter, isNotOverMax, isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
 import { useDeployDrop } from "@/hooks/useDeployDrop";
 import { type deployDrop } from "@/server-actions/drop";
 import { useRef } from "react";
@@ -148,6 +148,24 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               rows={3}
               className="px-3 py-1 min-w-[25vw]"
             />
+          </Field>
+          <Field>
+            <Label htmlFor="royaltyBps" className="block mb-2">Royalties</Label>
+            <Input
+              {...register('royaltyBps', {
+                validate: {
+                  isValid: (v) => isValidNumber(v, false) || "Royalties is invalid",
+                  overFlowMin: (v) => isNotOverMin(v, 0) || "Royalties is between 0.0% ~ 10.0%",
+                  overFlowMax: (v) => isNotOverMax(v, 10) || "Royalties is between 0.0% ~ 10.0%",
+                }
+              })}
+              id="royaltyBps"
+              type="text"
+              className="px-3 py-1 min-w-[25vw]"
+            />
+            {errors.royaltyBps && (
+              <p className="mt-1 text-xs text-red-600">{errors.royaltyBps.message}</p>
+            )}
           </Field>
           <Field>
             <Label htmlFor="payToken" as="p" className="block mb-2">Payment Tokens</Label>

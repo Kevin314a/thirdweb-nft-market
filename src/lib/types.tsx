@@ -117,6 +117,7 @@ export type PosseFormDrop = {
   description?: string;
   image?: string;
   payToken: string[];
+  royaltyBps?: string;
   owner: string;
   visible?: boolean;
   mintStages: PosseFormDropMintStage[];

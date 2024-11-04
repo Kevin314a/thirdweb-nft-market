@@ -25,6 +25,7 @@ export async function deployDrop(newDrop: PosseFormDrop) {
       group: newDrop.group,
       address: newDrop.address,
       name: newDrop.name,
+      royaltyBps: newDrop.royaltyBps,
       description: newDrop.description,
       image: newDrop.image,
       payToken: newDrop.payToken,

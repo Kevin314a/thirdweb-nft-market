@@ -36,7 +36,7 @@ export function DropDetailBox(props: DropDetailProps) {
     if (isLoading) {
       return;
     }
-    
+
     if (!account) {
       connect({ client });
       return;
@@ -169,6 +169,7 @@ export function DropDetailBox(props: DropDetailProps) {
           <UnLimitedDropDetail
             drop={drop}
             stage={stage}
+            isLoading={isLoading}
             stageStatus={stageStatus}
             onClaim={() => handleClaimTo()}
           />
@@ -177,6 +178,7 @@ export function DropDetailBox(props: DropDetailProps) {
           <LimitedDropDetail
             drop={drop}
             stage={stage}
+            isLoading={isLoading}
             lazyNFTs={props.lazyNFTs}
             stageStatus={stageStatus}
             onClaim={() => handleClaimTo()}

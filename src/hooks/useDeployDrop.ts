@@ -1,7 +1,7 @@
-import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
+import { DEFAULT_PLATFORMFEE_DROP, DEFAULT_PLATFORMFEE_RECEIVER, DEFAULT_ROYALTYFEE, client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { PosseFormDropMintStage, PosseFormDrop, PosseStageInput } from "@/lib/types";
-import { getDateTimeAfter, isValidBigInt } from "@/lib/utils";
+import { getDateTimeAfter, isValidBigInt, isValidNumber, royaltyBpsToBigInt } from "@/lib/utils";
 import { type deployDrop } from "@/server-actions/drop";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -37,6 +37,7 @@ export function useDeployDrop(props: DeployDropProps) {
       address: "",
       name: "",
       description: "",
+      royaltyBps: "",
       image: "",
       payToken: ['ETH'],
       owner: "",
@@ -91,6 +92,9 @@ export function useDeployDrop(props: DeployDropProps) {
             name: newDrop.name,
             description: newDrop.description,
             image: newDrop.image,
+            royaltyRecipient: account.address,
+            royaltyBps: !isValidNumber(newDrop.royaltyBps, false) ? DEFAULT_ROYALTYFEE : royaltyBpsToBigInt(Number(newDrop.royaltyBps)),
+            platformFeeRecipient: DEFAULT_PLATFORMFEE_RECEIVER,
             platformFeeBps: DEFAULT_PLATFORMFEE_DROP,
           },
         })
@@ -104,6 +108,10 @@ export function useDeployDrop(props: DeployDropProps) {
             name: newDrop.name,
             description: newDrop.description,
             image: newDrop.image,
+            royaltyRecipient: account.address,
+            royaltyBps: !isValidNumber(newDrop.royaltyBps, false) ? DEFAULT_ROYALTYFEE : royaltyBpsToBigInt(Number(newDrop.royaltyBps)),
+            platformFeeRecipient: DEFAULT_PLATFORMFEE_RECEIVER,
+            platformFeeBps: DEFAULT_PLATFORMFEE_DROP,
           },
         });
 

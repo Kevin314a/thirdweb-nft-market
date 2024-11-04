@@ -150,6 +150,20 @@ const NAV_ITEMS = [
   {
     label: 'Eldorado',
     href: '/market',
+    children: [
+      {
+        label: 'Market',
+        href: '/market',
+      },
+      {
+        label: 'NFT Drops',
+        href: '/drops',
+      },
+      {
+        label: 'Stat',
+        href: '#',
+      },
+    ],
   },
   {
     label: 'Roundup',
@@ -157,24 +171,6 @@ const NAV_ITEMS = [
   },
   {
     label: 'Yeehaw',
-    href: '#',
-  },
-  {
-    label: 'Drops',
-    href: '/drops',
-    children: [
-      {
-        label: 'Overview',
-        href: '/drops',
-      },
-      {
-        label: 'Create Drops',
-        href: '/create/drop',
-      },
-    ]
-  },
-  {
-    label: 'Stats',
     href: '#',
   },
   {
@@ -189,6 +185,14 @@ const NAV_ITEMS = [
         label: 'Create a Collection',
         href: '/create/collection',
       },
+      {
+        label: 'Create an NFT Drop',
+        href: '/create/drop',
+      },
+      {
+        label: 'Create a Coin',
+        href: '#',
+      }
     ]
   },
 ]
