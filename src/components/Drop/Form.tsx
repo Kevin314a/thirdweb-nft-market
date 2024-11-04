@@ -60,7 +60,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
       <form
         ref={formRef}
         onSubmit={useSubmit(handleSubmit)}
-        className="flex flex-col gap-6 sm:gap-12 md:flex-row"
+        className="flex flex-col gap-6 sm:gap-12 md:flex-row z-50"
       >
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
@@ -69,7 +69,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               setDropGroup(v);
               setValue('group', v);
             }}>
-              <div className="mt-4 flex flex-row items-center gap-2">
+              <div className="mt-4 w-full flex flex-col md:flex-row items-center gap-2">
                 <Radio
                   value={"LIMITED"}
                   className={({ checked }) =>

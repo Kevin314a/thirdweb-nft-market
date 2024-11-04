@@ -59,7 +59,7 @@ export default function CreateLayout({ children }) {
       <div className="relative w-full h-full min-h-[calc(100vh)] flex items-center justify-center p-2 lg:p-20">
         {children}
       </div>
-      <div className="absolute bottom-12 left-0 z-[1]">
+      <div className="absolute bottom-12 left-0 z-10">
         <Image
           width={145}
           height={312}
@@ -69,7 +69,7 @@ export default function CreateLayout({ children }) {
           priority
         />
       </div>
-      <div className="absolute top-24 right-0 z-[1]">
+      <div className="absolute top-24 right-0 z-10">
         <Image
           width={220}
           height={328}

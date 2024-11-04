@@ -3,6 +3,7 @@
 import { TempImageNFT } from "@/assets";
 import { client } from "@/lib/constants";
 import { PossePricedNFT } from "@/lib/types";
+import { formatToPowerNotation } from "@/lib/utils";
 import { MediaRenderer } from "thirdweb/react";
 
 export const NFTPricedBox = ({ nft, onDetail }: {
@@ -33,7 +34,7 @@ export const NFTPricedBox = ({ nft, onDetail }: {
             </p>
           </div>
           <p className="text-xs font-bold text-white py-2">
-            {`${!nft.price ? "?" : nft.price} ${!nft.currency ? "ETH" : nft.currency}`}
+            {`${!nft.price ? "?" : formatToPowerNotation(nft.price)} ${!nft.currency ? "ETH" : nft.currency}`}
           </p>
           <p className="text-xs text-white pb-2">
             {`Last sale:`} {!nft.lastSalePrice ? (

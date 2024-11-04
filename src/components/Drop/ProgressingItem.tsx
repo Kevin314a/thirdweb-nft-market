@@ -2,7 +2,7 @@
 import { ImageNFT } from "@/assets";
 import {client} from "@/lib/constants";
 import { PosseBridgeDrop } from "@/lib/types";
-import { parseRemainTime } from "@/lib/utils";
+import { formatToPowerNotation, parseRemainTime } from "@/lib/utils";
 import { MediaRenderer } from "thirdweb/react";
 
 export const DropProgressingItem = ({
@@ -24,17 +24,10 @@ export const DropProgressingItem = ({
   return (
     <div className="bg-golden-1000 drop-shadow-3xl rounded-[10px] cursor-pointer" onClick={onClick}>
       <div className="relative">
-        {/* <Image
-          width={240}
-          height={162}
-          src={!drop.image ? ImageNFT : drop.image}
-          className="w-full h-auto rounded-t-[10px]"
-          alt="dropitem"
-        /> */}
         <MediaRenderer
           src={!drop.image ? ImageNFT.src : drop.image}
           client={client}
-          className="object-cover rounded-lg w-full min-w-[240px] min-h-[162px] h-[162px]"
+          className="object-cover rounded-t-lg w-full min-h-[162px] h-[162px]"
           style={{objectFit: 'cover'}}
         />
       </div>
@@ -60,7 +53,7 @@ export const DropProgressingItem = ({
               Price
             </h6>
             <p className="text-base font-inter text-white leading-[22.6px] font-normal">
-              {`${drop.mintStages[0].price} ${drop.mintStages[0].currency}`}
+              {`${formatToPowerNotation(drop.mintStages[0].price)} ${drop.mintStages[0].currency}`}
             </p>
           </div>
         </div>

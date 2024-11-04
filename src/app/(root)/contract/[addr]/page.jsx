@@ -80,15 +80,15 @@ export default function ContractPage({
                 <div className="flex flex-col md:flex-row mt-8 lg:mt-16 gap-1 md:gap-6 flex-start">
                   <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 items-center text-white text-xl">
                     <span className="text-sm md:text-lg font-medium whitespace-nowrap">20 CRO</span>
-                    <span className="text-sm">total volume</span>
+                    <span className="text-sm">Total volume</span>
                   </div>
                   <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
                     <span className="text-sm md:text-lg font-medium whitespace-nowrap">0.09 CRO</span>
-                    <span className="text-sm">floor price</span>
+                    <span className="text-sm">Floor price</span>
                   </div>
                   <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
                     <span className="text-sm md:text-lg font-medium whitespace-nowrap">0.08 CRO</span>
-                    <span className="text-sm">best offer</span>
+                    <span className="text-sm">Best offer</span>
                   </div>
                   <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
                     <span className="text-sm md:text-lg font-medium whitespace-nowrap">20%</span>

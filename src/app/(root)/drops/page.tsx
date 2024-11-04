@@ -9,9 +9,9 @@ export default async function DropsPage() {
   const cookieStore = cookies();
   const accountAddr = cookieStore.get('userAddr')?.value;
 
-  const upcomings = !accountAddr ? [] : await upcomingDrops(accountAddr);
-  const progressings = !accountAddr ? [] : await activeDrops(accountAddr);
-  const pasts = !accountAddr ? [] : await pastDrops(accountAddr);
+  const upcomings = await upcomingDrops(accountAddr);
+  const progressings = await activeDrops(accountAddr);
+  const pasts = await pastDrops(accountAddr);
 
   return (
     <section className="lg:pt-24 pt-20 relative z-10">

@@ -181,3 +181,12 @@ export const generateUuid = () => {
     return v.toString(16);
   });
 };
+
+export const formatToPowerNotation = (strnumber: string) => {
+  const num = Number(strnumber);
+  if (num > 0.0000001) {
+    return num;
+  }
+  const exponent = num.toExponential().split("e")[1];
+  return `10^${exponent}`;
+};

@@ -38,8 +38,12 @@ export const DropUpcomingItem = ({
 
   }, [drop]);
 
+  const handleDetailDrop = () => {
+    router.push(`/drops/${drop.address}/${drop.mintStages[0].startAt}`);
+  };
+
   return (
-    <div className="relative cursor-pointer">
+    <div className="relative cursor-pointer" onClick={handleDetailDrop}>
       {/* <MediaRenderer
         src={!drop.image ? DropNoneBack.src : drop.image}
         client={client}
@@ -64,9 +68,9 @@ export const DropUpcomingItem = ({
           />
         </div>
         <div className="flex flex-col w-full mb-4 lg:mb-8">
-          <div className="text-md text-white">{shortenString(drop.name, 25)}</div>
-          <span className="text-xs text-white">{shortenAddress(drop.owner)}</span>
-          <span className="text-xs text-white">{`${drop.group === 'LIMITED' ? "Limited Edition" : "Open Edition"}: ${drop.mintStages[0].price} ${drop.mintStages[0].currency}`}</span>
+          <span className="text-md lg:text-xl text-white text-stroke-2">{shortenString(drop.name, 25)}</span>
+          <span className="text-xs lg:text-md text-white text-stroke-2">{shortenAddress(drop.owner)}</span>
+          <span className="text-xs lg:text-md text-white text-stroke-2">{`${drop.group === 'LIMITED' ? "Limited Edition" : "Open Edition"}: ${drop.mintStages[0].price} ${drop.mintStages[0].currency}`}</span>
         </div>
         <div className="text-white">
           <div className="flex flex-col md:flex-row w-full justify-between items-center gap-1">
@@ -80,7 +84,7 @@ export const DropUpcomingItem = ({
               <div className="bg-gray-1200 hover:bg-gray-1000 rounded-md p-2 flex justify-center items-center cursor-pointer"><MdNotifications /></div>
               <div
                 className="bg-gray-1300 hover:bg-gray-1000 rounded-md p-2 whitespace-nowrap text-sm cursor-pointer"
-                onClick={() => router.push(`/drops/${drop.address}/${drop.mintStages[0].startAt}`)}
+                onClick={handleDetailDrop}
               >
                 Drop Info
               </div>

@@ -50,15 +50,15 @@ export const DetailUnLimited = ({
           <div className="flex flex-col md:flex-row gap-1 md:gap-6 flex-start">
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">total volume</span>
+              <span className="text-sm">Total volume</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">floor price</span>
+              <span className="text-sm">Floor price</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">best offer</span>
+              <span className="text-sm">Best offer</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
@@ -119,8 +119,8 @@ export const DetailUnLimited = ({
                 nft={{
                   name: sharedData[0],
                   image: sharedData[2],
-                  contractAddr: '',
-                  contract: '',
+                  contractAddr: drop.address,
+                  contract: drop.name,
                   tokenId: '',
                   price: stage.price,
                   currency: stage.currency,

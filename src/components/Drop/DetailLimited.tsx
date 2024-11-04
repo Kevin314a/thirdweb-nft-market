@@ -32,27 +32,27 @@ export const DetailLimited = ({
           <div className="flex flex-col md:flex-row gap-1 md:gap-6 flex-start">
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">total volume</span>
+              <span className="text-sm whitespace-nowrap">Total volume</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">floor price</span>
+              <span className="text-sm whitespace-nowrap">Floor price</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">best offer</span>
+              <span className="text-sm whitespace-nowrap">Best offer</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">Listed</span>
+              <span className="text-sm whitespace-nowrap">Listed</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">Owners</span>
+              <span className="text-sm whitespace-nowrap">Owners</span>
             </div>
             <div className="flex flex-row w-full justify-between md:justify-start md:flex-col gap-2 md:items-start items-center text-white text-xl">
               <span className="text-sm md:text-lg font-medium whitespace-nowrap">{'N/A'}</span>
-              <span className="text-sm">Unique owners</span>
+              <span className="text-sm whitespace-nowrap">Unique owners</span>
             </div>
           </div>
         </div>
@@ -70,8 +70,8 @@ export const DetailLimited = ({
                 // category: lazyNFT.category,
                 name: lazyNFT.name,
                 image: lazyNFT.image,
-                contractAddr: lazyNFT.contractAddr,
-                contract: lazyNFT.contract?.name,
+                contractAddr: drop.address,
+                contract: drop.name,
                 tokenId: lazyNFT.tokenId,
                 price: stage.price,
                 currency: stage.currency,
