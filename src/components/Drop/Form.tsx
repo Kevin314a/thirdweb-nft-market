@@ -60,7 +60,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
       <form
         ref={formRef}
         onSubmit={useSubmit(handleSubmit)}
-        className="flex flex-col gap-6 sm:gap-12 md:flex-row z-50"
+        className="flex flex-col gap-6 sm:gap-12 md:flex-row"
       >
         <Fieldset className="space-y-8 md:w-1/2">
           <Field>
@@ -167,7 +167,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               <p className="mt-1 text-xs text-red-600">{errors.royaltyBps.message}</p>
             )}
           </Field>
-          <Field>
+          {/* <Field>
             <Label htmlFor="payToken" as="p" className="block mb-2">Payment Tokens</Label>
             <MultiSelect
               variant="inline"
@@ -182,8 +182,8 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
             {errors.payToken && (
               <p className="mt-1 text-xs text-red-600">{errors.payToken.message}</p>
             )}
-          </Field>
-
+          </Field> */}
+          <span className="text-white font-medium text-sm my-2">※ You must pay 1 ETH to create an NFT drop(Testnet phase)</span>
         </Fieldset>
         <div className="space-y-5 md:w-1/2">
           <div>
