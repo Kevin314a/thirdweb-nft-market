@@ -50,6 +50,9 @@ export function useDeployDrop(props: DeployDropProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = async (newDrop: PosseFormDrop) => {
+    if (isLoading) {
+      return;
+    }
     if (!account) {
       connect({ client });
       return;

@@ -53,6 +53,10 @@ export function LazyMintForm(props: LazyMintNFTProps) {
   const router = useRouter();
 
   const handleSubmit = async (newNFT: PosseFormLazyNFT) => {
+    if (isLoading) {
+      return;
+    }
+    
     if (!account) {
       connect({ client });
       return;

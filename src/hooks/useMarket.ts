@@ -47,6 +47,9 @@ export function useMarket(props: MarketProps) {
   };
 
   const onLoadMore = async () => {
+    if (isLoading) {
+      return;
+    }
     if (!account) {
       toast.error("Please connect your wallet");
       return;

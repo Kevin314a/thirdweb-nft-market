@@ -32,6 +32,9 @@ export function useMintNFT(props: MintNFTProps) {
   const router = useRouter();
 
   const handleSubmit = async (newNFT: PosseFormNFT) => {
+    if (isLoading) {
+      return;
+    }
     if (!account) {
       connect({ client });
       return;

@@ -42,6 +42,10 @@ export function ShareMetadataForm({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubmit = async (newNFT: PosseFormShareMetadata) => {
+    if (isLoading) {
+      return;
+    }
+
     if (!account) {
       connect({ client });
       return;

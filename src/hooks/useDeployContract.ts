@@ -28,6 +28,9 @@ export function useDeployContract(props: DeployContractProps) {
   const router = useRouter();
 
   const handleSubmit = async (newCollection: PosseFormContract) => {
+    if (isLoading) {
+      return;
+    }
     if (!account) {
       connect({ client });
       return;

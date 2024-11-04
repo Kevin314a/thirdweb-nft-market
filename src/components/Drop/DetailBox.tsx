@@ -33,6 +33,10 @@ export function DropDetailBox(props: DropDetailProps) {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleClaimTo = async () => {
+    if (isLoading) {
+      return;
+    }
+    
     if (!account) {
       connect({ client });
       return;
