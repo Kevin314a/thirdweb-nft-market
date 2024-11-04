@@ -14,15 +14,18 @@ import { sharedMetadata } from "thirdweb/extensions/erc721";
 import { useEffect, useState } from "react";
 import { getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
+import { Button } from "../base";
 
 export const DetailUnLimited = ({
   drop,
   stage,
   stageStatus,
+  onClaim,
 }: {
   drop: PosseBridgeDrop,
   stage: PosseBridgeDropMintStage,
   stageStatus: 'past' | 'today' | 'future',
+  onClaim: () => void,
 }) => {
   const router = useRouter();
 
@@ -108,6 +111,14 @@ export const DetailUnLimited = ({
               ))}
               <span className="text-white text-lg">Name: {sharedData[0]}</span>
               <span className="text-white text-lg">Description: {sharedData[1]}</span>
+              <Button
+                className="py-4 text-md font-medium lg:text-2xl"
+                disabled={stageStatus !== 'today'}
+                variant={stageStatus !== 'today' ? 'common' : 'default'}
+                onClick={onClaim}
+              >
+                Claim NFT
+              </Button>
             </div>
           </div>
         </TabPanel>

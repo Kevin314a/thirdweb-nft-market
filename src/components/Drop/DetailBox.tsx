@@ -166,6 +166,7 @@ export function DropDetailBox(props: DropDetailProps) {
             drop={drop}
             stage={stage}
             stageStatus={stageStatus}
+            onClaim={() => handleClaimTo()}
           />
         )}
         {drop.group === 'LIMITED' && (
@@ -174,6 +175,7 @@ export function DropDetailBox(props: DropDetailProps) {
             stage={stage}
             lazyNFTs={props.lazyNFTs}
             stageStatus={stageStatus}
+            onClaim={() => handleClaimTo()}
           />
         )}
       </div>
@@ -190,7 +192,8 @@ export function DropDetailBox(props: DropDetailProps) {
             <Button
               type="button"
               onClick={() => handleClaimTo()}
-              disabled={isLoading}
+              disabled={isLoading || stageStatus !== 'today'}
+              variant={stageStatus === 'today' ? 'default' : 'common'}
               className="ml-4"
             >
               {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim an NFT

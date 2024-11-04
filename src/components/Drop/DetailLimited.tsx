@@ -17,11 +17,13 @@ export const DetailLimited = ({
   lazyNFTs,
   stage,
   stageStatus,
+  onClaim,
 }: {
   drop: PosseBridgeDrop,
   lazyNFTs: PosseBridgeLazyNFT[],
   stage: PosseBridgeDropMintStage,
   stageStatus: 'past' | 'today' | 'future',
+  onClaim: () => void,
 }) => {
 
 
@@ -56,9 +58,15 @@ export const DetailLimited = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-row justify-between mt-4 lg:mt-0">
-          <div> </div>
-          <div> </div>
+        <div className="flex flex-row items-center mt-4 lg:mt-0">
+          <Button
+            className="text-sm font-medium lg:text-xl"
+            disabled={stageStatus !== 'today'}
+            variant={stageStatus !== 'today' ? 'common' : 'default'}
+            onClick={onClaim}
+          >
+            Claim NFT
+          </Button>
         </div>
       </div>
       <div className="mt-8 lg:mt-16">
