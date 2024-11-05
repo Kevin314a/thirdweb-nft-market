@@ -1,8 +1,7 @@
 'use client'
 
-import { ConnectButton } from "@/components/shared/ConnectButton";
-import { ProfileMenu } from "@/components/shared/ProfileMenu";
 import { Polygon1, Polygon22, TempImageCreateBack } from "@/assets";
+import { ConnectButton, ProfileMenu } from "@/components/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

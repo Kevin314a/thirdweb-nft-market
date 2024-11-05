@@ -1,16 +1,16 @@
 'use client'
 
-import { useMintNFT } from "@/hooks/useMintNFT";
 import { PosseBridgeContract, PosseFormNFT } from "@/lib/types";
+import { isValidBigInt } from "@/lib/utils";
+import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "@/components/base";
+import { XUpload } from "@/components/shared";
+import { ContractSelect } from "@/components/Contract";
+import { useMintNFT } from "@/hooks/useMintNFT";
 import { mintNFT } from "@/server-actions/nft";
 import { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { LuLoader2 } from "react-icons/lu";
-import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "../base";
-import { ContractSelect } from "../Contract";
-import { XUpload } from "../XUpload";
 import { NFTTraitCard, NFTTraitDialog } from ".";
-import { isValidBigInt } from "@/lib/utils";
 
 export const NFTForm = (props: { mintNFT: typeof mintNFT, collections: PosseBridgeContract[] }) => {
 

@@ -1,7 +1,12 @@
-import { XCard } from ".";
+import { ReactNode } from 'react';
 import { LineChart } from "../Chart/LineChart";
+import { XCard } from ".";
 
-const XGraphCard = ({ className, title, data }) => {
+export const XGraphCard = ({ className, title, data }: {
+  className: string,
+  title: string,
+  data: ReactNode,
+}) => {
   return (
     <XCard
       className={className}
@@ -21,5 +26,3 @@ const XGraphCard = ({ className, title, data }) => {
     </XCard>
   );
 };
-
-export default XGraphCard;

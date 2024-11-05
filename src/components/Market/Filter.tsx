@@ -1,8 +1,9 @@
 'use client'
 
-import { IconMagnify, ImageCurrency } from "@/assets";
+import { IconMagnify } from "@/assets";
 import { PosseCurrency } from "@/lib/types";
 import { Button, Input, Menu, MenuButton, MenuItem, MenuItems } from "@/components/base";
+import { Spinner } from "@/components/shared";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useRef, useEffect } from "react";
 import { BiCoinStack } from "react-icons/bi";
@@ -10,7 +11,6 @@ import { FaChevronDown } from "react-icons/fa";
 import { LuRefreshCw } from "react-icons/lu";
 import { GrSort } from "react-icons/gr";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Spinner } from "../shared/Spinner";
 import { useActiveAccount } from "thirdweb/react";
 import Image from "next/image";
 

@@ -1,8 +1,8 @@
 'use client'
 
+import { Button } from "@/components/base";
 import { useMarket } from "@/hooks/useMarket";
 import { getAllValidNFTs } from "@/server-actions/market";
-import { Button } from "../base";
 import { MarketFilter, MarketNFT } from ".";
 
 export default function MarketBox(props: { getAllValidNFTs: typeof getAllValidNFTs }) {

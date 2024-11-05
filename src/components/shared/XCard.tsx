@@ -1,6 +1,13 @@
 import classNames from "classnames";
+import { ReactNode } from 'react';
 
-const XCard = ({ className, children, border, header, footer }) => {
+export function XCard({ className, children, border, header, footer }: {
+  className?: string,
+  children: ReactNode,
+  border?: boolean,
+  header: ReactNode,
+  footer?: ReactNode,
+}) {
 
   return (
     <div className={classNames("bg-golden-1000/[50%] flex flex-col rounded-lg", className)}>
@@ -13,5 +20,3 @@ const XCard = ({ className, children, border, header, footer }) => {
     </div>
   );
 };
-
-export default XCard;

@@ -1,5 +1,5 @@
 import { Inter, Poppins } from "next/font/google";
-import { Providers } from "@/components/shared/Provider";
+import { Providers } from "@/components/shared";
 import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { Toaster } from "react-hot-toast";

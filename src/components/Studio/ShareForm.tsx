@@ -2,7 +2,10 @@
 
 import { client } from "@/lib/constants";
 import { PosseBridgeDrop, PosseFormShareMetadata, PosseTrait } from "@/lib/types";
+import { Button, Field, Fieldset, Input, Label, Textarea } from "@/components/base";
+import { XUpload } from "@/components/shared";
 import { useState, useRef } from "react";
+import { LuLoader2 } from "react-icons/lu";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
@@ -10,9 +13,6 @@ import { soneiumMinato } from "thirdweb/chains";
 import { isERC721, setSharedMetadata } from "thirdweb/extensions/erc721";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import toast from "react-hot-toast";
-import { LuLoader2 } from "react-icons/lu";
-import { Button, Field, Fieldset, Input, Label, Textarea } from "../base";
-import { XUpload } from "../XUpload";
 
 export function ShareMetadataForm({
   drop,

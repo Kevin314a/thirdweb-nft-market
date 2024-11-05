@@ -1,8 +1,8 @@
 'use client'
 
 import { ImageCreator, ImageVerifiedBadge } from "@/assets";
+import { Pagination } from "@/components/shared";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { Pagination } from "@/components/shared/Pagination";
 import { useRouter } from "next/navigation";
 
 export default function StatsPage() {

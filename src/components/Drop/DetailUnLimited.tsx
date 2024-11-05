@@ -1,21 +1,19 @@
 'use client'
 
 import { DEFAULT_PLATFORMFEE_DROP, client } from "@/lib/constants";
-import { NFTPricedBox } from "@/components/NFT";
 import { PosseBridgeDrop, PosseBridgeDropMintStage } from "@/lib/types";
 import { formatDateIntl } from "@/lib/utils";
+import { Button } from "@/components/base";
+import { NFTPricedBox } from "@/components/NFT";
 import { ImagePossef } from "@/assets";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { MdLanguage, MdMoreHoriz } from "react-icons/md";
-import { IoBarChart, IoStar, IoShareSocial } from "react-icons/io5";
 import { notFound, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { LuLoader2 } from "react-icons/lu";
 import { MediaRenderer } from "thirdweb/react";
 import { sharedMetadata } from "thirdweb/extensions/erc721";
-import { useEffect, useState } from "react";
 import { getContract } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
-import { Button } from "../base";
-import { LuLoader2 } from "react-icons/lu";
 
 export const DetailUnLimited = ({
   isLoading,

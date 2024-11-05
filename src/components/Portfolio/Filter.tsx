@@ -1,7 +1,8 @@
 'use client'
 
 import { IconMagnify } from "@/assets";
-import { Button, Menu, MenuButton, MenuItem, MenuItems } from "@/components/base";
+import { Button, Menu, MenuButton, MenuItem, MenuItems, Input } from "@/components/base";
+import { Spinner } from "@/components/shared";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useRef, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
@@ -9,8 +10,6 @@ import { GrSort } from "react-icons/gr";
 import { LuRefreshCw } from "react-icons/lu";
 import { useHotkeys } from "react-hotkeys-hook";
 import Image from "next/image";
-import { Input } from "../base";
-import { Spinner } from "../shared/Spinner";
 
 export default function PortfolioFilter({
   isLoading,

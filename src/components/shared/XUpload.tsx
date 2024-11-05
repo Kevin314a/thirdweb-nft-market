@@ -6,7 +6,6 @@ import { useCallback, useState } from "react";
 import { HiOutlineUpload } from "react-icons/hi";
 import Dropzone, { DropzoneOptions } from "react-dropzone";
 import { MediaRenderer } from "thirdweb/react";
-import toast from "react-hot-toast";
 
 export default function XUpload({
   onFileChange,

@@ -3,14 +3,14 @@
 import classNames from "classnames";
 import { PosseFormDropMintStage } from "@/lib/types";
 import { formatDate, formatDateStageDuration, getDateTimeAfter, isNotOverMax, isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
+import { Button, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "@/components/base";
+import { XUpload } from "@/components/shared";
 import { useDeployDrop } from "@/hooks/useDeployDrop";
 import { type deployDrop } from "@/server-actions/drop";
 import { useRef } from "react";
 import { LuPlus, LuLoader2 } from "react-icons/lu";
 import { MdCheckCircleOutline, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { Button, Field, Fieldset, Input, Label, MultiSelect, Radio, RadioGroup, Textarea, XDatePicker } from "../base";
-import { XUpload } from "../XUpload";
 import { StageDialog } from ".";
 import toast from "react-hot-toast";
 

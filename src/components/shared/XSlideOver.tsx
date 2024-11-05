@@ -10,14 +10,14 @@ interface HeadlessSlideOverProps {
   children: ReactNode;
 }
 
-export function SlideOver({
+export function XSlideOver({
   open,
   setOpen,
   title,
   children,
 }: HeadlessSlideOverProps) {
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition show={open} as={Fragment}>
       <Dialog
         as="div"
         static
@@ -84,6 +84,6 @@ export function SlideOver({
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 }

@@ -1,16 +1,15 @@
 'use client'
 
-import { useListingPortfolio } from "@/hooks/useListingPortfolio";
 import { PosseFormListing, PosseBridgeNFT, PosseCurrency } from "@/lib/types";
+import { isNotOverMin, isValidNumber } from "@/lib/utils";
+import { Button, Field, Fieldset, Input, Label, Menu, MenuButton, MenuItems, MenuItem } from "@/components/base";
+import { Spinner, XSlideOver } from "@/components/shared";
+import { useListingPortfolio } from "@/hooks/useListingPortfolio";
 import { getOwnedNFTs, listNFT, verifyNFTtoList } from "@/server-actions/nft";
 import { useState, useRef, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { FaChevronDown } from "react-icons/fa";
-import { Button, Field, Fieldset, Input, Label, Menu, MenuButton, MenuItems, MenuItem } from "../base";
-import { Spinner } from "../shared/Spinner";
-import { SlideOver } from "../XSlideOver/SlideOver";
 import { PortfolioFilter, PortfolioNFT } from ".";
-import { isNotOverMin, isValidNumber } from "@/lib/utils";
 
 export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs, listNFT: typeof listNFT, verifyNFTtoList: typeof verifyNFTtoList }) {
 
@@ -48,7 +47,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
           <span className="text-white">No NFTs.</span>
         )}
       </div>
-      <SlideOver
+      <XSlideOver
         open={isListPanelOpen}
         setOpen={() => !isOperating && setIsListPanelOpen(false)}
         title="List Details"
@@ -63,7 +62,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
               <Field>
                 <Label htmlFor="price" className="block mb-2">Price *</Label>
                 <Input
-                  {...register('price', { 
+                  {...register('price', {
                     required: "Price is required",
                     validate: {
                       isValid: (v) => isValidNumber(v, true) || "Price is invalid",
@@ -106,7 +105,7 @@ export default function PortfolioBox(props: { getOwnedNFTs: typeof getOwnedNFTs,
             </Button>
           </form>
         </div>
-      </SlideOver>
+      </XSlideOver>
     </>
   );
 };

@@ -1,14 +1,14 @@
 'use client'
 
 import { PosseBridgeDrop, PosseFormDropMintStage, PosseBridgeDropMintStage } from "@/lib/types";
+import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
+import { Button, Field, Fieldset, Input, Label, Switch, Textarea, XDatePicker } from "@/components/base";
+import { XUpload } from "@/components/shared";
 import { useState, useRef, useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { isAddress } from "thirdweb";
-import { Button, Field, Fieldset, Input, Label, Switch, Textarea, XDatePicker } from "../base";
-import { XUpload } from "../XUpload";
-import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
 import { FaPlusCircle } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { isAddress } from "thirdweb";
 
 export function PhaseForm({
   drop,

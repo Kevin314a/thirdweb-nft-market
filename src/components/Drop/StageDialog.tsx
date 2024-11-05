@@ -1,14 +1,14 @@
 'use client'
 
 import { PosseFormDropMintStage } from "@/lib/types";
+import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
+import { Button, Field, Fieldset, Input, Label, Switch, TransitionDialog, XDatePicker } from "@/components/base";
+import { XUpload } from "@/components/shared";
 import { useState, useRef, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FaPlusCircle } from "react-icons/fa";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { Button, Field, Fieldset, Input, Label, Switch, TransitionDialog, XDatePicker } from "../base";
-import { XUpload } from "../XUpload";
 import { isAddress } from 'thirdweb/utils';
-import { isNotOverMin, isValidBigInt, isValidNumber } from "@/lib/utils";
 
 export const StageDialog = ({
   open,

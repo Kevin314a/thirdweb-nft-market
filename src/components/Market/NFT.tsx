@@ -1,11 +1,11 @@
 'use client'
 
+import { Spinner } from "@/components/shared";
 import { client } from "@/lib/constants";
 import { PosseBridgeMarket } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { MediaRenderer, useActiveAccount } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
-import { Spinner } from "../shared/Spinner";
 import MarQuee from "react-fast-marquee";
 
 export default function MarketNFT({

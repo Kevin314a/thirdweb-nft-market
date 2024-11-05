@@ -1,16 +1,16 @@
 'use client'
 
 import { PosseFormContract } from "@/lib/types";
+import { isNotOverMax, isNotOverMin, isValidNumber } from "@/lib/utils";
+import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "@/components/base";
+import { XUpload } from "@/components/shared";
 import { useDeployContract } from "@/hooks/useDeployContract";
 import { type deployContract } from "@/server-actions/contract";
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { LuLoader2 } from "react-icons/lu";
 import { MdCheckCircleOutline } from "react-icons/md";
-import { Button, Description, Field, Fieldset, Input, Label, Radio, RadioGroup, Textarea } from "../base";
-import { XUpload } from "../XUpload";
 import { ContractTraitCard, ContractTraitDialog } from ".";
-import { isNotOverMax, isNotOverMin, isValidNumber } from "@/lib/utils";
 
 export const ContractForm = (props: { deployContract: typeof deployContract }) => {
 

@@ -1,6 +1,5 @@
-import { Navbar } from "@/components/shared/Navbar";
-import { Footer } from "@/components/shared/Footer";
 import type { ReactNode } from "react";
+import { Navbar, Footer } from "@/components/shared";
 
 export default function WithFooterLayout({ children }: Readonly<{
   children: ReactNode;

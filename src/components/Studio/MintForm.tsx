@@ -2,9 +2,13 @@
 
 import { client } from "@/lib/constants";
 import { PosseBridgeDrop, PosseFormLazyNFT, PosseTrait } from "@/lib/types";
+import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "@/components/base";
+import { XUpload } from "@/components/shared";
+import { NFTTraitCard, NFTTraitDialog } from "@/components/NFT";
 import { lazyMintNFT } from "@/server-actions/lazynft";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { LuLoader2 } from "react-icons/lu";
 import { useRouter } from "next/navigation";
 import { getContract, sendTransaction, waitForReceipt } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
@@ -13,10 +17,6 @@ import { isERC721, lazyMint as lazyMint721, nextTokenIdToMint as nextTokenIdToMi
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
 import { resolveScheme, upload } from "thirdweb/storage";
 import toast from "react-hot-toast";
-import { LuLoader2 } from "react-icons/lu";
-import { Button, Description, Field, Fieldset, Input, Label, Textarea } from "../base";
-import { NFTTraitCard, NFTTraitDialog } from "../NFT";
-import { XUpload } from "../XUpload";
 
 interface LazyMintNFTProps {
   lazyMintNFT: typeof lazyMintNFT;

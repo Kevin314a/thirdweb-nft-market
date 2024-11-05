@@ -1,9 +1,9 @@
 'use client'
 
+import { Button, Dialog, DialogPanel, DialogTitle, CloseButton, Field, Fieldset, Input, Label, Transition, TransitionChild } from "@/components/base";
 import { Fragment, useEffect, useState } from "react";
 import { MdClose, MdOutlineEdit } from "react-icons/md";
 import { RiDeleteBin2Line } from "react-icons/ri";
-import { Button, Dialog, DialogPanel, DialogTitle, CloseButton, Field, Fieldset, Input, Label, Transition, TransitionChild } from "../base";
 
 export const ContractTraitDialog = ({
   isOpen,

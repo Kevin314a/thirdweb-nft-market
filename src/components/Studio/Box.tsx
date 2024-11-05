@@ -6,6 +6,7 @@ import { client } from "@/lib/constants";
 import { SUPPORTED_CURRENCIES } from "@/lib/currencies";
 import { PosseBridgeDrop, PosseBridgeDropMintStage, PosseStageInput } from "@/lib/types";
 import { formatDate, generateUuid, isValidBigInt } from "@/lib/utils";
+import { XSlideOver } from "@/components/shared";
 import { lazyMintNFT } from "@/server-actions/lazynft";
 import axios, { HttpStatusCode } from "axios";
 import { useState } from "react";
@@ -19,9 +20,8 @@ import { NATIVE_TOKEN_ADDRESS, getContract, sendTransaction } from "thirdweb";
 import { soneiumMinato } from "thirdweb/chains";
 import { setClaimConditions } from "thirdweb/extensions/erc721";
 import { useActiveAccount, useConnectModal, useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
-import toast from "react-hot-toast";
-import { SlideOver } from "../XSlideOver/SlideOver";
 import { StudioLazyMintForm, StudioPhaseForm, StudioShareMetadataForm } from ".";
+import toast from "react-hot-toast";
 
 interface StudioBoxProps {
   lazyMintNFT: typeof lazyMintNFT;
@@ -341,7 +341,7 @@ export function StudioBox(props: StudioBoxProps) {
       ))}
       {!!selectedDrop && (
         <>
-          <SlideOver
+          <XSlideOver
             open={isMintSlideOpen}
             setOpen={(b) => {
               !isOperating && setIsMintSlideOpen(!!b);
@@ -358,8 +358,8 @@ export function StudioBox(props: StudioBoxProps) {
                 !isOperating && setSelectedDrop(null);
               }}
             />
-          </SlideOver>
-          <SlideOver
+          </XSlideOver>
+          <XSlideOver
             open={isShareSlideOpen}
             setOpen={(b) => {
               !isOperating && setIsShareSlideOpen(!!b);
@@ -375,8 +375,8 @@ export function StudioBox(props: StudioBoxProps) {
                 !isOperating && setSelectedDrop(null);
               }}
             />
-          </SlideOver>
-          <SlideOver
+          </XSlideOver>
+          <XSlideOver
             open={!!selectedStageId && selectedStageId !== "none"}
             setOpen={() => !isOperating && setSelectedStageId("none")}
             title="Update a Mint Stage"
@@ -387,7 +387,7 @@ export function StudioBox(props: StudioBoxProps) {
               onEditDone={(stage) => handleEditPhaseDone(stage)}
               onClose={() => !isOperating && setSelectedStageId("none")}
             />
-          </SlideOver>
+          </XSlideOver>
         </>
       )}
     </>
