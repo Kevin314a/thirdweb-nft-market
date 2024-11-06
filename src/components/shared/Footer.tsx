@@ -67,36 +67,32 @@ export const Footer = () => {
                 </h4>
                 <ul>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Partners
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Categories
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Collections
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Getting Listed
-                    </a>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -106,36 +102,32 @@ export const Footer = () => {
                 </h4>
                 <ul>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Swap
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Pools
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Farm
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Stake
-                    </a>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -145,36 +137,32 @@ export const Footer = () => {
                 </h4>
                 <ul>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       About Us
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Contact Us
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Documents
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Privacy Policy
-                    </a>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -184,36 +172,32 @@ export const Footer = () => {
                 </h4>
                 <ul>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Is DeFi?
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Are NFTs?
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Is GameFi?
-                    </a>
+                    </span>
                   </li>
                   <li>
-                    <a
-                      // href="#"
+                    <span
                       className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What is SocialFi?
-                    </a>
+                    </span>
                   </li>
                 </ul>
               </div>

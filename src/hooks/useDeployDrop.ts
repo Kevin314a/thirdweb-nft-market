@@ -25,7 +25,7 @@ export function useDeployDrop(props: DeployDropProps) {
   const activeWalletChain = useActiveWalletChain();
   const { connect } = useConnectModal();
   const [file, setFile] = useState<File | null>(null);
-  const [dropGroup, setDropGroup] = useState<"LIMITED" | "UNLIMITED">("LIMITED");
+  const [dropGroup, setDropGroup] = useState<"LIMITED" | "UNLIMITED">("UNLIMITED");
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [selectedPayToken, setSelectedPayToken] = useState<string[]>(["ETH"]);
   const [isLoading, setIsLoading] = useState<boolean>(false);

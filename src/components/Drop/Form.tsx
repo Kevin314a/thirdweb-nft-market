@@ -66,14 +66,18 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
           <Field>
             <Label as="p" className="block text-sm font-medium">Select the Group of your Drop *</Label>
             <RadioGroup value={dropGroup} onChange={(v) => {
-              setDropGroup(v);
-              setValue('group', v);
+              if (v === "LIMITED") {
+                toast.error("coming soon");
+              }
+              // setDropGroup(v);
+              // setValue('group', v);
             }}>
               <div className="mt-4 w-full flex flex-col md:flex-row items-center gap-2">
                 <Radio
+                  // disabled={true}
                   value={"LIMITED"}
                   className={({ checked }) =>
-                    `${checked ? 'bg-golden-1300 text-white' : 'bg-golden-1400 text-gray'
+                    `${checked ? 'bg-golden-1300 text-white' : 'bg-golden-1400/[30%] text-gray'
                     } w-full relative rounded-lg shadow-md px-5 py-2 cursor-pointer flex focus:outline-none`
                   }
                 >
@@ -183,7 +187,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
               <p className="mt-1 text-xs text-red-600">{errors.payToken.message}</p>
             )}
           </Field> */}
-          <span className="text-white font-medium text-sm my-2">※ You must pay 1 ETH to create an NFT drop(Testnet phase)</span>
+          {/* <span className="text-white font-medium text-sm my-2">※ You must pay 1 ETH to create an NFT drop(Testnet phase)</span> */}
         </Fieldset>
         <div className="space-y-5 md:w-1/2">
           <div>
