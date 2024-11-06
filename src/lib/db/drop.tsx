@@ -52,7 +52,7 @@ export const getUpcomingDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          // visible: true,               // TODO visible is only charlie
+          visible: true,               // TODO visible is only charlie
           $or: condsMintStageAllow,
           $expr: {
             $gt: ['$mintStages.startAt', now],
@@ -113,7 +113,7 @@ export const getActiveDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          // visible: true,
+          visible: true,
           $or: condsMintStageAllow,
           $expr: {
             $and: [
@@ -180,7 +180,7 @@ export const getPastDrops = async (accountAddr: string | undefined) => {
       },
       {
         $match: {
-          // visible: true,
+          visible: true,
           $or: condsMintStageAllow,
           $expr: { $lt: ["$mintStages.endAt", now] },
         },

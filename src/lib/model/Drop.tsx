@@ -54,7 +54,7 @@ const DropSchema = new mongoose.Schema<PosseDBDrop>({
   visible: {
     type: Boolean,
     required: true,
-    default: false,
+    default: true,
   },
 }, {
   toJSON: { getters: true },
