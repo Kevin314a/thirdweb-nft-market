@@ -65,7 +65,7 @@ export const ProfileMenu = ({
             if (wallet) {
               disconnect(wallet);
             }
-            router.push('/');
+            // router.push('/');
           }}>
             <div className="flex items-center gap-4">
               <MdLogout color="white" className="size-4" />

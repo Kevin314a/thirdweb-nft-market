@@ -79,7 +79,7 @@ export const Navbar = () => {
                         <li key={childIndex} className="border-b border-black-1200">
                           <Link
                             href={child.href}
-                            onClick={() => item.href === "#" && toast.error("Coming soon...")}
+                            onClick={() => child.href === "#" && toast.error("Coming soon...")}
                             className="block p-4 hover:bg-golden-1300 rounded-lg hover:text-gray-200 whitespace-nowrap"
                           >
                             {child.label}
