@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { client } from "@/lib/constants";
+import { RiWallet2Line } from "react-icons/ri";
 import { ConnectButton as PrimaryConnectButton, darkTheme } from "thirdweb/react";
+import { MdAccountBalanceWallet } from "react-icons/md";
 
-import { IconWallet } from "@/assets";
+
 
 const useScreenSize = () => {
   const [screenSize, setScreenSize] = useState('sm');
@@ -41,14 +43,16 @@ export const ConnectButton = () => {
       connectButton={{
         label: (
           <>
-            <img src={IconWallet.src} alt="" />
-            <span className="ml-2 hidden md:block">Connect Wallet</span>
+            <MdAccountBalanceWallet color='white' size="18" />
+            <span className="ml-1 md:ml-2 text-xs md:text-base whitespace-nowrap">
+              {screenSize === "md" ? "Login" : "Connect Wallet"}
+            </span>
           </>
         ),
         style: {
-          minWidth: screenSize === "md" ? "180px" : "0px",
-          borderRadius: screenSize === "md" ? "0.5rem" : "50%",
-          padding: screenSize === "md" ? "0.5rem" : "0.5rem",
+          minWidth: screenSize === "md" ? "100px" : "140px",
+          borderRadius: "0.5rem",
+          padding: "0.5rem",
           width: '2rem',
           height: screenSize === "md" ? '2.5rem' : '2rem',
           color: '#FFF',

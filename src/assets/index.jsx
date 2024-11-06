@@ -1,4 +1,4 @@
-import IconLogo from '@/assets/images/logo.svg';
+import IconLogo from '@/assets/images/logo.png';
 import IconDiscord from '@/assets/images/discord.svg';
 import IconFooterLogo from '@/assets/images/footer-logo.svg';
 import IconMagnify from '@/assets/images/magnify.svg';
@@ -33,8 +33,19 @@ import ImageNFT from '@/assets/images/nft-img.png';
 import ImagePosse from '@/assets/images/posse.png';
 import ImagePossef from '@/assets/images/possef.png';
 import ImageSwap from '@/assets/images/swap.png';
+import ImageSwapAstar from '@/assets/images/swap-astar.png';
+import ImageSwapAstar1 from '@/assets/images/swap-astar1.webp';
+
 import ImageVerifiedBadge from '@/assets/images/verified-badge.png';
 import ImageProfileBack from '@/assets/images/profile-back.jpg';
+import ImageLaunchBoy from "@/assets/images/launch-boy.png";
+import ImageOverallBack from "@/assets/images/bg1.webp";
+
+import IconChainAll from "@/assets/images/chain-all.png";
+import IconChainSoneium from "@/assets/images/chain-soneium.png";
+import IconChainAstar from "@/assets/images/chain-astar.png";
+import IconChainBase from "@/assets/images/chain-base.png";
+import IconChainCronos from "@/assets/images/chain-cronos.png";
 
 import ImageCurrency from '@/assets/images/currency-mark.png';
 import TempImageNFT from '@/assets/images/z-temp-nft.png';
@@ -78,11 +89,20 @@ export {
   ImagePosse,
   ImagePossef,
   ImageSwap,
+  ImageSwapAstar,
+  ImageSwapAstar1,
   ImageVerifiedBadge,
   ImageProfileBack,
   TempImageNFT,
   TempImageNFTMore,
   TempImageCreateBack,
   ImageCurrency,
+  ImageLaunchBoy,
   DropNoneBack,
+  ImageOverallBack,
+  IconChainAll,
+  IconChainSoneium,
+  IconChainAstar,
+  IconChainBase,
+  IconChainCronos,
 }

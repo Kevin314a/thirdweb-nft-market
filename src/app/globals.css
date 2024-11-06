@@ -61,31 +61,21 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.stacking-approve-box-minibox-inputbox {
-    background-color: transparent;
-    border: none !important;
-    font-size: 1.4em;
-    text-align: end;
-    color: white;
-    outline: none !important;
+@media (max-width: 1023px) {
+    .swiper {
+        .swiper-button-next, .swiper-button-prev {
+            display: none;
+        }
+        .swiper-pagination.swiper-pagination-bullets {
+            display: none;
+        }
+    }
 }
-
-.hr {
-    width: 100%;
-    height: 2px;
-    margin-bottom: 10px;
-    background-color: #846a51;
-    position: relative;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .swiper {
-    .swiper-button-next, .swiper-button-prev {
-        background-color: #C3976A;
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        background-color: #C3976A7F;
         color: white;
         transition-duration: 300ms;
         transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
@@ -94,21 +84,35 @@ input[type=number] {
         padding-bottom: 0.5rem;
         padding-left: 1.4rem;
         padding-right: 1.4rem;
-        border-radius: 9999px;
+        top: 0;
+        height: 100%;
+        margin-top: 0;
     }
 
-    /* .swiper-button-prev {
+    .swiper-button-prev {
         left: 0rem;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 1rem;
+        border-bottom-right-radius: 0;
     }
+
     .swiper-button-next {
         right: 0rem;
-    } */
-    
-    .swiper-button-prev::after, .swiper-button-next::after {
+        border-top-left-radius: 0;
+        border-top-right-radius: 1rem;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 1rem;
+    }
+
+    .swiper-button-prev::after,
+    .swiper-button-next::after {
         font-size: 1rem;
     }
-    .swiper-button-prev:hover, .swiper-button-next:hover {
-        background-color: #924A36;
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        background-color: #924A367F;
     }
 
     .swiper-pagination.swiper-pagination-bullets {

@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,459 +9,423 @@ import { ImageCreator } from '@/assets';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { XSwiper } from '../base';
 
 const MemecoinsSlider = () => {
 
-  const swiperRef = useRef<SwiperCore | null>(null);
+  const [viewMode, setViewMode] = useState<"swiper" | "card">("card");
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1280) {
+        setViewMode("swiper");
+      } else {
+        setViewMode("card");
+      }
+    };
 
-  const handlePrev = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slidePrev();
-    }
-  };
+    window.addEventListener('resize', handleResize); // Update on resize
 
-  const handleNext = () => {
-    if (swiperRef.current) {
-      swiperRef.current.slideNext();
-    }
-  };
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div className="max-w-full mx-auto relative lg:pl-0 pl-3">
-
-      <Swiper
-        onBeforeInit={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-        spaceBetween={26}
-        slidesPerView={3}
-        pagination={{ clickable: true }}
-        breakpoints={{
-          320: {
-            slidesPerView: 1.2,
-            spaceBetween: 15,
-          },
-          480: {
-            slidesPerView: 2.2,
-          },
-
-          1440: {
-            slidesPerView: 4.2,
-          },
-
-        }}
-      >
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+    <div className="w-full flex flex-col gap-2 md:gap-4 xl:gap-10">
+      {viewMode === "card" ? (
+        <>
+          <div className="w-full flex flex-col md:flex-row justify-between gap-2 md:gap-4 xl:gap-10">
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
+                </span>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
-                </span>
-              </p>
-            </div>
           </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+          <div className="w-full flex flex-col md:flex-row justify-between gap-2 md:gap-4 xl:gap-10">
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
+                </span>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
-                </span>
-              </p>
-            </div>
           </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+          <div className="w-full flex flex-col md:flex-row justify-between gap-2 md:gap-4 xl:gap-10">
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
+                </span>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
+            <div className="max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-[15px]">
+              <div className="relative md:w-1/2 w-full">
+                <Image
+                  width={222}
+                  height={222}
+                  src={ImageCreator}
+                  className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
+                  alt=""
+                />
+                <div className="absolute left-0 right-0 bottom-2.5">
+                  <a
+                    href="#"
+                    className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
+                  >
+                    View
+                  </a>
+                </div>
+              </div>
+              <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
+                  Creator: 0a000b
                 </span>
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide>
-          <div className="bg-golden-1000/[50%] flex md:flex-row flex-col  rounded-[15px]">
-            <div className="relative md:w-1/2 w-full">
-              <Image
-                width={222}
-                height={222}
-                src={ImageCreator}
-                className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-[9px] border border-golden-1000"
-                alt=""
-              />
-              <div className="absolute left-0 right-0 bottom-2.5">
-                <a
-                  href="#"
-                  className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2"
-                >
-                  View
-                </a>
+                <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
+                  Market cap: 50k
+                </span>
+                <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
+                  Ticker: Yeehaw
+                </span>
+                <p className="text-[15px] font-medium text-white leading-normal">
+                  Description:
+                  <span className="opacity-70">
+                    {" "}
+                    Yeehaw is on a mission to take over the Wild West one meme
+                    at a time!
+                  </span>
+                </p>
               </div>
             </div>
-            <div className="pl-[14px] md:w-1/2 w-full flex-1 pt-[18px] pb-5 md:pb-14 pr-2.5">
-              <span className="text-[15px] font-semibold block text-golden-1000 leading-[23px]">
-                Creator: 0a000b
-              </span>
-              <span className="text-[15px] font-semibold block text-golden-100 leading-[23px]">
-                Market cap: 50k
-              </span>
-              <span className="text-[15px] font-semibold block text-green-1000 leading-[23px]">
-                Ticker: Yeehaw
-              </span>
-              <p className="text-[15px] font-medium text-white leading-normal">
-                Description:
-                <span className="opacity-70">
-                  {" "}
-                  Yeehaw is on a mission to take over the Wild West one meme
-                  at a time!
-                </span>
-              </p>
-            </div>
           </div>
-        </SwiperSlide>
-
-
-
-
-      </Swiper>
-
-
-      <div className="lg:flex hidden justify-between mt-4">
-        <button
-          onClick={handlePrev}
-          className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition absolute -translate-y-1/2 top-1/2 -left-4 z-10 duration-300"
+        </>
+      ) : (
+        <XSwiper
+          slidesPerView={{ xs: 1.5, sm: 1.5, md: 2, lg: 3, xl: 4, xxl: 5 }}
         >
-          <svg
-            stroke="currentColor"
-            className="-ml-1"
-            fill="none"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            color="#f5f3f7"
-            width={24}
-            height={24}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-        </button>
-        <button
-          onClick={handleNext}
-          className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition duration-300 absolute -translate-y-1/2 top-1/2 -right-4 z-10 "
-        >
-          <svg
-            stroke="currentColor"
-            className="rotate-180 -mr-1"
-            fill="none"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            color="#f5f3f7"
-            width={24}
-            height={24}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-
-        </button>
-      </div>
-
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
+            <XSwiper.SwiperSlide key={i} className='rounded-lg'>
+              <div className="md:max-h-[220px] bg-golden-1000/[50%] flex md:flex-row flex-col rounded-lg">
+                <div className="relative md:w-1/2 w-full">
+                  <Image
+                    width={222}
+                    height={222}
+                    src={ImageCreator}
+                    className="w-full h-full md:max-h-full max-h-[250px] bg-cover object-cover rounded-lg border border-golden-1000"
+                    alt=""
+                  />
+                  <div className="absolute left-0 right-0 bottom-2.5">
+                    <a href="#" className="text-base h-[30px] mx-auto transition-all ease-out duration-500 hover:bg-golden-1100  max-w-[120px] text-center justify-center font-medium text-white flex items-center rounded-lg bg-golden-1000 border border-golden-1000 p-[7px] px-[14px] gap-2">
+                      View
+                    </a>
+                  </div>
+                </div>
+                <div className="px-2 py-3 md:w-1/2 w-full flex-1 md:p-4">
+                  <span className="text-base font-semibold block text-golden-1000 pb-1">
+                    Creator: 0a000b
+                  </span>
+                  <span className="text-base font-semibold block text-black-1000 pb-1">
+                    Ticker: Yeehaw
+                  </span>
+                  <span className="text-base md:font-semibold block text-green-1000 pb-1">
+                    Market cap: 50k
+                  </span>
+                  <p className="text-sm md:font-medium text-white leading-normal">
+                    Description:
+                    <span className="opacity-70">
+                      {" "}
+                      Yeehaw is on a mission to take over the Wild West one meme
+                      at a time!
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </XSwiper.SwiperSlide>
+          ))}
+        </XSwiper>
+      )}
     </div>
   );
 };

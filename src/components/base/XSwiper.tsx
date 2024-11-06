@@ -1,120 +1,61 @@
 'use client'
 
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import classNames from "classnames";
-import SwiperCore from 'swiper';
+import React, { ReactNode } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Mousewheel, Keyboard } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-
-const breakpoints = {
-  large: {
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    480: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    768: {
-      slidesPerView: 1.7,
-    },
-    1024: {
-      slidesPerView: 2.2,
-    },
-    1440: {
-      slidesPerView: 2.7,
-    },
-    2560: {
-      slidesPerView: 3.5,
-    },
-  },
-  medium: {
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    480: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    768: {
-      slidesPerView: 1.7,
-    },
-    1024: {
-      slidesPerView: 2.2,
-    },
-    1440: {
-      slidesPerView: 2.7,
-    },
-    2560: {
-      slidesPerView: 3.5,
-    },
-  },
-  small: {
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    480: {
-      slidesPerView: 1,
-      spaceBetween: 15,
-    },
-    768: {
-      slidesPerView: 1.7,
-    },
-    1024: {
-      slidesPerView: 2.2,
-    },
-    1440: {
-      slidesPerView: 2.7,
-    },
-    2560: {
-      slidesPerView: 3.5,
-    },
-  }
-};
-
 const XSwiper = ({
   children,
   slidesPerView,
   spaceBetween,
-  breakpoint,
+  pagination,
+  navigation,
 }: {
   children: ReactNode;
-  slidesPerView?: number,
-  spaceBetween?: number,
-  breakpoint?: "large" | "medium" | "small",
+  slidesPerView?: { xs: number, sm: number, md: number, lg: number, xl: number, xxl: number },
+  spaceBetween?: { xs: number, sm: number, md: number, lg: number, xl: number, xxl: number },
+  pagination?: boolean;
+  navigation?: boolean;
 }) => {
-  // const swiperRef = useRef<SwiperCore | null>(null);
 
-
-  // const handlePrev = () => {
-  //   if (swiperRef.current) {
-  //     swiperRef.current.slidePrev();
-  //   }
-  // };
-
-  // const handleNext = () => {
-  //   if (swiperRef.current) {
-  //     swiperRef.current.slideNext();
-  //   }
-  // };
+  const breakpoint = {
+    320: {
+      slidesPerView: slidesPerView?.xs || 1,
+      spaceBetween: spaceBetween?.xs || 8,
+    },
+    480: {
+      slidesPerView: slidesPerView?.sm || 1,
+      spaceBetween: spaceBetween?.sm || 12,
+    },
+    768: {
+      slidesPerView: slidesPerView?.md || 1.7,
+      spaceBetween: spaceBetween?.md || 16,
+    },
+    1024: {
+      slidesPerView: slidesPerView?.lg || 2.2,
+      spaceBetween: spaceBetween?.lg || 20,
+    },
+    1440: {
+      slidesPerView: slidesPerView?.xl || 12.7,
+      spaceBetween: spaceBetween?.xl || 24,
+    },
+    2560: {
+      slidesPerView: slidesPerView?.xxl || 3.5,
+      spaceBetween: spaceBetween?.xxl || 32,
+    },
+  };
 
   return (
     <div className="max-w-full mx-auto relative pl-0">
       <Swiper
-        spaceBetween={spaceBetween || 26}
-        slidesPerView={slidesPerView || 3}
-        navigation={true}
+        navigation={!!navigation}
         pagination={{ clickable: true }}
-        breakpoints={breakpoint ? breakpoints[breakpoint] : breakpoints['medium']}
-        modules={[Navigation, Pagination]}
+        breakpoints={breakpoint}
+        modules={[Navigation].concat(!!pagination ? [Pagination] : [])}
       >
         {children}
       </Swiper>
@@ -122,64 +63,6 @@ const XSwiper = ({
   );
 };
 
-
-const SwiperLeftIcon = ({
-  onPrev,
-}: {
-  onPrev: () => void,
-}) => {
-  return (
-    <button
-      onClick={onPrev}
-      className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition absolute -translate-y-1/2 top-1/2 -left-4 z-10 duration-300"
-    >
-      <svg
-        stroke="currentColor"
-        className="-ml-1"
-        fill="none"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        color="#f5f3f7"
-        width={24}
-        height={24}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="m15 18-6-6 6-6" />
-      </svg>
-    </button>
-  );
-};
-
-const SwiperRightIcon = ({
-  onNext,
-}: {
-  onNext: () => void,
-}) => {
-  return (
-    <button
-      onClick={onNext}
-      className="bg-golden-1000 text-white px-2.5 py-2 rounded-full hover:bg-golden-1100 transition duration-300 absolute -translate-y-1/2 top-1/2 -right-4 z-10 "
-    >
-      <svg
-        stroke="currentColor"
-        className="rotate-180 -mr-1"
-        fill="none"
-        strokeWidth={2}
-        viewBox="0 0 24 24"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        color="#f5f3f7"
-        width={24}
-        height={24}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path d="m15 18-6-6 6-6" />
-      </svg>
-    </button>
-  );
-};
 
 XSwiper.SwiperSlide = SwiperSlide;
 

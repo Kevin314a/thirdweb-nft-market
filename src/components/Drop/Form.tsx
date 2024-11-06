@@ -260,7 +260,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
         onCreate={handleToDone}
       />
       <div className="fixed py-2.5 w-[100vw] z-50 bottom-0 start-0 bg-black/[30%]">
-        <div className="max-w-[1920px] flex items-center justify-between mx-auto xl:px-10 px-5 h-[64px]">
+        <div className="max-w-[1920px] flex items-center justify-between mx-auto lg:px-10 px-6 h-[64px]">
           <div className="flex lg:w-full items-center justify-end">
             <Button
               type="button"

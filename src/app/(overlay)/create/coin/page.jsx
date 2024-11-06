@@ -20,7 +20,7 @@ export default function CreateCoinPage() {
   };
 
   return (
-    <div className="max-w-[1920px] flex-col md:flex-row mx-auto xl:px-10 px-5">
+    <div className="max-w-[1920px] flex-col md:flex-row mx-auto lg:px-10 px-6">
       <div className="mb-4 flex flex-col">
         <span className="text-2xl lg:text-4xl text-white text-center">Coin information</span>
       </div>

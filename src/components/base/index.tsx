@@ -21,6 +21,8 @@ import { TransitionDialog } from "./TransitionDialog";
 import { XDatePicker } from "./XDatePicker";
 import { XSwiper } from "./XSwiper";
 
+import GradientText from "./GradientText";
+
 export {
   Button,
   Dialog, DialogPanel, DialogTitle, CloseButton,
@@ -40,4 +42,5 @@ export {
   Tab, TabGroup, TabList, TabPanel, TabPanels,
   XDatePicker,
   XSwiper,
+  GradientText,
 };

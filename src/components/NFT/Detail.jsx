@@ -2,7 +2,7 @@
 
 import { ImageNFT, Polygon, Polygon1, Polygon11, Polygon22, TempImageNFTMore, ImageVerifiedBadge } from "@/assets";
 import { PosseBridgeNFT } from "@/lib/types";
-import { XCard, XGraphCard, XTableCard } from "@/components/XCard";
+import { XCard, XGraphCard, XTableCard } from "@/components/shared";
 import { FaRegListAlt, FaRegHeart } from "react-icons/fa";
 import { FiEye } from "react-icons/fi";
 import { HiOutlineReceiptPercent } from "react-icons/hi2";
@@ -17,7 +17,7 @@ export const NFTDetail = ({ nft }) => {
   return (
     <>
       <section className="lg:pt-24 pt-20 relative z-10">
-        <div className="max-w-[1920px] lg:px-[50px] px-5 mx-auto">
+        <div className="max-w-[1920px] lg:px-[50px] px-6 mx-auto">
           <div className="flex lg:flex-nowrap flex-wrap justify-center gap-6">
             <div className="lg:w-[38%] md:w-1/2 w-full rounded-lg">
               <div className="w-full flex flex-col">
@@ -145,7 +145,7 @@ export const NFTDetail = ({ nft }) => {
       </section>
 
       <section className="pt-10 relative">
-        <div className="max-w-[1920px] px-2 lg:px-6 mx-auto relative z-10">
+        <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-10">
           <div className="mb-14">
             <XCard
               header={

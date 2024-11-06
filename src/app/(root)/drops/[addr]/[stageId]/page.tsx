@@ -36,7 +36,7 @@ export default async function DropDetailPage({
         </div>
       </section>
       <section className="relative py-16">
-        <div className="max-w-[1920px] px-2 lg:px-6 mx-auto">
+        <div className="max-w-[1920px] px-6 lg:px-10 mx-auto">
           <DropDetailBox drop={drop} lazyNFTs={!lazyNFTs ? [] : lazyNFTs} stageId={params.stageId} />
         </div>
       </section>

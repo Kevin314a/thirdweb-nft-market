@@ -15,8 +15,10 @@ import TopSalesSlider from "./TopSalesSlider";
 import { XSlideOver } from "./XSlideOver";
 import XUpload from "./XUpload";
 import { XCard } from "./XCard";
-import {XTableCard} from "./XTableCard";
-import {XGraphCard} from "./XGraphCard";
+import { XTableCard } from "./XTableCard";
+import { XGraphCard } from "./XGraphCard";
+import { UserMenu } from "./UserMenu";
+import { SwapPanel } from "./SwapPanel";
 
 export {
   ConnectButton,
@@ -38,4 +40,6 @@ export {
   XCard,
   XTableCard,
   XGraphCard,
+  UserMenu,
+  SwapPanel,
 }

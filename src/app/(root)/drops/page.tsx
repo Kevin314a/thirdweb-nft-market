@@ -15,7 +15,7 @@ export default async function DropsPage() {
 
   return (
     <section className="lg:pt-24 pt-20 relative z-10">
-      <div className="max-w-[1920px] px-2 lg:px-6 mx-auto z-10 relative">
+      <div className="max-w-[1920px] px-6 lg:px-10 mx-auto z-10 relative">
         <h4 className="py-2 text-2xl text-white font-bold">
           <span className="bg-heading-bg  bg-clip-text text-transparent">
             Drops
@@ -23,11 +23,11 @@ export default async function DropsPage() {
         </h4>
       </div>
       {!!upcomings.length && (
-        <div className="max-w-[1920px] px-2 lg:px-6 mx-auto z-10 relative">
+        <div className="max-w-[1920px] px-6 lg:px-10 mx-auto z-10 relative">
           <DropUpcoming items={upcomings} />
         </div>
       )}
-      <div className="max-w-[1920px] px-2 lg:px-6 pt-8 mx-auto z-10 relative">
+      <div className="max-w-[1920px] px-6 lg:px-10 pt-8 mx-auto z-10 relative">
         <TabGroup className="w-full">
           <TabList className="mb-2 lg:mb-4">
             <Tab className="" variant="outline">

@@ -30,7 +30,7 @@ export default function ContractPage({
         </div>
       </section>
       <section className="relative py-16">
-        <div className="max-w-[1920px] px-2 lg:px-6 mx-auto">
+        <div className="max-w-[1920px] px-6 lg:px-10 mx-auto">
           <div className="relative flex flex-col min-w-0 break-words w-full shadow-xl -mt-16">
             <div className="flex flex-wrap justify-center">
               <div className="w-full">
