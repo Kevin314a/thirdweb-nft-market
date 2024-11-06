@@ -1,4 +1,4 @@
-import IconLogo from '@/assets/images/logo.png';
+import IconLogo from '@/assets/images/logo.webp';
 import IconDiscord from '@/assets/images/discord.svg';
 import IconFooterLogo from '@/assets/images/footer-logo.svg';
 import IconMagnify from '@/assets/images/magnify.svg';

@@ -23,7 +23,7 @@ export default async function DropsPage() {
         </h4>
       </div>
       {!!upcomings.length && (
-        <div className="max-w-[1920px] px-6 lg:px-10 mx-auto z-10 relative">
+        <div className="max-w-[1920px] px-6 lg:px-10 w-full mx-auto z-10 relative">
           <DropUpcoming items={upcomings} />
         </div>
       )}

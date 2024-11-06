@@ -1,13 +1,12 @@
 'use client'
 
-import { DropNoneBack, ImageCreator } from "@/assets";
-import { client } from "@/lib/constants";
 import { PosseBridgeDrop } from "@/lib/types";
 import { parseRemainTime, shortenString } from "@/lib/utils";
+import { DropNoneBack, ImageCreator } from "@/assets";
 import { useRouter } from "next/navigation";
 import { MdNotifications } from "react-icons/md";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { MediaRenderer } from "thirdweb/react";
 import { shortenAddress } from "thirdweb/utils";
 

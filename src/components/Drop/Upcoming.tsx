@@ -10,7 +10,9 @@ export const DropUpcoming = ({
   items: PosseBridgeDrop[],
 }) => {
   return (
-    <XSwiper>
+    <XSwiper
+      pagination={true}
+    >
       {items.map((item, i) => (
         <XSwiper.SwiperSlide key={i}>
           <DropUpcomingItem

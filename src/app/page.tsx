@@ -4,8 +4,20 @@ import { ImageLaunchBoy, ImageOverallBack, TempImageCreateBack } from "@/assets"
 import { Button } from "@/components/base";
 import { Launchbar } from "@/components/shared/Launchbar";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useActiveAccount } from "thirdweb/react";
 
 export default function LandingPage() {
+  const account = useActiveAccount();
+  const router = useRouter();
+
+  useEffect(() => { 
+    if (!!account) {
+      router.push('/home');
+    }
+  }, [account]);
+
   return (
     <>
       <Launchbar />

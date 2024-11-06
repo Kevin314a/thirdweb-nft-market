@@ -4,11 +4,11 @@ import { Polygon1, Polygon22, TempImageCreateBack } from "@/assets";
 import { ConnectButton, ProfileMenu } from "@/components/shared";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { useActiveAccount, useActiveWallet } from "thirdweb/react";
 
-export default function CreateLayout({ children }) {
+export default function CreateLayout({ children }: { children: ReactNode }) {
 
   const router = useRouter();
   const account = useActiveAccount();

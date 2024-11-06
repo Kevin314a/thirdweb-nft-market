@@ -28,7 +28,7 @@ export const ProfileMenu = ({
   return (
     <>
       <div className="group relative cursor-pointer rounded-md bg-golden-1000 px-3 shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-golden-1100 data-[open]:bg-golden-1100 data-[focus]:outline-1 data-[focus]:outline-white">
-        <a className="menu-hover text-base font-medium text-white flex justify-center items-center py-2 gap-2">
+        <a className="menu-hover w-full min-w-max text-base font-medium text-white flex justify-center items-center py-2 gap-2">
           <FiUser size={30} className="min-w-[30px]" />
           <Image
             src={ensAvatar ?? blo(address as `0x${string}`)}

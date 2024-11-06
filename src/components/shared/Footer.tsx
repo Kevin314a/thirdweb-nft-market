@@ -21,7 +21,8 @@ export const Footer = () => {
                 <ul className="flex items-center lg:justify-start justify-between lg:gap-[52px] ml-20 md:ml-36 lg:ml-0">
                   <li>
                     <a
-                      // href="#"
+                      href="https://twitter.com/possestudio"
+                      target="_blank"
                       className="md:scale-100 scale-75 bg-golden-1000 rounded-full flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
                     >
                       <FaTwitter size="32" color="white" />
@@ -29,7 +30,8 @@ export const Footer = () => {
                   </li>
                   <li>
                     <a
-                      // href="#"
+                      href="https://discord.gg/possestudios"
+                      target="_blank"
                       className="md:scale-100 scale-75 bg-golden-1000 rounded-full flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
                     >
                       <FaDiscord size="32" color="white" />
@@ -37,7 +39,8 @@ export const Footer = () => {
                   </li>
                   <li>
                     <a
-                      // href="#"
+                      href="https://t.me/possestudiosannouncements"
+                      target="_blank"
                       className="md:scale-100 scale-75 bg-golden-1000 rounded-full flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
                     >
                       <FaTelegramPlane size="32" color="white" />
@@ -45,7 +48,8 @@ export const Footer = () => {
                   </li>
                   <li>
                     <a
-                      // href="#"
+                      href="https://m.youtube.com/@possestudiohq"
+                      target="_blank"
                       className="md:scale-100 scale-75 bg-golden-1000 rounded-full flex items-center justify-center w-12 h-12 md:w-16 md:h-16"
                     >
                       <IoLogoYoutube size="32" color="white" />
@@ -56,7 +60,7 @@ export const Footer = () => {
             </div>
           </div>
           <div className="lg:w-2/3 w-full">
-            <div className="flex mt-0 lg:flex-nowrap flex-wrap lg:justify-end justify-start md:justify-between xl:gap-12 lg:gap-8 space-y-8">
+            <div className="flex mt-0 lg:flex-nowrap flex-wrap justify-start md:justify-between xl:gap-12 lg:gap-8 space-y-8">
               <div className="w-1/2 md:w-auto lg:w-auto mt-8">
                 <h4 className="lg:text-2xl text-lg lg:mb-20 md:mb-2 pb-4 leading-9 text-white font-medium ">
                   Marketplace
@@ -65,7 +69,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Partners
                     </a>
@@ -73,7 +77,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Categories
                     </a>
@@ -81,7 +85,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Collections
                     </a>
@@ -89,7 +93,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Getting Listed
                     </a>
@@ -104,7 +108,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Swap
                     </a>
@@ -112,7 +116,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Pools
                     </a>
@@ -120,7 +124,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Farm
                     </a>
@@ -128,7 +132,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Stake
                     </a>
@@ -143,7 +147,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       About Us
                     </a>
@@ -151,7 +155,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Contact Us
                     </a>
@@ -159,7 +163,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Documents
                     </a>
@@ -167,7 +171,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       Privacy Policy
                     </a>
@@ -182,7 +186,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Is DeFi?
                     </a>
@@ -190,7 +194,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Are NFTs?
                     </a>
@@ -198,7 +202,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What Is GameFi?
                     </a>
@@ -206,7 +210,7 @@ export const Footer = () => {
                   <li>
                     <a
                       // href="#"
-                      className="block md:mb-4 mb-2 lg:text-lg text-base hover:underline text-white leading-[27px] font-normal"
+                      className="block md:mb-4 mb-2 lg:text-lg text-base text-white leading-[27px] font-normal"
                     >
                       What is SocialFi?
                     </a>

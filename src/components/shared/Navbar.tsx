@@ -37,15 +37,15 @@ export const Navbar = () => {
       <nav>
         <div className="max-w-[1920px] px-2 lg:px-6 flex items-center justify-between mx-auto">
           <div className="flex min-w-[120px]">
-          <Link href="/" className="flex items-center relative z-20">
-            <img src={IconLogo.src}
-              width={175}
-              height={64}
-              className="w-auto h-[32px] md:min-h-[48px] xl:min-h-[60px] bg-contain px-2 lg:px-0 py-0 md:py-2 lg:-mt-4"
-              // className="min-w-[120px] h-auto bg-contain p-2 md:-mt-4"
-              alt="Logo"
-            />
-          </Link>
+            <Link href="/home" className="flex items-center relative z-20">
+              <img src={IconLogo.src}
+                width={175}
+                height={64}
+                className="w-auto h-[32px] md:min-h-[48px] xl:min-h-[60px] bg-contain px-2 lg:px-0 py-0 md:py-2 lg:-mt-4"
+                // className="min-w-[120px] h-auto bg-contain p-2 md:-mt-4"
+                alt="Logo"
+              />
+            </Link>
           </div>
           <div
             className={`${active ? 'active' : ''
@@ -68,8 +68,8 @@ export const Navbar = () => {
                       {item.label}
                       {item.children && (
                         <FaChevronDown size={12} className={`${item.href.split('/').at(1) === pathname.split('/').at(1)
-                        ? 'text-golden-1100' : 'text-white'
-                        } group-hover:text-golden-1000 hover:text-golden-1000`} />
+                          ? 'text-golden-1100' : 'text-white'
+                          } group-hover:text-golden-1000 hover:text-golden-1000`} />
                       )}
                     </div>
                   </Link>
@@ -79,6 +79,7 @@ export const Navbar = () => {
                         <li key={childIndex} className="border-b border-black-1200">
                           <Link
                             href={child.href}
+                            onClick={() => item.href === "#" && toast.error("Coming soon...")}
                             className="block p-4 hover:bg-golden-1300 rounded-lg hover:text-gray-200 whitespace-nowrap"
                           >
                             {child.label}
@@ -144,7 +145,7 @@ const NAV_ITEMS = [
         href: '/drops',
       },
       {
-        label: 'Stat',
+        label: 'NFT Stats',
         href: '#',
       },
     ],

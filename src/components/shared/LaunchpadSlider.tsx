@@ -4,6 +4,7 @@ import { ImageNFT } from '@/assets';
 import { XSwiper } from '@/components/base';
 import React from 'react';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
 
 const LaunchpadSlider = () => {
 
@@ -57,7 +58,8 @@ const LaunchpadSlider = () => {
               </div>
               <div className="text-center">
                 <a
-                  href="#"
+                  // href="#"
+                  onClick={() => toast.error("coming soon")}
                   className="text-base text-center transition-all hover:bg-orange-800 flex items-center justify-center text-white font-medium font-poppins h-[30px] max-w-[130px] mx-auto w-full mt-2.5 bg-golden-1200 rounded-[7px]"
                 >
                   Mint

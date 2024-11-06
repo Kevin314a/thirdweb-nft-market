@@ -40,7 +40,7 @@ const XSwiper = ({
       spaceBetween: spaceBetween?.lg || 20,
     },
     1440: {
-      slidesPerView: slidesPerView?.xl || 12.7,
+      slidesPerView: slidesPerView?.xl || 2.7,
       spaceBetween: spaceBetween?.xl || 24,
     },
     2560: {

@@ -2,7 +2,7 @@
 
 export const SwapPanel = () => {
   return (
-    <div className="w-full max-w-[800px] w-full lg:min-w-[600px] h-[200px] md:h-[360px] bg-[#846a51] rounded-2xl backdrop-blur-[8px] py-2 px-2 md:px-4">
+    <div className="w-full w-[600px] h-[200px] md:h-[360px] bg-[#846a51] rounded-2xl backdrop-blur-[8px] py-2 px-2 md:px-4">
       <div className="stacking-approve-heading flex items-center justify-between pb-2 md:py-4">
         <span className="text-white text-md md:text-2xl ml-1 font-bold">Swap</span>
         <div className="flex items-center gap-2">
