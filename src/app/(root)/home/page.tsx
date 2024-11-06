@@ -87,26 +87,23 @@ export default function PosseHome() {
             Token
             <GradientText text="Swap" fontSize={16} />
           </h2>
-          <div className="flex md:flex-row flex-col justify-center gap-10">
-            <div className="w-full hidden lg:flex">
+          <div className="flex flex-wrap justify-center gap-10 items-center mx-auto w-full">
+            <div className="block mx-auto">
               <Link
                 href="https://lfgm.astar.network/posse"
                 target="_blank"
-                className="w-full"
               >
                 <Image
-                  width={500}
-                  height={350}
+                  width={1280}
+                  height={640}
                   src={ImageSwapAstar1}
-                  className="rounded-2xl object-cover w-auto h-full max-h-[360px] bg-cover w-full"
+                  className="rounded-2xl object-cover min-w-[400px] max-w-[400px] md:min-w-[720px] md:max-w-[720px] min-h-[200px] max-h-[200px] md:min-h-[360px] md:max-h-[360px] bg-cover"
                   alt=""
                   priority
                 />
               </Link>
             </div>
             <SwapPanel />
-
-
           </div>
         </div>
         <div className="absolute bottom-0 left-0 max-h-[312px] -z-10">
