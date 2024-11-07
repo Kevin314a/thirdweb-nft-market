@@ -89,7 +89,7 @@ export default async function PosseHome() {
             <GradientText text="Swap" fontSize={16} />
           </h2>
           <div className="flex flex-wrap justify-center gap-10 items-center mx-auto w-full">
-            <div className="block mx-auto">
+            <div className="hidden md:block mx-auto">
               <Link
                 href="https://lfgm.astar.network/posse"
                 target="_blank"

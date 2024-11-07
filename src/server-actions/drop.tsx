@@ -400,11 +400,11 @@ export async function fetchFeaturedDrops() {
 
   const recommedDrops = [
     // for production
-    // '0x2358Ba26618e25Bf7698e14FCbc91d12CD84f172',
-    // '0x906b941171390da4c5f2B95F9646853A4F5Eb637',
+    '0x2358Ba26618e25Bf7698e14FCbc91d12CD84f172',
+    '0x906b941171390da4c5f2B95F9646853A4F5Eb637',
 
     // for test
-    '0xF73cDA350Ac60C33b763bf3A13CCc4F6a454117F',
+    // '0xF73cDA350Ac60C33b763bf3A13CCc4F6a454117F',
   ];
 
   try {
