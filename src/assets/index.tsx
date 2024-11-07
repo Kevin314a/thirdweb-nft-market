@@ -38,7 +38,7 @@ import ImageSwapAstar1 from '@/assets/images/swap-astar1.webp';
 
 import ImageVerifiedBadge from '@/assets/images/verified-badge.png';
 import ImageProfileBack from '@/assets/images/profile-back.jpg';
-import ImageLaunchBoy from "@/assets/images/launch-boy.png";
+import ImageLaunchBoy from "@/assets/images/launch-boy.webp";
 import ImageOverallBack from "@/assets/images/bg1.webp";
 
 import IconChainAll from "@/assets/images/chain-all.png";
