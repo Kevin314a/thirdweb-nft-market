@@ -21,12 +21,14 @@ export const DetailUnLimited = ({
   stage,
   stageStatus,
   onClaim,
+  onSetActive,
 }: {
   isLoading: boolean,
   drop: PosseBridgeDrop,
   stage: PosseBridgeDropMintStage,
   stageStatus: 'past' | 'today' | 'future',
   onClaim: () => void,
+  onSetActive: (v: boolean) => void,
 }) => {
   const router = useRouter();
 
@@ -42,6 +44,7 @@ export const DetailUnLimited = ({
         })
       });
       setSharedData([ret1, ret2, ret3, ret4]);
+      onSetActive(!!ret3);
     }
     fnLoadSharedData();
   }, [drop]);
@@ -112,14 +115,18 @@ export const DetailUnLimited = ({
               ))}
               <span className="text-white text-lg">Name: {sharedData[0]}</span>
               <span className="text-white text-lg">Description: {sharedData[1]}</span>
-              <Button
-                className="py-4 text-md font-medium lg:text-2xl"
-                disabled={isLoading || stageStatus !== 'today'}
-                variant={stageStatus !== 'today' ? 'common' : 'default'}
-                onClick={onClaim}
-              >
-                {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim NFT
-              </Button>
+              {!sharedData[2] ? (
+                <div className="bg-black-1300 rounded-lg text-red-700 text-center text-lg p-2 w-full">※ The metadata is not set yet. ※</div>
+              ) : (
+                <Button
+                  className="py-4 text-md font-medium lg:text-2xl"
+                  disabled={isLoading || stageStatus !== 'today'}
+                  variant={stageStatus !== 'today' ? 'common' : 'default'}
+                  onClick={onClaim}
+                >
+                  {!!isLoading && <LuLoader2 size={18} className="animate-spin" />}Claim NFT
+                </Button>
+              )}
             </div>
           </div>
         </TabPanel>

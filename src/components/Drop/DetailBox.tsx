@@ -32,6 +32,8 @@ export function DropDetailBox(props: DropDetailProps) {
   const { connect } = useConnectModal();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [buttonActive, setButtonActive] = useState<boolean>(false);
+
   const handleClaimTo = async () => {
     if (isLoading) {
       return;
@@ -172,6 +174,7 @@ export function DropDetailBox(props: DropDetailProps) {
             isLoading={isLoading}
             stageStatus={stageStatus}
             onClaim={() => handleClaimTo()}
+            onSetActive={(v: boolean) => setButtonActive(v)}
           />
         )}
         {drop.group === 'LIMITED' && (
@@ -198,7 +201,7 @@ export function DropDetailBox(props: DropDetailProps) {
             <Button
               type="button"
               onClick={() => handleClaimTo()}
-              disabled={isLoading || stageStatus !== 'today'}
+              disabled={isLoading || stageStatus !== 'today' || !buttonActive}
               variant={stageStatus === 'today' ? 'default' : 'common'}
               className="ml-4"
             >

@@ -114,7 +114,7 @@ export async function updateDropStage(dropAddr: string, newStages: PosseBridgeDr
 
 export async function ownedDrops(accountAddr?: string) {
   try {
-    const dbDrops = await getDrops(accountAddr);
+    const dbDrops = await getDrops(!!owner ? { owner } : {}, { 'createdAt': -1 }, 0);
     const ownDrops: PosseBridgeDrop[] = dbDrops.map(dbDrop => ({
       group: dbDrop.group,
       address: dbDrop.address,
@@ -392,5 +392,49 @@ export async function claimNFT(dropAddr: string, accountAddr: string) {
       actions: "Please try again",
     };
     return res;
+  }
+}
+
+
+export async function fetchFeaturedDrops() {
+
+  const recommedDrops = [
+    // for production
+    // '0x2358Ba26618e25Bf7698e14FCbc91d12CD84f172',
+    // '0x906b941171390da4c5f2B95F9646853A4F5Eb637',
+
+    // for test
+    '0xF73cDA350Ac60C33b763bf3A13CCc4F6a454117F',
+  ];
+
+  try {
+    const dbDrops = await getDrops({ address: { $in: recommedDrops } }, { 'createdAt': -1 }, 0);
+    const featuredDrops: PosseBridgeDrop[] = dbDrops.map(dbDrop => ({
+      group: dbDrop.group,
+      address: dbDrop.address,
+      name: dbDrop.name,
+      description: dbDrop.description,
+      image: dbDrop.image,
+      payToken: dbDrop.payToken,
+      owner: dbDrop.owner,
+      visible: dbDrop.visible,
+      mintStages: dbDrop.mintStages.map((stage: PosseBridgeDropMintStage) => ({
+        did: generateUuid(),
+        name: stage.name,
+        price: stage.price,
+        currency: stage.currency,
+        numberOfItems: stage.numberOfItems,
+        startAt: stage.startAt,
+        endAt: stage.endAt,
+        perlimit: stage.perlimit,
+        allows: stage.allows,
+        isActive: Date.now() > stage.startAt && Date.now() < stage.endAt,
+      })),
+    }));
+
+    return featuredDrops;
+  } catch (err) {
+    console.error('[ERROR ON FETCHING DROP]', err);
+    return null;
   }
 }

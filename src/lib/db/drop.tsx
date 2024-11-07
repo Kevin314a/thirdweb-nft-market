@@ -18,10 +18,10 @@ export const storeDrop = async (newDrop: PosseBridgeDrop) => {
   }
 };
 
-export const getDrops = async (owner?: string) => {
+export const getDrops = async (filter: { [key: string]: any }, sort: { [key: string]: any }, page: number) => {
   try {
     await dbConnect();
-    return await DropModel.find(!!owner ? { owner } : {}).sort({ 'createdAt': -1 });
+    return await DropModel.find(filter).sort(sort);
   } catch (err) {
     console.error("[ERROR ON FETCHING DROPS on DB]", err);
     throw new Error("Failed to fetch Drops");

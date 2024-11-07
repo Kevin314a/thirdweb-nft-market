@@ -152,6 +152,7 @@ export interface PosseBridgeDropMintStage extends Omit<PosseFormDropMintStage, '
   endAt: number;
   allows: string[];
   did?: string;
+  isActive?: boolean;
 };
 
 export type PosseFormLazyNFT = {

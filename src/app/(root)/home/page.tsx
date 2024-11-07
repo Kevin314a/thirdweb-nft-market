@@ -1,13 +1,14 @@
-'use client'
+'use server'
 
 import Image from "next/image";
 import Link from "next/link";
 import { IconChainAll, IconChainAstar, IconChainBase, IconChainCronos, IconChainSoneium, ImagePosse, ImageSwap, ImageSwapAstar1, ImageVerifiedBadge, Poly2, Poly3, Poly6, Poly7, Polygon, Polygon1, Polygon11 } from "@/assets";
 import { TableTabs, LaunchpadSlider, MarketMoversSlider, TopSalesSlider, MemecoinsSlider, SwapPanel, FeaturedSlider } from "@/components/shared";
 import { GradientText, Tab, TabGroup, TabList, XSwiper } from "@/components/base";
+import { fetchFeaturedDrops } from "@/server-actions/drop";
 
-export default function PosseHome() {
-
+export default async function PosseHome() {
+  const featuredDrops = await fetchFeaturedDrops();
   return (
     <>
       <section className="md:pt-20 pt-16 relative z-20">
@@ -71,7 +72,7 @@ export default function PosseHome() {
             Featured
             <GradientText text="Collections" fontSize={16} />
           </h1>
-          <FeaturedSlider />
+          <FeaturedSlider drops={featuredDrops} />
         </div>
         <div className="absolute -bottom-4 right-0 z-1">
           <img
