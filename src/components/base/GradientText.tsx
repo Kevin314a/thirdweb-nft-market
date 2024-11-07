@@ -18,7 +18,8 @@ const GradientText: React.FC<GradientTextProps> = ({
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       height={fontSize * 1.5}
-      style={{ display: 'inline-block', verticalAlign: 'baseline' }} // Align vertically with text
+      viewBox={`0 0 ${fontSize * text.length} ${fontSize * 1.5}`}
+      style={{ display: 'inline-block', verticalAlign: 'baseline' }}
     >
       <defs>
         <linearGradient id={rndId} x1="0%" y1="0%" x2="100%" y2="0%">

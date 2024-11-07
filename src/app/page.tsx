@@ -1,6 +1,6 @@
 'use client'
 
-import { ImageLaunchBoy, ImageOverallBack, TempImageCreateBack } from "@/assets";
+import { ImageLaunchBoy, ImageOverallBack } from "@/assets";
 import { Button } from "@/components/base";
 import { Launchbar } from "@/components/shared/Launchbar";
 import Link from "next/link";

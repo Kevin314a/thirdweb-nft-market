@@ -10,10 +10,8 @@ export default function StatsPage() {
   return (
     <section className="lg:pt-24 pt-20 relative z-10">
       <div className="max-w-[1920px] px-6 lg:px-10 mx-auto z-10 relative">
-        <h4 className="py-2 text-2xl text-white font-bold">
-          <span className="bg-heading-bg  bg-clip-text text-transparent">
-            Collection Stats
-          </span>
+        <h4 className="py-2 text-2xl text-golden-1000 font-bold">
+          Collection Stats
         </h4>
       </div>
       <div className="max-w-[1920px] px-6 lg:px-10 mx-auto z-10 relative">
@@ -89,7 +87,7 @@ export default function StatsPage() {
                                   {i}
                                 </td>
                                 <td className="lg:p-4 p-2 text-sm lg:text-base text-center min-w-[160px]">
-                                  <div className="flex justify-center items-center cursor-pointer" onClick={() => router.push('/contract/0x1') }>
+                                  <div className="flex justify-center items-center cursor-pointer" onClick={() => router.push('/contract/0x1')}>
                                     <img src={ImageCreator.src} width={60} height={60} className="bg-golden-1200 rounded-lg mr-2" />
                                     <span>Cowboys Wild West</span>
                                     <img className="ml-2" src={ImageVerifiedBadge.src} width={20} height={20} alt="verified" />

@@ -1,4 +1,4 @@
-import { Polygon1, Polygon22, TempImageCreateBack } from "@/assets";
+import { Polygon1, Polygon22 } from "@/assets";
 import { ReactNode } from "react";
 import Image from "next/image";
 

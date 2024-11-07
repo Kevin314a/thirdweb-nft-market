@@ -18,7 +18,7 @@ export default async function PosseHome() {
       </section>
       <section className="md:pt-4 pt-8 relative">
         <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-10">
-          <h1 className="text-[15px] flex gap-2 mb-4 font-semibold text-white leading-normal md:text-start">
+          <h1 className="text-[15px] flex gap-2 mb-2 md:mb-4 font-semibold text-white md:text-start">
             Featured
             <GradientText text="Collections" fontSize={16} />
           </h1>
@@ -34,7 +34,7 @@ export default async function PosseHome() {
 
       <section className="md:pt-10 pt-8 relative">
         <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-30">
-          <h2 className="text-[15px] flex gap-2 mb-4 font-semibold text-white leading-normal sm:text-start">
+          <h2 className="text-[15px] flex gap-2 mb-2 md:mb-4 font-semibold text-white sm:text-start">
             Token
             <GradientText text="Swap" fontSize={16} />
           </h2>
@@ -79,7 +79,7 @@ export default async function PosseHome() {
 
       <section className="md:pt-10 pt-8 relative">
         <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-10">
-          <h2 className="text-[15px] flex gap-2 mb-4 font-semibold text-white leading-normal whitespace-nowrap">
+          <h2 className="text-[15px] flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
             Memecoins on
             <GradientText text="Yeehaw" fontSize={16} />
           </h2>
@@ -100,35 +100,35 @@ export default async function PosseHome() {
       <section className="lg:pt-10 pt-8 relative z-10">
         <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-10">
           <div className="lg:mb-10 mb-8 -mx-2">
-            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 font-semibold text-white whitespace-nowrap">
+            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
               Launchpad NFT
               <GradientText text="Collections" fontSize={16} />
             </h2>
             <LaunchpadSlider />
           </div>
           <div className="lg:mb-10 mb-8 -mx-2">
-            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 font-semibold text-white whitespace-nowrap">
+            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
               Top NFT
               <GradientText text="Sales" fontSize={16} />
             </h2>
             <TopSalesSlider />
           </div>
           <div className="lg:mb-10 mb-8 -mx-2">
-            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 font-semibold text-white whitespace-nowrap">
+            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
               NFT Market
               <GradientText text="Movers" fontSize={16} />
             </h2>
             <MarketMoversSlider />
           </div>
           <div className="lg:mb-10 mb-8 -mx-2">
-            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 font-semibold text-white whitespace-nowrap">
+            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
               Trending
               <GradientText text="Collections" fontSize={16} />
             </h2>
             <MarketMoversSlider />
           </div>
           <div className="lg:mb-10 mb-8 -mx-2">
-            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 font-semibold text-white whitespace-nowrap">
+            <h2 className="text-[15px] mx-2 flex gap-2 mb-2 md:mb-4 font-semibold text-white whitespace-nowrap">
               404
               <GradientText text="Collections" fontSize={16} />
             </h2>
