@@ -147,7 +147,10 @@ export const isNotOverMax = (value: string | undefined, maxValue: number): boole
   return isNaN(v) || v <= maxValue;
 };
 
-export const toNumber = (value: string): number => {
+export const toNumber = (value?: string): number => {
+  if (!value) {
+    return 0;
+  }
   const num = Number(value); // Convert string to a number
   return isNaN(num) ? 0 : num; // Check if conversion was successful
 };

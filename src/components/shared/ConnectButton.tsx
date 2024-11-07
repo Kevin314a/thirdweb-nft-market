@@ -45,7 +45,7 @@ export const ConnectButton = () => {
           <>
             <MdAccountBalanceWallet color='white' size="18" />
             <span className="ml-1 md:ml-2 text-xs md:text-base whitespace-nowrap">
-              {screenSize === "md" ? "Login" : "Connect Wallet"}
+              Login
             </span>
           </>
         ),
