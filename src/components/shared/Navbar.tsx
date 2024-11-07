@@ -1,7 +1,7 @@
 'use client'
 
 import { IconLogo, IconMagnify } from "@/assets";
-import { Input } from "@/components/base";
+import { Button, Input } from "@/components/base";
 import { FaChevronDown } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import toast from "react-hot-toast";
 import { UserMenu } from ".";
-import { MdMenu } from "react-icons/md";
+import { MdClose, MdMenu } from "react-icons/md";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -49,38 +49,49 @@ export const Navbar = () => {
           </div>
           <div
             className={`${active ? 'active' : ''
-              } items-center xxl:pr-[54px] xl:pr-8 xl:pl-8 px-6 lg:h-auto h-screen justify-between w-3/4 transition-all z-10 duration-500 lg:static absolute -left-[100%] py-6 lg:py-0 top-16 lg:flex lg:w-auto md:order-1 lg:bg-transparent bg-black`}
+              } items-center xxl:pr-[54px] xl:px-8 p-2 lg:px-6 lg:h-auto h-screen justify-between w-full lg:w-3/4 transition-all z-[4998] duration-500 
+              lg:static absolute -left-[100%] lg:py-0 top-0 lg:flex lg:w-auto md:order-1 lg:bg-transparent bg-black`}
             id="navbar-sticky"
           >
-            <ul className="flex flex-col rtl:space-x-reverse lg:flex-row gap-5 lg:gap-1">
+            <div className="w-full flex justify-between items-center lg:hidden mb-4">
+              <img src={IconLogo.src}
+                width={175}
+                height={64}
+                className="w-auto h-[32px] md:min-h-[48px] bg-contain px-2 py-0 md:py-2"
+                alt="Logo"
+              />
+              <Button variant="common" className="border-none" onClick={toggleMenu}><MdClose color="white" size="18" /></Button>
+            </div>
+            <ul className="flex flex-col rtl:space-x-reverse lg:flex-row p-1 lg:p-0 lg:gap-1">
               {NAV_ITEMS.map((item, i) => (
-                <li key={i} className="group relative py-4">
+                <li key={i} className="group relative px-0 py-2 lg:py-4">
                   <Link
-                    href={item.href}
-                    onClick={() => item.href === "#" && toast.error("Coming soon...")}
+                    href={!item.children ? item.href : ""}
+                    onClick={() => item.href === "#" ? toast.error("Coming soon...") : toggleMenu()}
                     className={`block px-2.5 transition-all font-medium xxl:text-lg text-base leading-[27px] ${item.href.split('/').at(1) === pathname.split('/').at(1)
                       ? 'text-golden-1100 xxl:text-xl'
                       : 'text-white'
-                      } group-hover:text-golden-1000 hover:text-golden-1000`}
+                      } lg:group-hover:text-golden-1000 hover:text-golden-1000`}
                     aria-current="page"
                   >
-                    <div className="flex justify-center items-center whitespace-nowrap gap-1">
+                    <div className="flex lg:justify-center items-center whitespace-nowrap lg:gap-1">
                       {item.label}
                       {item.children && (
                         <FaChevronDown size={12} className={`${item.href.split('/').at(1) === pathname.split('/').at(1)
                           ? 'text-golden-1100' : 'text-white'
-                          } group-hover:text-golden-1000 hover:text-golden-1000`} />
+                          } lg:group-hover:text-golden-1000 hover:text-golden-1000`} />
                       )}
                     </div>
                   </Link>
                   {item.children && (
-                    <ul className="absolute left-0 mt-4 w-auto bg-black-1300 text-white shadow-lg rounded-lg hidden group-hover:block transition duration-300 ease-in-out">
+                    <ul className="lg:absolute lg:left-0 lg:mt-4 w-auto ml-4 lg:ml-0 lg:bg-black-1300 text-white shadow-lg lg:rounded-lg text-sm lg:text-base
+                    lg:hidden lg:group-hover:block transition duration-300 ease-in-out border-l-2 border-black-1000 lg:border-0">
                       {item.children.map((child, childIndex) => (
-                        <li key={childIndex} className="border-b border-black-1200">
+                        <li key={childIndex} className="lg:border-b lg:border-black-1200 px-4 py-2 lg:p-0">
                           <Link
                             href={child.href}
-                            onClick={() => child.href === "#" && toast.error("Coming soon...")}
-                            className="block p-4 hover:bg-golden-1300 rounded-lg hover:text-gray-200 whitespace-nowrap"
+                            onClick={() => child.href === "#" ? toast.error("Coming soon...") : toggleMenu()}
+                            className="block lg:p-4 lg:hover:bg-golden-1300 rounded-lg hover:text-black-1000 lg:hover:text-gray-200 whitespace-nowrap"
                           >
                             {child.label}
                           </Link>
