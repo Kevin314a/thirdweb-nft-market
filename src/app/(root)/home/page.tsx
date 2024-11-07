@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { IconChainAll, IconChainAstar, IconChainBase, IconChainCronos, IconChainSoneium, ImageSwapAstar1, Poly2, Poly3, Poly6, Polygon, Polygon1, Polygon11 } from "@/assets";
-import { TableTabs, LaunchpadSlider, MarketMoversSlider, TopSalesSlider, MemecoinsSlider, SwapPanel, FeaturedSlider } from "@/components/Home";
-import { GradientText, Tab, TabGroup, TabList, XSwiper } from "@/components/base";
+import { ImageSwapAstar1, Poly2, Poly3, Poly6, Polygon, Polygon1, Polygon11 } from "@/assets";
+import { SubMenu, TableTabs, LaunchpadSlider, MarketMoversSlider, TopSalesSlider, MemecoinsSlider, SwapPanel, FeaturedSlider } from "@/components/Home";
+import { GradientText } from "@/components/base";
 import { fetchFeaturedDrops } from "@/server-actions/drop";
 
 export default async function PosseHome() {
@@ -12,63 +12,13 @@ export default async function PosseHome() {
   return (
     <>
       <section className="md:pt-20 pt-16 relative z-20">
-        <div className="max-w-[1920px] px-6 lg:px-6 mx-auto relative z-10 flex flex-col xl:flex-row justify-between gap-4 items-center">
-          <div className="flex flex-row gap-4 w-full overflow-x-scroll md:overflow-x-hidden">
-            <div className="flex flex-row items-center cursor-pointer gap-2 min-w-max">
-              <img width="24" height="24" src={IconChainAll.src} alt="chain-icon" />
-              <span className="whitespace-nowrap text-white font-medium">All Chains</span>
-            </div>
-            <div className="flex flex-row items-center cursor-pointer gap-2 min-w-max">
-              <img width="24" height="24" src={IconChainSoneium.src} alt="chain-icon" />
-              <span className="whitespace-nowrap text-white font-medium">Soneium</span>
-            </div>
-            <div className="flex flex-row items-center cursor-pointer gap-2 min-w-max">
-              <img width="24" height="24" src={IconChainAstar.src} alt="chain-icon" />
-              <span className="whitespace-nowrap text-white font-medium">Astar</span>
-            </div>
-            <div className="flex flex-row items-center cursor-pointer gap-2 min-w-max">
-              <img width="24" height="24" src={IconChainBase.src} alt="chain-icon" />
-              <span className="whitespace-nowrap text-white font-medium">Base</span>
-            </div>
-            <div className="flex flex-row items-center cursor-pointer gap-2 min-w-max">
-              <img width="24" height="24" src={IconChainCronos.src} alt="chain-icon" />
-              <span className="whitespace-nowrap text-white font-medium">Cronos</span>
-            </div>
-          </div>
-
-          <TabGroup className="w-full">
-            <TabList className="flex lg:justify-end flex-row w-full bg-transparent overflow-x-scroll md:overflow-x-hidden">
-              <Tab className="bg-transparent py-2 px-4 text-base font-regular text-white">
-                All
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Gaming
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Derivatives
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Video
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Art
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Memes
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                PFPs
-              </Tab>
-              <Tab className="bg-transparent pl-5 py-2 px-4 text-base font-regular text-white">
-                Generative
-              </Tab>
-            </TabList>
-          </TabGroup>
+        <div className="max-w-[1920px] px-6 lg:px-6 mx-auto relative z-10">
+          <SubMenu />
         </div>
       </section>
       <section className="md:pt-4 pt-8 relative">
         <div className="max-w-[1920px] px-6 lg:px-10 mx-auto relative z-10">
-          <h1 className="text-[15px] md:flex gap-2 hidden sm:mb-3 font-semibold text-white leading-normal md:text-start lg:px-0 px-6 text-center mb-4">
+          <h1 className="text-[15px] flex gap-2 mb-4 font-semibold text-white leading-normal md:text-start">
             Featured
             <GradientText text="Collections" fontSize={16} />
           </h1>

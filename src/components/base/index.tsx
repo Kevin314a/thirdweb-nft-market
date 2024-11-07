@@ -16,7 +16,8 @@ import { Switch } from "@headlessui/react";
 import { Tab } from "./Tab";
 import { TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 
-import { MultiSelectListbox as MultiSelect } from "./MultiSelect";
+import { XSelect } from "./XSelect";
+import { XMultiSelect } from "./XMultiSelect";
 import { TransitionDialog } from "./TransitionDialog";
 import { XDatePicker } from "./XDatePicker";
 import { XSwiper } from "./XSwiper";
@@ -32,7 +33,6 @@ export {
   Label,
   Listbox, ListboxButton, ListboxOption, ListboxOptions,
   Menu, MenuButton, MenuItem, MenuItems,
-  MultiSelect,
   Radio, RadioGroup,
   Switch,
   Textarea,
@@ -41,6 +41,8 @@ export {
   TransitionDialog,
   Tab, TabGroup, TabList, TabPanel, TabPanels,
   XDatePicker,
+  XSelect,
+  XMultiSelect,
   XSwiper,
   GradientText,
 };

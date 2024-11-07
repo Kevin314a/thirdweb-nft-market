@@ -173,7 +173,7 @@ export const DropForm = (props: { deployDrop: typeof deployDrop }) => {
           </Field>
           {/* <Field>
             <Label htmlFor="payToken" as="p" className="block mb-2">Payment Tokens</Label>
-            <MultiSelect
+            <XMultiSelect
               variant="inline"
               items={["ETH", "ASTR"]}
               selectedItems={selectedPayToken}

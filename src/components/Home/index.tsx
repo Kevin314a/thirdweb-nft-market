@@ -1,4 +1,4 @@
-
+import SubMenu from "./SubMenu";
 import FeaturedSlider from "./FeaturedSlider";
 import LaunchpadSlider from "./LaunchpadSlider";
 import MarketMoversSlider from "./MarketMoversSlider";
@@ -9,6 +9,7 @@ import { SwapPanel } from "./SwapPanel";
 
 
 export {
+  SubMenu,
   FeaturedSlider,
   LaunchpadSlider,
   MarketMoversSlider,
