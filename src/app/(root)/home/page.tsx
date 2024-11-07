@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { IconChainAll, IconChainAstar, IconChainBase, IconChainCronos, IconChainSoneium, ImagePosse, ImageSwap, ImageSwapAstar1, ImageVerifiedBadge, Poly2, Poly3, Poly6, Poly7, Polygon, Polygon1, Polygon11 } from "@/assets";
-import { TableTabs, LaunchpadSlider, MarketMoversSlider, TopSalesSlider, MemecoinsSlider, SwapPanel, FeaturedSlider } from "@/components/shared";
+import { IconChainAll, IconChainAstar, IconChainBase, IconChainCronos, IconChainSoneium, ImageSwapAstar1, Poly2, Poly3, Poly6, Polygon, Polygon1, Polygon11 } from "@/assets";
+import { TableTabs, LaunchpadSlider, MarketMoversSlider, TopSalesSlider, MemecoinsSlider, SwapPanel, FeaturedSlider } from "@/components/Home";
 import { GradientText, Tab, TabGroup, TabList, XSwiper } from "@/components/base";
 import { fetchFeaturedDrops } from "@/server-actions/drop";
 
@@ -74,7 +74,7 @@ export default async function PosseHome() {
           </h1>
           <FeaturedSlider drops={featuredDrops} />
         </div>
-        <div className="absolute -bottom-4 right-0 z-1">
+        <div className="hidden md:absolute -bottom-4 right-0 z-1">
           <img
             src={Polygon1.src}
             alt=""
@@ -89,7 +89,7 @@ export default async function PosseHome() {
             <GradientText text="Swap" fontSize={16} />
           </h2>
           <div className="flex flex-wrap justify-center gap-10 items-center mx-auto w-full">
-            <div className="hidden md:block mx-auto">
+            <div className="hidden lg:block mx-auto">
               <Link
                 href="https://lfgm.astar.network/posse"
                 target="_blank"
@@ -107,7 +107,7 @@ export default async function PosseHome() {
             <SwapPanel />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 max-h-[312px] -z-10">
+        <div className="hidden md:absolute bottom-0 left-0 max-h-[312px] -z-10">
           <img
             className="w-[145px] h-full"
             src={Poly2.src}
@@ -135,7 +135,7 @@ export default async function PosseHome() {
           </h2>
           <MemecoinsSlider />
         </div>
-        <div className="absolute md:block hidden bottom-1/2 -mb-44 left-0 z-0">
+        <div className="hidden md:absolute md:block hidden bottom-1/2 -mb-44 left-0 z-0">
           <img
             className="w-auto h-full max-h-[312px]"
             src={Poly6.src}
@@ -185,7 +185,7 @@ export default async function PosseHome() {
             <MarketMoversSlider />
           </div>
         </div>
-        <div className="absolute -top-20 max-h-[312px] -right-2">
+        <div className="hidden md:absolute -top-20 max-h-[312px] -right-2">
           <img
             className="w-auto h-full max-h-[312px]"
             src={Poly3.src}
@@ -193,7 +193,7 @@ export default async function PosseHome() {
           />
         </div>
 
-        <div className="absolute -translate-y-1/2 top-1/2 -mt-36 left-0">
+        <div className="hidden md:absolute -translate-y-1/2 top-1/2 -mt-36 left-0">
           <img
             className="max-h-[312px] bg-contain w-auto"
             src={Polygon.src}
@@ -205,7 +205,7 @@ export default async function PosseHome() {
         <div className="h-[555px] w-[547px] bg-[#200B07] blur-[250px] absolute -bottom-[0%] -right-44 z-0"></div>
 
 
-        <div className="absolute -bottom-34 right-0">
+        <div className="hidden md:absolute -bottom-34 right-0">
           <img
             className="max-h-[312px] bg-contain w-auto"
             src={Polygon11.src}

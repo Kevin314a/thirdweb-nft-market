@@ -1,34 +1,13 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Swiper as SwiperInstance } from 'swiper';
-import { ImageCreator } from '@/assets';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import { XSwiper } from '../base';
+import { ImageCreator } from '@/assets';
+import { XSwiper } from '@/components/base';
+import { useWindowResize } from '@/hooks/useWindowResize';
+import Image from 'next/image';
 import toast from 'react-hot-toast';
 
 const MemecoinsSlider = () => {
-
-  const [viewMode, setViewMode] = useState<"swiper" | "card">("card");
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1280) {
-        setViewMode("swiper");
-      } else {
-        setViewMode("card");
-      }
-    };
-
-    window.addEventListener('resize', handleResize); // Update on resize
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+  const { viewMode } = useWindowResize();
   return (
     <div className="w-full flex flex-col gap-2 md:gap-4 xl:gap-10">
       {viewMode === "card" ? (
