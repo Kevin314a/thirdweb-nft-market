@@ -14,7 +14,12 @@ const GradientText: React.FC<GradientTextProps> = ({
 }) => {
   const rndId = generateUuid();
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" height={fontSize * 1.5}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      height={fontSize * 1.5}
+      style={{ display: 'inline-block', verticalAlign: 'baseline' }} // Align vertically with text
+    >
       <defs>
         <linearGradient id={rndId} x1="0%" y1="0%" x2="100%" y2="0%">
           {colors.map((color, index) => (
@@ -27,7 +32,7 @@ const GradientText: React.FC<GradientTextProps> = ({
         </linearGradient>
       </defs>
       <text
-        x="0"  // Set back to 0 for starting from the left
+        x="0"
         y={fontSize}
         fontSize={fontSize}
         fill={`url(#${rndId})`}
