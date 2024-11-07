@@ -1,8 +1,8 @@
 'use server'
 
 import { END_EARTH_DATE, client } from "@/lib/constants";
-import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { storeContract } from "@/lib/db/contract";
+import { PosseFormDrop, PosseBridgeDrop, PosseBridgeDropMintStage, PosseDBDrop, PosseBridgeLazyNFT } from "@/lib/types";
 import { getActiveDrops, getDrop, getDrops, getPastDrops, getUpcomingDrops, storeDrop, updateDrop } from "@/lib/db/drop";
 import { getNFTs, storeNFT } from "@/lib/db/nft";
 import { getLazyNFTs } from "@/lib/db/lazynft";
@@ -114,7 +114,8 @@ export async function updateDropStage(dropAddr: string, newStages: PosseBridgeDr
 
 export async function ownedDrops(accountAddr?: string) {
   try {
-    const dbDrops = await getDrops(!!owner ? { owner } : {}, { 'createdAt': -1 }, 0);
+    const dbDrops = await getDrops(!!accountAddr ? { owner: accountAddr } : {}, { 'createdAt': -1 }, 0);
+
     const ownDrops: PosseBridgeDrop[] = dbDrops.map(dbDrop => ({
       group: dbDrop.group,
       address: dbDrop.address,
